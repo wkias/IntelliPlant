@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" enctype="multipart/form-data" id="signupForm">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">单据编号</label>
+                                <div class="col-sm-8">
+                                    <input id="loanCode" name="loanCode" class="form-control" type="text" th:value="${loanCode}" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*借款金额(元)</label>
+                                <div class="col-sm-8">
+                                    <input id="loanAccount" name="loanAccount" class="form-control" type="text" required
+                                           onchange="summary()"   onkeyup="document.getElementById('summary').value=this.value" onblur="document.getElementById('summary').value=this.value">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*还款日期</label>
+                                <div class="col-sm-8">
+                                    <input id="repaymentDate" name="repaymentDate" class="form-control" type="date" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*收款账户</label>
+                                <input id="bankAccountId" name="bankAccountId" class="form-control" type="hidden" >
+                                <div class="col-sm-8">
+                                    <input id="collectionAccount" name="collectionAccount" class="form-control" onclick="getBank()" type="text"  required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">银行账户</label>
+                                <div class="col-sm-8">
+                                    <input id="bankAccount" name="bankAccount" class="form-control" type="text" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">开户行</label>
+                                <div class="col-sm-8">
+                                    <input id="bankName" name="bankName"  readonly class=" form-control"  type="text"/></input>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*申请事由</label>
+                                <div class="col-sm-8">
+                                    <textarea id="loanPurpose" name="loanPurpose" class="form-control" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注</label>
+                                <div class="col-sm-8">
+                                    <textarea id="note" name="note" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <!--<div class="form-group">
+                                <label class="col-sm-3 control-label">申请事由：</label>
+                                <div class="col-sm-8">
+                                    <input id="loanPurpose" name="loanPurpose" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">申请时间：</label>
+                                <div class="col-sm-8">
+                                    <input id="loanDate" name="loanDate" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注：</label>
+                                <div class="col-sm-8">
+                                    <input id="note" name="note" class="form-control" type="text">
+                                </div>
+                            </div>-->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">附件</label>
+                                <div class="col-sm-8">
+                                    <input  class="form-control"  name="filesFile" type="file">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">汇总(元)</label>
+                                <div class="col-sm-8">
+                                    <input id="summary" name="summary" class="form-control" type="text" readonly>
+                                </div>
+                            </div>
+                            <!--<div class="form-group">
+                                <label class="col-sm-3 control-label">删除标记：</label>
+                                <div class="col-sm-8">
+                                    <input id="isDeleted" name="isDeleted" class="form-control" type="hidden">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">创建者：</label>
+                                <div class="col-sm-8">
+                                    <input id="createUserId" name="createUserId" class="form-control" type="hidden">
+                                </div>
+                            </div>-->
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    <button type="submit" class="btn btn-primary" name="loanState" value="0">存为草稿</button>
+                                    <button type="submit" class="btn btn-primary" name="loanState" value="1">提交</button>
+                                </div>
+                            </div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/factory/reimburse/loanApplication/add.js">
+	</script>
+</body>
+</html>

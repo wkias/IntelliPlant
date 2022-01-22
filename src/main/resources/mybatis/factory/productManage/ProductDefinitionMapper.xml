@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.productManage.dao.ProductDefinitionDao">
+
+    <select id="get" resultType="com.bootdo.factory.productManage.domain.ProductDefinitionDO">
+		select `product_id`,`product_code`,`product_name`,`product_size`,`product_model`,`unit`,`state`,`price`, `weight_unit`,`weight`,`description`,`is_deleted`,`create_user_id`,`create_date` from product_definition where product_id = #{value}
+	</select>
+
+    <select id="getVO" resultType="com.bootdo.factory.productManage.vo.ProductDefinitionVO">
+		select `product_id`,`product_code`,`product_name`,`product_size`,`product_model`,`unit`,`state`,`price`, `weight_unit`,`weight`,`description`,`is_deleted`,`create_user_id`,`create_date` from product_definition where product_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.productManage.domain.ProductDefinitionDO">
+        select
+        `product_id`,`product_code`,`product_name`,`product_size`,`product_model`,`unit`,`state`,`price`,`weight_unit`,`weight`,`description`,`is_deleted`,`create_user_id`,`create_date`
+        from product_definition
+        <where>
+            is_deleted=0
+            <if test="productId != null and productId != ''">and product_id = #{productId}</if>
+            <if test="productCode != null and productCode != ''">and product_code like CONCAT('%',#{productCode},'%')
+            </if>
+            <if test="productName != null and productName != ''">and product_name like CONCAT('%',#{productName},'%') escape '/'
+            </if>
+            <if test="productSize != null and productSize != ''">and product_size = #{productSize}</if>
+            <if test="productModel != null and productModel != ''">and product_model = #{productModel}</if>
+            <if test="unit != null and unit != ''">and unit = #{unit}</if>
+            <if test="price != null and price != ''">and price = #{price}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="weightUnit != null and weightUnit != ''"> and weight_unit = #{weightUnit} </if>
+            <if test="weight != null and weight != ''"> and weight = #{weight} </if>
+            <if test="description != null and description != ''">and description = #{description}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createDate != null and createDate != ''">and create_date = #{createDate}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by product_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from product_definition
+        <where>
+            is_deleted = 0
+            <if test="productId != null and productId != ''">and product_id = #{productId}</if>
+            <if test="productCode != null and productCode != ''">and product_code = #{productCode}</if>
+            <if test="productName != null and productName != ''">and product_name = #{productName}</if>
+            <if test="productSize != null and productSize != ''">and product_size = #{productSize}</if>
+            <if test="productModel != null and productModel != ''">and product_model = #{productModel}</if>
+            <if test="unit != null and unit != ''">and unit = #{unit}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="price != null and price != ''">and price = #{price}</if>
+            <if test="weightUnit != null and weightUnit != ''"> and weight_unit = #{weightUnit} </if>
+            <if test="weight != null and weight != ''"> and weight = #{weight} </if>
+            <if test="description != null and description != ''">and description = #{description}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createDate != null and createDate != ''">and create_date = #{createDate}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.productManage.domain.ProductDefinitionDO">
+		insert into product_definition
+		(
+			`product_id`, 
+			`product_code`, 
+			`product_name`, 
+			`product_size`, 
+			`product_model`,
+			`price`,
+			`unit`, 
+			`state`,
+            `weight_unit`,
+            `weight`,
+			`description`,
+		    `create_user_id`,
+			`create_date`
+		)
+		values
+		(
+			#{productId}, 
+			#{productCode}, 
+			#{productName}, 
+			#{productSize}, 
+			#{productModel},
+			#{price},
+			#{unit}, 
+			#{state},
+            #{weightUnit},
+            #{weight},
+			#{description},
+		    #{createUserId},
+			#{createDate}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.productManage.domain.ProductDefinitionDO">
+        update product_definition
+        <set>
+            <if test="productCode != null">`product_code` = #{productCode},</if>
+            <if test="productName != null">`product_name` = #{productName},</if>
+            <if test="productSize != null">`product_size` = #{productSize},</if>
+            <if test="productModel != null">`product_model` = #{productModel},</if>
+            <if test="price != null">`price` = #{price},</if>
+            <if test="unit != null">`unit` = #{unit},</if>
+            <if test="state != null">`state` = #{state},</if>
+            <if test="weightUnit != null">`weight_unit` = #{weightUnit}, </if>
+            <if test="weight != null">`weight` = #{weight}, </if>
+            <if test="description != null">`description` = #{description},</if>
+            <if test="isDeleted != null">`is_deleted` = #{isDeleted},</if>
+            <if test="createUserId != null">`create_user_id` = #{createUserId},</if>
+            <if test="createDate != null">`create_date` = #{createDate}</if>
+        </set>
+        where product_id = #{productId}
+    </update>
+
+    <delete id="remove">
+		update product_definition set is_deleted=1 where product_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        update product_definition set is_deleted=1 where product_id in
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+
+</mapper>

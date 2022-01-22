@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head  th:include="include :: header">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="columns pull-right">
+    <div class="form-inline">
+        <div
+                class="form-group">
+            <input id="custermerName" type="text" class="form-control"
+                   placeholder="交易方名称">
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-success" onclick="reLoad()">查询</button>
+        </div>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-success" onclick="reset()">重置</button>
+        </div>
+    </div>
+</div>
+<input id="isSupplier" name="isSupplier"type="hidden" th:value="${isSupplier}">
+<table id="exampleTable" data-mobile-responsive="true">
+</table>
+<div th:include="include :: footer"></div>
+<script>
+    var isSupplier;
+    if($("#isSupplier").val()=="true"){
+        isSupplier=true;
+    }else{
+        isSupplier=false;
+    }
+
+    function load() {
+        $('#exampleTable')
+            .bootstrapTable(
+                {
+                    method: 'get', // 服务器数据的请求方式 get or post
+                    url: (isSupplier?"/factory/supplierInformation":"/factory/custermerInformation") + "/list", // 服务器数据的加载地址
+                    iconSize: 'outline',
+                    toolbar: '#exampleToolbar',
+                    striped: true, // 设置为true会有隔行变色效果
+                    dataType: "json", // 服务器返回的数据类型
+                    pagination: true, // 设置为true会在底部显示分页条
+                    singleSelect: false, // 设置为true将禁止多选
+                    pageSize: 10, // 如果设置了分页，每页数据条数
+                    pageNumber: 1, // 如果设置了分布，首页页码
+                    showColumns: false, // 是否显示内容下拉框（选择显示的列）
+                    sidePagination: "server", // 设置在哪里进行分页，可选值为"client" 或者 "server"
+                    onDblClickRow: function (row, $element) {//双击事件
+                       // if (s_details_h != 'hidden') {
+                           // details(row.custermerId);
+                        //}
+                    },
+                    queryParams: function (params) {
+                        return {
+                            limit: params.limit,
+                            offset: params.offset,
+                        };
+                    },
+                    columns: [
+                        {
+                            visible: false,
+                            field: 'custermerId',
+                            title: '交易方ID'
+                        },
+                        {
+                            field: 'custermerName',
+                            title: '交易方名称（全称）'
+                        },
+                        {
+                            field: 'custermerType',
+                            title: '交易方类型'
+                        },
+                        {
+                            visible: false,
+                            field: 'taxpayerIdNumbers',
+                            title: '纳税人识别号'
+                        },
+                        {
+                            visible: false,
+                            field: 'socialCreditCode',
+                            title: '统一社会信用代码'
+                        },
+                        {
+                            visible: false,
+                            field: 'email',
+                            title: '电子邮箱'
+                        },
+                        {
+                            visible: false,
+                            field: 'fax',
+                            title: '传真'
+                        },
+                        {
+                            field: 'name',
+                            title: '主联系人'
+                        },
+                        {
+                            field: 'contactPersonTel',
+                            title: '主联系人电话'
+                        },
+                        {
+                            visible: false,
+                            field: 'createUserId',
+                            title: '创建者'
+                        },
+                        {
+                            visible: false,
+                            field: 'createTime',
+                            title: '创建时间'
+                        },
+                        {
+                            title: '操作',
+                            field: 'id',
+                            align: 'center',
+                            formatter: function (value, row, index) {
+                                var e = "<a class='btn btn-primary btn-sm' href='#' mce_href='#' title='选择' onclick='select("
+                                    + JSON.stringify(row)
+                                    + ")'><i class='fa fa-edit'></i></a> ";
+                                return e;
+                            }
+                        }]
+                });
+    }
+    var opt = {};
+    function reLoad() {//搜索（带参刷新）
+        //$('#exampleTable').bootstrapTable('refresh');
+        opt = {
+            query: {
+                custermerName: $('#custermerName').val()
+                //为方便url传参，模糊查询在mapper中实现
+            }
+        };
+        $('#exampleTable').bootstrapTable('refresh', opt);
+    }
+
+    function reset(){//重置
+        $('#custermerName').val("");
+        $('#exampleTable').bootstrapTable('refresh')
+    }
+    function select(row) {
+        try{
+            parent.loadTrader(row,isSupplier);
+            var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+            parent.layer.close(index);
+        }catch (e) {
+            try{
+                var layerParent = top.layerParent;
+                layerParent.layer.msg("操作成功");
+                layerParent.loadTrader(row,isSupplier);
+                var index = top.layer.getFrameIndex(window.name); // 获取窗口索引
+                top.layer.close(index);
+            }
+            catch (e) {
+                var layerParent = top.layerParent.pop();
+                layerParent.layer.msg("操作成功");
+                layerParent.loadTrader(row,isSupplier);
+                var index = top.layer.getFrameIndex(window.name); // 获取窗口索引
+                top.layer.close(index);
+            }
+        }
+    }
+    $().ready(function() {
+        load();
+    });
+</script>
+</body>
+</html>

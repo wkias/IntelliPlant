@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.productManage.dao.ProductInspectionDao">
+
+	<select id="get" resultType="com.bootdo.factory.productManage.domain.ProductInspectionDO">
+		select `product_inspection_id`,`associated_product`,`product_code`,`state`,`result`,`represent`,`is_deleted`,`create_user_id`,`create_time` from product_inspection where product_inspection_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.productManage.domain.ProductInspectionDO">
+		select `product_inspection_id`,`associated_product`,`product_code`,`state`,`result`,`represent`,`is_deleted`,`create_user_id`,`create_time` from product_inspection
+        <where>  
+		  		  <if test="productInspectionId != null and productInspectionId != ''"> and product_inspection_id = #{productInspectionId} </if>
+		  		  <if test="associatedProduct != null and associatedProduct != ''"> and associated_product like CONCAT('%',#{associatedProduct},'%') </if>
+		  		  <if test="productCode != null and productCode != ''"> and product_code like CONCAT('%',#{productCode},'%') </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="result != null and result != ''"> and result = #{result} </if>
+		  		  <if test="represent != null and represent != ''"> and represent = #{represent} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by product_inspection_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from product_inspection
+		 <where>  
+		  		  <if test="productInspectionId != null and productInspectionId != ''"> and product_inspection_id = #{productInspectionId} </if>
+		  		  <if test="associatedProduct != null and associatedProduct != ''"> and associated_product = #{associatedProduct} </if>
+		  		  <if test="productCode != null and productCode != ''"> and product_code = #{productCode}  </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="result != null and result != ''"> and result = #{result} </if>
+		  		  <if test="represent != null and represent != ''"> and represent = #{represent} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.productManage.domain.ProductInspectionDO">
+		insert into product_inspection
+		(
+			`product_inspection_id`, 
+			`associated_product`, 
+			`product_code`, 
+			`state`, 
+			`result`, 
+			`represent`, 
+			`is_deleted`, 
+			`create_user_id`,
+			`create_time`
+		)
+		values
+		(
+			#{productInspectionId}, 
+			#{associatedProduct}, 
+			#{productCode}, 
+			#{state}, 
+			#{result}, 
+			#{represent}, 
+			#{isDeleted}, 
+			#{createUserId},
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.productManage.domain.ProductInspectionDO">
+		update product_inspection 
+		<set>
+			<if test="associatedProduct != null">`associated_product` = #{associatedProduct}, </if>
+			<if test="productCode != null">`product_code` = #{productCode}, </if>
+			<if test="state != null">`state` = #{state}, </if>
+			<if test="result != null">`result` = #{result}, </if>
+			<if test="represent != null">`represent` = #{represent}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where product_inspection_id = #{productInspectionId}
+	</update>
+
+	<delete id="remove">
+		update product_inspection
+		<set>
+			is_deleted = 1
+			where
+			product_inspection_id = #{productInspectionId}
+		</set>
+	</delete>
+
+	<delete id="batchRemove">
+		update product_inspection
+		set is_deleted = 1
+		where product_inspection_id in
+		<foreach item="productInspectionId" collection="array" open="(" separator="," close=")">
+			#{productInspectionId}
+		</foreach>
+	</delete>
+
+	<delete id="removeByProductInspectionId">
+			delete from inspection_items_detail where product_inspection_id = {#value}
+	</delete>
+
+</mapper>

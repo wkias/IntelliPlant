@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.contractManage.dao.ReceivePlanDao">
+
+	<select id="get" resultType="com.bootdo.factory.contractManage.domain.ReceivePlanDO">
+		select `receive_id`,`contract_id`,`contract_code`,`contract_name`,`contract_amount`,`sign_date`,`demander`,`demander_name`,`receive_batch`,`planned_amount`,`planned_date`,`state`,`days_overdue`,`received_amount`,`unreceived_amount`,`create_user_id`,`create_time`,`is_deleted`,`note` from receive_plan where receive_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.contractManage.domain.ReceivePlanDO">
+		select
+		`receive_id`,`contract_id`,`contract_code`,`contract_name`,`contract_amount`,`sign_date`,`demander`,`demander_name`,`receive_batch`,`planned_amount`,`planned_date`,`state`,`days_overdue`,`received_amount`,`unreceived_amount`,`create_user_id`,`create_time`,`is_deleted`,`note`
+		from receive_plan
+		<where>
+            <if test="receiveId != null and receiveId != ''">and receive_id = #{receiveId}</if>
+            <if test="contractId != null and contractId != ''">and contract_id = #{contractId}</if>
+            <if test="contractCode != null and contractCode != ''">and contract_code like #{contractCode}</if>
+            <if test="contractName != null and contractName != ''">and contract_name like #{contractName}</if>
+            <if test="contractAmount != null and contractAmount != ''">and contract_amount = #{contractAmount}</if>
+            <if test="signDate != null and signDate != ''">and sign_date = #{signDate}</if>
+            <if test="demander != null and demander != ''">and demander = #{demander}</if>
+            <if test="demanderName != null and demanderName != ''">and demander_name like #{demanderName}</if>
+            <if test="receiveBatch != null and receiveBatch != ''">and receive_batch = #{receiveBatch}</if>
+            <if test="plannedAmount != null and plannedAmount != ''">and planned_amount = #{plannedAmount}</if>
+            <if test="plannedDate != null and plannedDate != ''">and planned_date = #{plannedDate}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="daysOverdue != null and daysOverdue != ''">and days_overdue = #{daysOverdue}</if>
+            <if test="receivedAmount != null and receivedAmount != ''">and received_amount = #{receivedAmount}</if>
+			<if test="unreceivedAmount != null and unreceivedAmount != ''">and unreceived_amount = #{unreceivedAmount}
+			</if>
+			<if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+			<if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+			<if test="note != null and note != ''">and note = #{note}</if>
+			and is_deleted = 0
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by receive_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from receive_plan
+        <where>
+            <if test="receiveId != null and receiveId != ''">and receive_id = #{receiveId}</if>
+            <if test="contractId != null and contractId != ''">and contract_id = #{contractId}</if>
+            <if test="contractCode != null and contractCode != ''">and contract_code like #{contractCode}</if>
+            <if test="contractName != null and contractName != ''">and contract_name like #{contractName}</if>
+            <if test="contractAmount != null and contractAmount != ''">and contract_amount = #{contractAmount}</if>
+            <if test="signDate != null and signDate != ''">and sign_date = #{signDate}</if>
+            <if test="demander != null and demander != ''">and demander = #{demander}</if>
+            <if test="demanderName != null and demanderName != ''">and demander_name like #{demanderName}</if>
+            <if test="receiveBatch != null and receiveBatch != ''">and receive_batch = #{receiveBatch}</if>
+            <if test="plannedAmount != null and plannedAmount != ''">and planned_amount = #{plannedAmount}</if>
+            <if test="plannedDate != null and plannedDate != ''">and planned_date = #{plannedDate}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="daysOverdue != null and daysOverdue != ''">and days_overdue = #{daysOverdue}</if>
+            <if test="receivedAmount != null and receivedAmount != ''">and received_amount = #{receivedAmount}</if>
+			<if test="unreceivedAmount != null and unreceivedAmount != ''">and unreceived_amount = #{unreceivedAmount}
+			</if>
+			<if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+			<if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+			<if test="note != null and note != ''">and note = #{note}</if>
+			and is_deleted = 0
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.bootdo.factory.contractManage.domain.ReceivePlanDO">
+		insert into receive_plan
+		(
+			`receive_id`,
+			`contract_id`,
+			`contract_code`,
+			`contract_name`,
+			`contract_amount`,
+			`sign_date`,
+			`demander`,
+			`demander_name`,
+			`receive_batch`,
+			`planned_amount`,
+			`planned_date`,
+			`state`,
+			`days_overdue`,
+			`received_amount`,
+			`unreceived_amount`,
+			`create_user_id`,
+			`create_time`,
+			`is_deleted`,
+			`note`
+		)
+		values
+		(
+			#{receiveId},
+			#{contractId},
+			#{contractCode},
+			#{contractName},
+			#{contractAmount},
+			#{signDate},
+			#{demander},
+			#{demanderName},
+			#{receiveBatch},
+			#{plannedAmount},
+			#{plannedDate},
+			#{state},
+			#{daysOverdue},
+			#{receivedAmount},
+			#{unreceivedAmount},
+			#{createUserId},
+			#{createTime},
+			#{isDeleted},
+			#{note}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.bootdo.factory.contractManage.domain.ReceivePlanDO">
+		update receive_plan
+		<set>
+			<if test="contractId != null">`contract_id` = #{contractId},</if>
+			<if test="contractCode != null">`contract_code` = #{contractCode},</if>
+			<if test="contractName != null">`contract_name` = #{contractName},</if>
+			<if test="contractAmount != null">`contract_amount` = #{contractAmount},</if>
+			<if test="signDate != null">`sign_date` = #{signDate},</if>
+			<if test="demander != null">`demander` = #{demander},</if>
+			<if test="demanderName != null">demander_name = #{demanderName},</if>
+			<if test="receiveBatch != null">`receive_batch` = #{receiveBatch},</if>
+			<if test="plannedAmount != null">`planned_amount` = #{plannedAmount},</if>
+			<if test="plannedDate != null">`planned_date` = #{plannedDate},</if>
+			<if test="state != null">`state` = #{state},</if>
+			<if test="daysOverdue != null">`days_overdue` = #{daysOverdue},</if>
+			<if test="receivedAmount != null">`received_amount` = #{receivedAmount},</if>
+			<if test="unreceivedAmount != null">`unreceived_amount` = #{unreceivedAmount},</if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId},</if>
+			<if test="createTime != null">`create_time` = #{createTime},</if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted},</if>
+			<if test="note != null">`note` = #{note}</if>
+		</set>
+		where receive_id = #{receiveId}
+	</update>
+
+	<delete id="remove">
+		update receive_plan set is_deleted = 1 where receive_id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+        update receive_plan set is_deleted = 1 where receive_id in
+        <foreach item="receiveId" collection="array" open="(" separator="," close=")">
+			#{receiveId}
+		</foreach>
+	</delete>
+
+</mapper>

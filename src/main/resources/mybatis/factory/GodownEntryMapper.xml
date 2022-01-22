@@ -1,0 +1,162 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.warehouseManagement.dao.GodownEntryDao">
+
+    <select id="get" resultType="com.bootdo.factory.warehouseManagement.domain.GodownEntryDO">
+		select `godown_entry_id`,`associated_table_id`,`associated_table_code`,`associated_table_type`,`godown_entry_code`,`consignee_id`,`consignee`,`business_type`,`godown_entry_state`,`quantity`,`weight`,`amount`,`manager`,`godown_entry_date`,`file`,`remark`,`repository`,`create_user_id`,`create_time`,`is_deleted` from godown_entry where godown_entry_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.warehouseManagement.domain.GodownEntryDO">
+        select
+        `godown_entry_id`,`associated_table_id`,`associated_table_code`,`associated_table_type`,`godown_entry_code`,`consignee_id`,`consignee`,`business_type`,`godown_entry_state`,`quantity`,`weight`,`amount`,`manager`,`godown_entry_date`,`file`,`remark`,`repository`,`create_user_id`,`create_time`,`is_deleted`
+        from godown_entry
+        <where>
+            <if test="godownEntryId != null and godownEntryId != ''">and godown_entry_id like #{godownEntryId}</if>
+            <if test="associatedTableId != null and associatedTableId != ''">and associated_table_id =
+                #{associatedTableId}
+            </if>
+            <if test="associatedTableCode != null and associatedTableCode != ''">and associated_table_code =
+                #{associatedTableCode}
+            </if>
+            <if test="associatedTableType != null and associatedTableType != ''">and associated_table_type =
+                #{associatedTableType}
+            </if>
+            <if test="godownEntryCode != null and godownEntryCode != ''">and godown_entry_code = #{godownEntryCode}</if>
+            <if test="consigneeId != null and consigneeId != ''">`consigneeId` = #{consigneeId},</if>
+            <if test="consignee != null and consignee != ''">and consignee like #{consignee}</if>
+            <if test="businessType != null and businessType != ''">and business_type = #{businessType}</if>
+            <if test="godownEntryState != null and godownEntryState != ''">and godown_entry_state =
+                #{godownEntryState}
+            </if>
+            <if test="quantity != null and quantity != ''">and quantity = #{quantity}</if>
+            <if test="weight != null and weight != ''">and weight = #{weight}</if>
+            <if test="amount != null and amount != ''">and amount = #{amount}</if>
+            <if test="manager != null and manager != ''">and manager = #{manager}</if>
+            <if test="godownEntryDate != null and godownEntryDate != ''">and godown_entry_date = #{godownEntryDate}</if>
+            <if test="file != null and file != ''">and file = #{file}</if>
+            <if test="remark != null and remark != ''">and remark = #{remark}</if>
+            <if test="repository != null and repository != ''">and repository = #{repository}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+            and is_deleted = 0
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by godown_entry_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from godown_entry
+        <where>
+            <if test="godownEntryId != null and godownEntryId != ''">and godown_entry_id = #{godownEntryId}</if>
+            <if test="associatedTableId != null and associatedTableId != ''">and associated_table_id =
+                #{associatedTableId}
+            </if>
+            <if test="associatedTableCode != null and associatedTableCode != ''">and associated_table_code =
+                #{associatedTableCode}
+            </if>
+            <if test="associatedTableType != null and associatedTableType != ''">and associated_table_type =
+                #{associatedTableType}
+            </if>
+            <if test="godownEntryCode != null and godownEntryCode != ''">and godown_entry_code like #{godownEntryCode}
+            </if>
+            <if test="consigneeId != null and consigneeId != ''">`consigneeId` = #{consigneeId},</if>
+            <if test="consignee != null and consignee != ''">and consignee like #{consignee}</if>
+            <if test="businessType != null and businessType != ''">and business_type = #{businessType}</if>
+            <if test="godownEntryState != null and godownEntryState != ''">and godown_entry_state =
+                #{godownEntryState}
+            </if>
+            <if test="quantity != null and quantity != ''">and quantity = #{quantity}</if>
+            <if test="weight != null and weight != ''">and weight = #{weight}</if>
+            <if test="amount != null and amount != ''">and amount = #{amount}</if>
+            <if test="manager != null and manager != ''">and manager = #{manager}</if>
+            <if test="godownEntryDate != null and godownEntryDate != ''">and godown_entry_date = #{godownEntryDate}</if>
+            <if test="file != null and file != ''">and file = #{file}</if>
+            <if test="remark != null and remark != ''">and remark = #{remark}</if>
+            <if test="repository != null and repository != ''">and repository = #{repository}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+            and is_deleted = 0
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.warehouseManagement.domain.GodownEntryDO">
+		insert into godown_entry
+		(
+			`godown_entry_id`, 
+			`associated_table_id`, 
+			`associated_table_code`, 
+			`associated_table_type`, 
+			`godown_entry_code`,
+			`consignee_id`,
+			`consignee`, 
+			`business_type`, 
+			`godown_entry_state`, 
+			`quantity`, 
+			`weight`, 
+			`amount`, 
+			`manager`, 
+			`godown_entry_date`, 
+			`file`, 
+			`remark`, 
+			`repository`, 
+			`create_user_id`, 
+			`create_time`, 
+			`is_deleted`
+		)
+		values
+		(
+			#{godownEntryId}, 
+			#{associatedTableId}, 
+			#{associatedTableCode}, 
+			#{associatedTableType}, 
+			#{godownEntryCode},
+			#{consigneeId},
+			#{consignee}, 
+			#{businessType}, 
+			#{godownEntryState}, 
+			#{quantity}, 
+			#{weight}, 
+			#{amount}, 
+			#{manager}, 
+			#{godownEntryDate}, 
+			#{file}, 
+			#{remark}, 
+			#{repository}, 
+			#{createUserId}, 
+			#{createTime}, 
+			0
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.warehouseManagement.domain.GodownEntryDO">
+        update godown_entry
+        <set>
+            <if test="associatedTableId != null">`associated_table_id` = #{associatedTableId},</if>
+            <if test="godownEntryState != null">`godown_entry_state` = #{godownEntryState},</if>
+            <if test="file != null">`file` = #{file},</if>
+            <if test="remark != null">`remark` = #{remark}</if>
+        </set>
+        where godown_entry_id = #{godownEntryId}
+    </update>
+
+    <delete id="remove">
+		update godown_entry set is_deleted = 1 where godown_entry_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        update godown_entry set is_deleted = 1 where godown_entry_id in
+        <foreach item="godownEntryId" collection="array" open="(" separator="," close=")">
+            #{godownEntryId}
+        </foreach>
+    </delete>
+
+</mapper>

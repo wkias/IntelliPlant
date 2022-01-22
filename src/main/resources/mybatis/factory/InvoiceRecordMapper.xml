@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.contractManage.dao.InvoiceRecordDao">
+
+    <select id="get" resultType="com.bootdo.factory.contractManage.domain.InvoiceRecordDO">
+		select `invoice_id`,`invoice_name`,`contract_number`,`contract_name`,`contract_type`,`invoice_money`,`invoice_date`,`invoice_type`,`invoice_code`,`invoice_number`,`handler_person`,`drawer`,`buying_name`,`buying_TIN`,`buying_address`,`buying_phone_number`,`buying_bank`,`buying_bank_number`,`selling_name`,`selling_TIN`,`selling_address`,`selling_phone_number`,`selling_bank`,`selling_bank_number`,`addtion_person`,`addtion_date`,`remarks`,`files`,`is_deleted`,`create_user_id`,`create_time` from invoice_record where invoice_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.contractManage.domain.InvoiceRecordDO">
+        select
+        `invoice_id`,`invoice_name`,`contract_number`,`contract_name`,`contract_type`,`invoice_money`,`invoice_date`,`invoice_type`,`invoice_code`,`invoice_number`,`handler_person`,`drawer`,`buying_name`,`buying_TIN`,`buying_address`,`buying_phone_number`,`buying_bank`,`buying_bank_number`,`selling_name`,`selling_TIN`,`selling_address`,`selling_phone_number`,`selling_bank`,`selling_bank_number`,`addtion_person`,`addtion_date`,`remarks`,`files`,`is_deleted`,`create_user_id`,`create_time`
+        from invoice_record
+        <where>
+            is_deleted = 0
+            <if test="invoiceId != null and invoiceId != ''">and invoice_id = #{invoiceId}</if>
+            <if test="invoiceName != null and invoiceName != ''">and invoice_name like CONCAT('%',#{invoiceName},'%')
+            </if>
+            <if test="contractNumber != null and contractNumber != ''">and contract_number = #{contractNumber}</if>
+            <if test="contractName != null and contractName != ''">and contract_name = #{contractName}</if>
+            <if test="contractType != null and contractType != ''">and contract_type = #{contractType}</if>
+            <if test="invoiceMoney != null and invoiceMoney != ''">and invoice_money = #{invoiceMoney}</if>
+            <if test="invoiceDate != null and invoiceDate != ''">and invoice_date = #{invoiceDate}</if>
+            <if test="invoiceType != null and invoiceType != ''">and invoice_type = #{invoiceType}</if>
+            <if test="invoiceCode != null and invoiceCode != ''">and invoice_code = #{invoiceCode}</if>
+            <if test="invoiceNumber != null and invoiceNumber != ''">and invoice_number = #{invoiceNumber}</if>
+            <if test="handlerPerson != null and handlerPerson != ''">and handler_person = #{handlerPerson}</if>
+            <if test="drawer != null and drawer != ''">and drawer = #{drawer}</if>
+            <if test="buyingName != null and buyingName != ''">and buying_name = #{buyingName}</if>
+            <if test="buyingTin != null and buyingTin != ''">and buying_TIN = #{buyingTin}</if>
+            <if test="buyingAddress != null and buyingAddress != ''">and buying_address = #{buyingAddress}</if>
+            <if test="buyingPhoneNumber != null and buyingPhoneNumber != ''">and buying_phone_number =
+                #{buyingPhoneNumber}
+            </if>
+            <if test="buyingBank != null and buyingBank != ''">and buying_bank = #{buyingBank}</if>
+            <if test="buyingBankNumber != null and buyingBankNumber != ''">and buying_bank_number =
+                #{buyingBankNumber}
+            </if>
+            <if test="sellingName != null and sellingName != ''">and selling_name = #{sellingName}</if>
+            <if test="sellingTin != null and sellingTin != ''">and selling_TIN = #{sellingTin}</if>
+            <if test="sellingAddress != null and sellingAddress != ''">and selling_address = #{sellingAddress}</if>
+            <if test="sellingPhoneNumber != null and sellingPhoneNumber != ''">and selling_phone_number =
+                #{sellingPhoneNumber}
+            </if>
+            <if test="sellingBank != null and sellingBank != ''">and selling_bank = #{sellingBank}</if>
+            <if test="sellingBankNumber != null and sellingBankNumber != ''">and selling_bank_number =
+                #{sellingBankNumber}
+            </if>
+            <if test="addtionPerson != null and addtionPerson != ''">and addtion_person = #{addtionPerson}</if>
+            <if test="addtionDate != null and addtionDate != ''">and addtion_date = #{addtionDate}</if>
+            <if test="remarks != null and remarks != ''">and remarks = #{remarks}</if>
+            <if test="files != null and files != ''">and files = #{files}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by invoice_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from invoice_record
+        <where>
+            is_deleted = 0
+            <if test="invoiceId != null and invoiceId != ''">and invoice_id = #{invoiceId}</if>
+            <if test="invoiceName != null and invoiceName != ''">and invoice_name = #{invoiceName}</if>
+            <if test="contractNumber != null and contractNumber != ''">and contract_number = #{contractNumber}</if>
+            <if test="contractName != null and contractName != ''">and contract_name = #{contractName}</if>
+            <if test="contractType != null and contractType != ''">and contract_type = #{contractType}</if>
+            <if test="invoiceMoney != null and invoiceMoney != ''">and invoice_money = #{invoiceMoney}</if>
+            <if test="invoiceDate != null and invoiceDate != ''">and invoice_date = #{invoiceDate}</if>
+            <if test="invoiceType != null and invoiceType != ''">and invoice_type = #{invoiceType}</if>
+            <if test="invoiceCode != null and invoiceCode != ''">and invoice_code = #{invoiceCode}</if>
+            <if test="invoiceNumber != null and invoiceNumber != ''">and invoice_number = #{invoiceNumber}</if>
+            <if test="handlerPerson != null and handlerPerson != ''">and handler_person = #{handlerPerson}</if>
+            <if test="drawer != null and drawer != ''">and drawer = #{drawer}</if>
+            <if test="buyingName != null and buyingName != ''">and buying_name = #{buyingName}</if>
+            <if test="buyingTin != null and buyingTin != ''">and buying_TIN = #{buyingTin}</if>
+            <if test="buyingAddress != null and buyingAddress != ''">and buying_address = #{buyingAddress}</if>
+            <if test="buyingPhoneNumber != null and buyingPhoneNumber != ''">and buying_phone_number =
+                #{buyingPhoneNumber}
+            </if>
+            <if test="buyingBank != null and buyingBank != ''">and buying_bank = #{buyingBank}</if>
+            <if test="buyingBankNumber != null and buyingBankNumber != ''">and buying_bank_number =
+                #{buyingBankNumber}
+            </if>
+            <if test="sellingName != null and sellingName != ''">and selling_name = #{sellingName}</if>
+            <if test="sellingTin != null and sellingTin != ''">and selling_TIN = #{sellingTin}</if>
+            <if test="sellingAddress != null and sellingAddress != ''">and selling_address = #{sellingAddress}</if>
+            <if test="sellingPhoneNumber != null and sellingPhoneNumber != ''">and selling_phone_number =
+                #{sellingPhoneNumber}
+            </if>
+            <if test="sellingBank != null and sellingBank != ''">and selling_bank = #{sellingBank}</if>
+            <if test="sellingBankNumber != null and sellingBankNumber != ''">and selling_bank_number =
+                #{sellingBankNumber}
+            </if>
+            <if test="addtionPerson != null and addtionPerson != ''">and addtion_person = #{addtionPerson}</if>
+            <if test="addtionDate != null and addtionDate != ''">and addtion_date = #{addtionDate}</if>
+            <if test="remarks != null and remarks != ''">and remarks = #{remarks}</if>
+            <if test="files != null and files != ''">and files = #{files}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.contractManage.domain.InvoiceRecordDO">
+		insert into invoice_record
+		(
+			`invoice_id`, 
+			`invoice_name`, 
+			`contract_number`, 
+			`contract_name`, 
+			`contract_type`, 
+			`invoice_money`, 
+			`invoice_date`, 
+			`invoice_type`, 
+			`invoice_code`, 
+			`invoice_number`, 
+			`handler_person`, 
+			`drawer`, 
+			`buying_name`, 
+			`buying_TIN`, 
+			`buying_address`, 
+			`buying_phone_number`, 
+			`buying_bank`, 
+			`buying_bank_number`, 
+			`selling_name`, 
+			`selling_TIN`, 
+			`selling_address`, 
+			`selling_phone_number`, 
+			`selling_bank`, 
+			`selling_bank_number`,
+			`addtion_person`, 
+			`addtion_date`, 
+			`remarks`,
+			`files`, 
+			`is_deleted`, 
+			`create_user_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{invoiceId}, 
+			#{invoiceName}, 
+			#{contractNumber}, 
+			#{contractName}, 
+			#{contractType}, 
+			#{invoiceMoney}, 
+			#{invoiceDate}, 
+			#{invoiceType}, 
+			#{invoiceCode}, 
+			#{invoiceNumber}, 
+			#{handlerPerson}, 
+			#{drawer}, 
+			#{buyingName}, 
+			#{buyingTin}, 
+			#{buyingAddress}, 
+			#{buyingPhoneNumber}, 
+			#{buyingBank}, 
+			#{buyingBankNumber}, 
+			#{sellingName}, 
+			#{sellingTin}, 
+			#{sellingAddress}, 
+			#{sellingPhoneNumber}, 
+			#{sellingBank}, 
+			#{sellingBankNumber},
+			#{addtionPerson}, 
+			#{addtionDate}, 
+			#{remarks},
+			#{files}, 
+			#{isDeleted}, 
+			#{createUserId}, 
+			#{createTime}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.contractManage.domain.InvoiceRecordDO">
+        update invoice_record
+        <set>
+            <if test="invoiceName != null">`invoice_name` = #{invoiceName},</if>
+            <if test="contractNumber != null">`contract_number` = #{contractNumber},</if>
+            <if test="contractName != null">`contract_name` = #{contractName},</if>
+            <if test="contractType != null">`contract_type` = #{contractType},</if>
+            <if test="invoiceMoney != null">`invoice_money` = #{invoiceMoney},</if>
+            <if test="invoiceDate != null">`invoice_date` = #{invoiceDate},</if>
+            <if test="invoiceType != null">`invoice_type` = #{invoiceType},</if>
+            <if test="invoiceCode != null">`invoice_code` = #{invoiceCode},</if>
+            <if test="invoiceNumber != null">`invoice_number` = #{invoiceNumber},</if>
+            <if test="handlerPerson != null">`handler_person` = #{handlerPerson},</if>
+            <if test="drawer != null">`drawer` = #{drawer},</if>
+            <if test="buyingName != null">`buying_name` = #{buyingName},</if>
+            <if test="buyingTin != null">`buying_TIN` = #{buyingTin},</if>
+            <if test="buyingAddress != null">`buying_address` = #{buyingAddress},</if>
+            <if test="buyingPhoneNumber != null">`buying_phone_number` = #{buyingPhoneNumber},</if>
+            <if test="buyingBank != null">`buying_bank` = #{buyingBank},</if>
+            <if test="buyingBankNumber != null">`buying_bank_number` = #{buyingBankNumber},</if>
+            <if test="sellingName != null">`selling_name` = #{sellingName},</if>
+            <if test="sellingTin != null">`selling_TIN` = #{sellingTin},</if>
+            <if test="sellingAddress != null">`selling_address` = #{sellingAddress},</if>
+            <if test="sellingPhoneNumber != null">`selling_phone_number` = #{sellingPhoneNumber},</if>
+            <if test="sellingBank != null">`selling_bank` = #{sellingBank},</if>
+            <if test="sellingBankNumber != null">`selling_bank_number` = #{sellingBankNumber},</if>
+            <if test="addtionPerson != null">`addtion_person` = #{addtionPerson},</if>
+            <if test="addtionDate != null">`addtion_date` = #{addtionDate},</if>
+            <if test="remarks != null">`remarks` = #{remarks},</if>
+            <if test="files != null">`files` = #{files},</if>
+            <if test="isDeleted != null">`is_deleted` = #{isDeleted},</if>
+            <if test="createUserId != null">`create_user_id` = #{createUserId},</if>
+            <if test="createTime != null">`create_time` = #{createTime}</if>
+        </set>
+        where invoice_id = #{invoiceId}
+    </update>
+
+	<delete id="remove">
+		update invoice_record
+		<set>
+			is_deleted = 1
+			where
+			invoice_id = #{invoiceId}
+		</set>
+	</delete>
+
+	<delete id="batchRemove">
+		update invoice_record
+		set is_deleted = 1
+		where invoice_id in
+		<foreach item="invoiceId" collection="array" open="(" separator="," close=")">
+			#{invoiceId}
+		</foreach>
+	</delete>
+
+    <delete id="removeByInvoiceId">
+			delete from bill_content where invoice_id = {#value}
+	</delete>
+
+</mapper>

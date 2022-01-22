@@ -1,0 +1,94 @@
+$().ready(function () {
+    validateRule();
+    loadType();
+});
+
+$.validator.setDefaults({
+    submitHandler: function () {
+        save();
+    }
+});
+
+function save() {
+    var formData = new FormData($('#signupForm')[0])
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url: "/factory/equipmentManage/save",
+        data: formData,// 你的formid
+        dataType: 'json',
+        contentType: false,//必须
+        processData: false,//必须
+        async: false,
+        error: function (request) {
+            parent.layer.alert("Connection error");
+        },
+        success: function (data) {
+            if (data.code == 0) {
+                var layerParent = top.layerParent;
+                layerParent.layer.msg("操作成功");
+                layerParent.reLoad();
+                var index = top.layer.getFrameIndex(window.name); // 获取窗口索引
+                top.layer.close(index);
+
+            } else {
+                layerParent.layer.alert(data.msg)
+            }
+
+        }
+    });
+
+}
+
+function validateRule() {
+    var icon = "<i class='fa fa-times-circle'></i> ";
+    $("#signupForm").validate({
+        rules: {
+            name: {
+                required: true
+            },
+        },
+        messages: {
+            name: {
+                required: icon + "请输入姓名"
+            },
+        }
+    })
+}
+
+function loadType() {
+    var html = "";
+    $.ajax({
+        url: '/common/dict/list/equipment_type',
+        success: function (data) {
+            // 加载数据
+            for (var i = 0; i < data.length; i++) {
+                html += '<option value="' + data[i].value + '">' + data[i].name + '</option>'
+            }
+            $(".chosen-select").append(html);
+            $(".chosen-select").chosen({
+                maxHeight: 200
+            });
+            $(".chosen-select").val($("#Ttype").val());
+            $(".chosen-select").trigger("chosen:updated");
+            // 点击事件
+            // $('.chosen-select').on('change', function (e, params) {
+            //
+            // });
+        }
+    });
+}
+
+function showImg(obj) {
+    var file = $(obj)[0].files[0];    //获取文件信息
+    var imgdata = '';
+    if (file) {
+        var reader = new FileReader();  //调用FileReader
+        reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
+        reader.onload = function (evt) {   //读取操作完成时触发。
+            $("#photoShow").attr('src', evt.target.result)  //将img标签的src绑定为DataURL
+        };
+    } else {
+        alert("上传失败");
+    }
+}

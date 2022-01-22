@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <div class="fixed-table-toolbar form-inline">
+                    <div class="columns pull-left">
+                        <button class="btn  btn-primary" onclick="add()" shiro:hasPermission="factory:receivePlan:add"
+                                type="button">
+                            <i aria-hidden="true" class="fa fa-plus"></i>添加
+                        </button>
+                        <button class="btn  btn-info" onclick="exportFile()"
+                                shiro:hasPermission="factory:receivePlan:export"
+                                type="button">
+                            <i aria-hidden="true" class="glyphicon glyphicon-file"></i>导出
+                        </button>
+                        <button class="btn  btn-danger" onclick="batchRemove()"
+                                shiro:hasPermission="factory:receivePlan:batchRemove"
+                                type="button">
+                            <i aria-hidden="true" class="fa fa-trash"></i>删除
+                        </button>
+                    </div>
+                    <div class="columns pull-right">
+                        <div class="form-group">
+                            <input class="form-control" id="searchName" placeholder="合同名称" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="searchCode" placeholder="合同编号" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="searchDemander" placeholder="合作商" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <select class="chosen-select form-control col-xs-3" id="state" name="state"></select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-success" onclick="reLoad()" type="button">查询</button>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-success" onclick="reset()">重置</button>
+                        </div>
+                    </div>
+                </div>
+                <table data-mobile-responsive="true" id="exampleTable">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <script type="text/javascript">
+        var s_edit_h = 'hidden';
+        var s_viewLog_h = 'hidden';
+        var s_attachment_h = 'hidden';
+        var s_remove_h = 'hidden';
+        var s_resetPwd_h = 'hidden';
+    </script>
+</div>
+<div shiro:hasPermission="factory:receivePlan:edit">
+    <script type="text/javascript">
+        s_edit_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="factory:receivePlan:receiveRecord">
+    <script type="text/javascript">
+        s_viewLog_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="factory:receivePlan:attachment">
+    <script type="text/javascript">
+        s_attachment_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="factory:receivePlan:remove">
+    <script type="text/javascript">
+        var s_remove_h = '';
+    </script>
+</div>
+</div>
+<div th:include="include :: footer"></div>
+<script src="/js/appjs/factory/receivePlan/receivePlan.js" type="text/javascript"></script>
+</body>
+</html>

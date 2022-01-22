@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.warehouseManagement.dao.PurchaseOrderDao">
+
+	<select id="get" resultType="com.bootdo.factory.warehouseManagement.domain.PurchaseOrderDO">
+		select `purpose`,`file_name`,`purchase_id`,`order_code`,`apply_dept_id`,`duty_person_id`,`apply_date`,`arrival_date`,`business_type`,`supplier`,`demander`,`total_number`,`total_weight`,`total_money`,`audit_state`,`purchase_state`,`is_deleted`,`create_user_id`,`create_time` from purchase_order where purchase_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.warehouseManagement.domain.PurchaseOrderDO">
+		select `purpose`,`file_name`,`purchase_id`,`order_code`,`apply_dept_id`,`duty_person_id`,`apply_date`,`arrival_date`,`business_type`,`supplier`,`demander`,`total_number`,`total_weight`,`total_money`,`audit_state`,`purchase_state`,`is_deleted`,`create_user_id`,`create_time`
+		from purchase_order po left join sys_dept sd on apply_dept_id=dept_id
+        <where>
+			is_deleted=0
+			      <if test="deptName != null and deptName != ''"> and sd.name like CONCAT('%',#{deptName},'%') </if>
+		  		  <if test="purchaseId != null and purchaseId != ''"> and purchase_id = #{purchaseId} </if>
+		  		  <if test="orderCode != null and orderCode != ''"> and order_code like CONCAT('%', #{orderCode},'%') </if>
+		  		  <if test="applyDeptId != null and applyDeptId != ''"> and apply_dept_id = #{applyDeptId} </if>
+		  		  <if test="dutyPersonId != null and dutyPersonId != ''"> and duty_person_id = #{dutyPersonId} </if>
+		  		  <if test="applyDate != null and applyDate != ''"> and apply_date = #{applyDate} </if>
+		  		  <if test="arrivalDate != null and arrivalDate != ''"> and arrival_date = #{arrivalDate} </if>
+		  		  <if test="businessType != null and businessType != ''"> and business_type = #{businessType} </if>
+		  		  <if test="supplier != null and supplier != ''"> and supplier = #{supplier} </if>
+		  		  <if test="demander != null and demander != ''"> and demander = #{demander} </if>
+		  		  <if test="totalNumber != null and totalNumber != ''"> and total_number = #{totalNumber} </if>
+		  		  <if test="totalWeight != null and totalWeight != ''"> and total_weight = #{totalWeight} </if>
+		  		  <if test="totalMoney != null and totalMoney != ''"> and total_money = #{totalMoney} </if>
+		  		  <if test="auditState != null and auditState != ''"> and audit_state = #{auditState} </if>
+		  		  <if test="purchaseState != null and purchaseState != ''"> and purchase_state = #{purchaseState} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by purchase_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from purchase_order
+		 <where>
+			 is_deleted=0
+		  		  <if test="purchaseId != null and purchaseId != ''"> and purchase_id = #{purchaseId} </if>
+		  		  <if test="orderCode != null and orderCode != ''"> and order_code = #{orderCode} </if>
+		  		  <if test="applyDeptId != null and applyDeptId != ''"> and apply_dept_id = #{applyDeptId} </if>
+		  		  <if test="dutyPersonId != null and dutyPersonId != ''"> and duty_person_id = #{dutyPersonId} </if>
+		  		  <if test="applyDate != null and applyDate != ''"> and apply_date = #{applyDate} </if>
+		  		  <if test="arrivalDate != null and arrivalDate != ''"> and arrival_date = #{arrivalDate} </if>
+		  		  <if test="businessType != null and businessType != ''"> and business_type = #{businessType} </if>
+		  		  <if test="supplier != null and supplier != ''"> and supplier = #{supplier} </if>
+		  		  <if test="demander != null and demander != ''"> and demander = #{demander} </if>
+		  		  <if test="totalNumber != null and totalNumber != ''"> and total_number = #{totalNumber} </if>
+		  		  <if test="totalWeight != null and totalWeight != ''"> and total_weight = #{totalWeight} </if>
+		  		  <if test="totalMoney != null and totalMoney != ''"> and total_money = #{totalMoney} </if>
+		  		  <if test="auditState != null and auditState != ''"> and audit_state = #{auditState} </if>
+		  		  <if test="purchaseState != null and purchaseState != ''"> and purchase_state = #{purchaseState} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.warehouseManagement.domain.PurchaseOrderDO">
+		insert into purchase_order
+		(
+			`purpose`,
+			`file_name`,
+			`purchase_id`, 
+			`order_code`, 
+			`apply_dept_id`, 
+			`duty_person_id`, 
+			`apply_date`, 
+			`arrival_date`, 
+			`business_type`, 
+			`supplier`, 
+			`demander`, 
+			`total_number`, 
+			`total_weight`, 
+			`total_money`, 
+			`audit_state`, 
+			`purchase_state`, 
+			`is_deleted`, 
+			`create_user_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{purpose},
+			#{fileName},
+			#{purchaseId}, 
+			#{orderCode}, 
+			#{applyDeptId}, 
+			#{dutyPersonId}, 
+			#{applyDate}, 
+			#{arrivalDate}, 
+			#{businessType}, 
+			#{supplier}, 
+			#{demander}, 
+			#{totalNumber}, 
+			#{totalWeight}, 
+			#{totalMoney}, 
+			#{auditState}, 
+			#{purchaseState}, 
+			#{isDeleted}, 
+			#{createUserId}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.warehouseManagement.domain.PurchaseOrderDO">
+		update purchase_order 
+		<set>
+			<if test="purpose ！=null">`purpose`=#{purpose}</if>
+			<if test="fileName !=null">`file_name`=#{fileName},</if>
+			<if test="orderCode != null">`order_code` = #{orderCode}, </if>
+			<if test="applyDeptId != null">`apply_dept_id` = #{applyDeptId}, </if>
+			<if test="dutyPersonId != null">`duty_person_id` = #{dutyPersonId}, </if>
+			<if test="applyDate != null">`apply_date` = #{applyDate}, </if>
+			<if test="arrivalDate != null">`arrival_date` = #{arrivalDate}, </if>
+			<if test="businessType != null">`business_type` = #{businessType}, </if>
+			<if test="supplier != null">`supplier` = #{supplier}, </if>
+			<if test="demander != null">`demander` = #{demander}, </if>
+			<if test="totalNumber != null">`total_number` = #{totalNumber}, </if>
+			<if test="totalWeight != null">`total_weight` = #{totalWeight}, </if>
+			<if test="totalMoney != null">`total_money` = #{totalMoney}, </if>
+			<if test="auditState != null">`audit_state` = #{auditState}, </if>
+			<if test="purchaseState != null">`purchase_state` = #{purchaseState}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where purchase_id = #{purchaseId}
+	</update>
+	
+	<delete id="remove">
+		update purchase_order set is_deleted=1 where purchase_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		update purchase_order set is_deleted=1 where purchase_id in
+		<foreach item="purchaseId" collection="array" open="(" separator="," close=")">
+			#{purchaseId}
+		</foreach>
+	</delete>
+
+</mapper>

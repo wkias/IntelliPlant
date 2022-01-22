@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.contractManage.dao.OrderContentDao">
+
+	<select id="get" resultType="com.bootdo.factory.contractManage.domain.OrderContentDO">
+		select `content_id`,`product_id`,`count`,`total_sum`,`deadline`,`destination`,`storehouse`,`order_id`,`is_batched`,`complete` from order_content where content_id = #{value}
+	</select>
+
+	<select id="listByComplete" resultType="com.bootdo.factory.contractManage.domain.OrderContentDO">
+		select `content_id`,`product_id`,`count`,`total_sum`,`deadline`,`destination`,`storehouse`,`order_id`,`is_batched`,`complete` from order_content
+		<where>
+			`count`>`complete`
+			<if test="contentId != null and contentId != ''"> and content_id = #{contentId} </if>
+			<if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+			<if test="count != null and count != ''"> and count = #{count} </if>
+			<if test="totalSum != null and totalSum != ''"> and total_sum = #{totalSum} </if>
+			<if test="deadline != null and deadline != ''"> and deadline = #{deadline} </if>
+			<if test="destination != null and destination != ''"> and destination = #{destination} </if>
+			<if test="storehouse != null and storehouse != ''"> and storehouse = #{storehouse} </if>
+			<if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+			<if test="isBatched != null and isBatched != ''"> and is_batched = #{isBatched} </if>
+			<if test="complete != null and complete != ''"> and complete = #{complete} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by content_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<select id="list" resultType="com.bootdo.factory.contractManage.domain.OrderContentDO">
+		select `content_id`,`product_id`,`count`,`total_sum`,`deadline`,`destination`,`storehouse`,`order_id`,`is_batched`,`complete` from order_content
+        <where>  
+		  		  <if test="contentId != null and contentId != ''"> and content_id = #{contentId} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="count != null and count != ''"> and count = #{count} </if>
+		  		  <if test="totalSum != null and totalSum != ''"> and total_sum = #{totalSum} </if>
+		  		  <if test="deadline != null and deadline != ''"> and deadline = #{deadline} </if>
+		  		  <if test="destination != null and destination != ''"> and destination = #{destination} </if>
+		  		  <if test="storehouse != null and storehouse != ''"> and storehouse = #{storehouse} </if>
+		  		  <if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+		  		  <if test="isBatched != null and isBatched != ''"> and is_batched = #{isBatched} </if>
+		  		  <if test="complete != null and complete != ''"> and complete = #{complete} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by content_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from order_content
+		 <where>
+			 `count`>`complete`
+		  		  <if test="contentId != null and contentId != ''"> and content_id = #{contentId} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="count != null and count != ''"> and count = #{count} </if>
+		  		  <if test="totalSum != null and totalSum != ''"> and total_sum = #{totalSum} </if>
+		  		  <if test="deadline != null and deadline != ''"> and deadline = #{deadline} </if>
+		  		  <if test="destination != null and destination != ''"> and destination = #{destination} </if>
+		  		  <if test="storehouse != null and storehouse != ''"> and storehouse = #{storehouse} </if>
+		  		  <if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+		  		  <if test="isBatched != null and isBatched != ''"> and is_batched = #{isBatched} </if>
+		  		  <if test="complete != null and complete != ''"> and complete = #{complete} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.contractManage.domain.OrderContentDO">
+		insert into order_content
+		(
+			`content_id`, 
+			`product_id`, 
+			`count`, 
+			`total_sum`, 
+			`deadline`, 
+			`destination`, 
+			`storehouse`, 
+			`order_id`, 
+			`is_batched`, 
+			`complete`
+		)
+		values
+		(
+			#{contentId}, 
+			#{productId}, 
+			#{count}, 
+			#{totalSum}, 
+			#{deadline}, 
+			#{destination}, 
+			#{storehouse}, 
+			#{orderId}, 
+			#{isBatched}, 
+			#{complete}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.contractManage.domain.OrderContentDO">
+		update order_content 
+		<set>
+			<if test="productId != null">`product_id` = #{productId}, </if>
+			<if test="count != null">`count` = #{count}, </if>
+			<if test="totalSum != null">`total_sum` = #{totalSum}, </if>
+			<if test="deadline != null">`deadline` = #{deadline}, </if>
+			<if test="destination != null">`destination` = #{destination}, </if>
+			<if test="storehouse != null">`storehouse` = #{storehouse}, </if>
+			<if test="orderId != null">`order_id` = #{orderId}, </if>
+			<if test="isBatched != null">`is_batched` = #{isBatched}, </if>
+			<if test="complete != null">`complete` = #{complete}+`complete`</if>
+		</set>
+		where content_id = #{contentId}
+	</update>
+	
+	<delete id="remove">
+		delete from order_content where content_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from order_content where content_id in 
+		<foreach item="contentId" collection="array" open="(" separator="," close=")">
+			#{contentId}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm" enctype="multipart/form-data">
+
+							<b>新增物品明细</b>
+							<table class="table table-striped table-bordered table-hover">
+								<tr>
+									<th>物品名称</th>
+									<td><input id="productName" name="productName" class="form-control" type="text" ></td>
+								<th>物品类型</th>
+									<td><select id="productType" name="productType" class="chosen-select form-control"  type="text" ></select></td>
+
+								</tr>
+								<tr>
+									<th>规格</th>
+									<td>
+									<input id="model" name="model" class="form-control"  >
+									</td>
+									<th>尺寸</th>
+									<td><input id="size" name="size" class="form-control" type="text" ></td>
+
+								</tr>
+								<tr>
+									<th>材料</th>
+									<td><input id="material" name="material" class="form-control" type="text" ></td>
+									<th>规值</th>
+									<td><input id="gaugeValue" name="gaugeValue" class="form-control" type="text" ></td>
+
+								</tr>
+								<tr>
+									<th>数量单位</th>
+
+									<td><select id="quantityUnit" name="quantityUnit"  class="chosen-select form-control" /></td>
+									<th>重量单位</th>
+									<td><select id="weightUnit" name="weightUnit"  class="chosen-select form-control" /></td>
+
+								</tr>
+								<tr>
+									<th>单重</th>
+
+									<td><input id="weight" name="weight" type="text" class="form-control" /></td>
+									<th>单价(元)</th>
+									<td><input id="price" name="price"  class="form-control" type="text"></td>
+
+								</tr>
+
+
+
+
+							</table>
+							<table>	<tr><b>备注/附件</b></tr>
+								<tr>
+									<td>
+										<div class="form-group" style="display: flex;align-items: center">
+											<textarea style="height: 100px;margin-right: 20px;margin-left: 20px"id="remark" name="remark" wrap="hard" row="20" cols="80"></textarea>
+										</div>
+									</td><td>
+									<div><label style="margin-right: 20px">附件上传</label><input id="filesFile"name="filesFile" class="form-control" type="file" >
+									</div>
+								</td>
+
+								</tr></table>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3" style="margin-right: 20px">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/factory/productManage/productDetail/add.js">
+	</script>
+</body>
+</html>

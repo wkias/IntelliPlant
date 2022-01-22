@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.contractManage.dao.ReceiveRecordDao">
+
+    <select id="get" resultType="com.bootdo.factory.contractManage.domain.ReceiveRecordDO">
+		select `record_id`,`plan_id`,`contract_id`,`contract_code`,`contract_name`,`contract_type`,`demander`,`demander_name`,`plan_batch`,`record_batch`,`receive_type`,`receive_amount`,`payment_method`,`date`,`payee`,`file`,`note`,`create_user_id`,`create_time`,`is_deleted` from receive_record where record_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.contractManage.domain.ReceiveRecordDO">
+        select `record_id`,`plan_id`,`contract_id`,`contract_code`,`contract_name`,`contract_type`,`demander`,`demander_name`,`plan_batch`,`record_batch`,`receive_type`,`receive_amount`,`payment_method`,`date`,`payee`,`file`,`note`,`create_user_id`,`create_time`,`is_deleted` from receive_record
+        <where>
+            <if test="recordId != null and recordId != ''">and record_id = #{recordId}</if>
+            <if test="planId != null and planId != ''">and plan_id = #{planId}</if>
+            <if test="contractId != null and contractId != ''">and contract_id = #{contractId}</if>
+            <if test="contractCode != null and contractCode != ''">and contract_code like #{contractCode}</if>
+            <if test="contractName != null and contractName != ''">and contract_name like #{contractName}</if>
+            <if test="contractType != null and contractType != ''">and contract_type = #{contractType}</if>
+            <if test="demander != null and demander != ''">and demander = #{demander}</if>
+            <if test="demanderName != null and demanderName != ''">and demander_name like #{demanderName}</if>
+            <if test="planBatch != null and planBatch != ''">and plan_batch = #{planBatch}</if>
+            <if test="recordBatch != null and recordBatch != ''">and record_batch = #{recordBatch}</if>
+            <if test="receiveType != null and receiveType != ''">and receive_type = #{receiveType}</if>
+            <if test="receiveAmount != null and receiveAmount != ''">and receive_amount = #{receiveAmount}</if>
+            <if test="paymentMethod != null and paymentMethod != ''">and payment_method = #{paymentMethod}</if>
+            <if test="date != null and date != ''">and date = #{date}</if>
+            <if test="payee != null and payee != ''">and payee = #{payee}</if>
+            <if test="file != null and file != ''"> and file = #{file} </if>
+            <if test="note != null and note != ''"> and note = #{note} </if>
+            <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+            <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+            and is_deleted = 0
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by record_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from receive_record
+        <where>
+            <if test="recordId != null and recordId != ''">and record_id = #{recordId}</if>
+            <if test="planId != null and planId != ''">and plan_id = #{planId}</if>
+            <if test="contractId != null and contractId != ''">and contract_id = #{contractId}</if>
+            <if test="contractCode != null and contractCode != ''">and contract_code like #{contractCode}</if>
+            <if test="contractName != null and contractName != ''">and contract_name like #{contractName}</if>
+            <if test="contractType != null and contractType != ''">and contract_type = #{contractType}</if>
+            <if test="demander != null and demander != ''">and demander = #{demander}</if>
+            <if test="demanderName != null and demanderName != ''">and demander_name like #{demanderName}</if>
+            <if test="planBatch != null and planBatch != ''">and plan_batch = #{planBatch}</if>
+            <if test="recordBatch != null and recordBatch != ''">and record_batch = #{recordBatch}</if>
+            <if test="receiveType != null and receiveType != ''">and receive_type = #{receiveType}</if>
+            <if test="receiveAmount != null and receiveAmount != ''">and receive_amount = #{receiveAmount}</if>
+            <if test="paymentMethod != null and paymentMethod != ''">and payment_method = #{paymentMethod}</if>
+            <if test="date != null and date != ''">and date = #{date}</if>
+            <if test="payee != null and payee != ''">and payee = #{payee}</if>
+            <if test="file != null and file != ''"> and file = #{file} </if>
+            <if test="note != null and note != ''"> and note = #{note} </if>
+            <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+            <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+            and is_deleted = 0
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.contractManage.domain.ReceiveRecordDO">
+		insert into receive_record
+		(
+			`record_id`,
+			`plan_id`,
+			`contract_id`,
+			`contract_code`,
+			`contract_name`,
+			`contract_type`,
+			`demander`,
+			`demander_name`,
+			`plan_batch`,
+			`record_batch`,
+			`receive_type`,
+			`receive_amount`,
+			`payment_method`,
+			`date`,
+			`payee`,
+			`file`,
+			`note`,
+			`create_user_id`,
+			`create_time`,
+			`is_deleted`
+		)
+		values
+		(
+			#{recordId},
+			#{planId},
+			#{contractId},
+			#{contractCode},
+			#{contractName},
+			#{contractType},
+			#{demander},
+			#{demanderName},
+			#{planBatch},
+			#{recordBatch},
+			#{receiveType},
+			#{receiveAmount},
+			#{paymentMethod},
+			#{date},
+			#{payee},
+			#{file},
+			#{note},
+			#{createUserId},
+			#{createTime},
+			#{isDeleted}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.contractManage.domain.ReceiveRecordDO">
+        update receive_record
+        <set>
+            <if test="planId != null">`plan_id` = #{planId}, </if>
+            <if test="contractId != null">`contract_id` = #{contractId}, </if>
+            <if test="contractCode != null">`contract_code` = #{contractCode}, </if>
+            <if test="contractName != null">`contract_name` = #{contractName}, </if>
+            <if test="contractType != null">`contract_type` = #{contractType}, </if>
+            <if test="demander != null">`demander` = #{demander}, </if>
+            <if test="demanderName != null"> and demander_name = #{demanderName} </if>
+            <if test="planBatch != null">`plan_batch` = #{planBatch}, </if>
+            <if test="recordBatch != null">`record_batch` = #{recordBatch}, </if>
+            <if test="receiveType != null">`receive_type` = #{receiveType}, </if>
+            <if test="receiveAmount != null">`receive_amount` = #{receiveAmount}, </if>
+            <if test="paymentMethod != null">`payment_method` = #{paymentMethod}, </if>
+            <if test="date != null">`date` = #{date}, </if>
+            <if test="payee != null">`payee` = #{payee}, </if>
+            <if test="file != null">`file` = #{file}, </if>
+            <if test="note != null">`note` = #{note}, </if>
+            <if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="isDeleted != null">`is_deleted` = #{isDeleted}</if>
+        </set>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="remove">
+		update receive_record set is_deleted = 1 where record_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        update receive_record set is_deleted = 1 where record_id in
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+
+</mapper>

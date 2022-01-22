@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.productManage.dao.ProcessInputDao">
+
+	<select id="get" resultType="com.bootdo.factory.productManage.domain.ProcessInputDO">
+		select `id`,`component_code`,`plan_id`,`process_id`,`material_id`,`material_count`,`inspecting`,`is_deleted`,`create_user_id`,`create_time` from process_input where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.productManage.domain.ProcessInputDO">
+		select `id`,`component_code`,`plan_id`,`process_id`,`material_id`,`material_count`,`inspecting`,`is_deleted`,`create_user_id`,`create_time` from process_input
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="componentCode != null and componentCode != ''"> and component_code = #{componentCode} </if>
+		  		  <if test="planId != null and planId != ''"> and plan_id = #{planId} </if>
+		  		  <if test="processId != null and processId != ''"> and process_id = #{processId} </if>
+		  		  <if test="materialId != null and materialId != ''"> and material_id = #{materialId} </if>
+		  		  <if test="materialCount != null and materialCount != ''"> and material_count = #{materialCount} </if>
+		  		  <if test="inspecting != null and inspecting != ''"> and inspecting = #{inspecting} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from process_input
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="componentCode != null and componentCode != ''"> and component_code = #{componentCode} </if>
+		  		  <if test="planId != null and planId != ''"> and plan_id = #{planId} </if>
+		  		  <if test="processId != null and processId != ''"> and process_id = #{processId} </if>
+		  		  <if test="materialId != null and materialId != ''"> and material_id = #{materialId} </if>
+		  		  <if test="materialCount != null and materialCount != ''"> and material_count = #{materialCount} </if>
+		  		  <if test="inspecting != null and inspecting != ''"> and inspecting = #{inspecting} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.productManage.domain.ProcessInputDO">
+		insert into process_input
+		(
+			`id`, 
+			`component_code`, 
+			`plan_id`, 
+			`process_id`, 
+			`material_id`, 
+			`material_count`, 
+			`inspecting`, 
+			`is_deleted`, 
+			`create_user_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{id}, 
+			#{componentCode}, 
+			#{planId}, 
+			#{processId}, 
+			#{materialId}, 
+			#{materialCount}, 
+			#{inspecting}, 
+			#{isDeleted}, 
+			#{createUserId}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.productManage.domain.ProcessInputDO">
+		update process_input 
+		<set>
+			<if test="planId != null">`plan_id` = #{planId}, </if>
+			<if test="processId != null">`process_id` = #{processId}, </if>
+			<if test="materialId != null">`material_id` = #{materialId}, </if>
+			<if test="materialCount != null">`material_count` = #{materialCount}, </if>
+			<if test="inspecting != null">`inspecting` = #{inspecting}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where component_code = #{componentCode}
+	</update>
+	
+	<delete id="remove">
+		delete from process_input where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from process_input where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

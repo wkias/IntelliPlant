@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.productManage.dao.ProductPlanDao">
+	<resultMap id="productPlanMap" type="com.bootdo.factory.productManage.domain.ProductPlanDO">
+					<id column="plan_Id" property="planId"/>
+		<result column="plan_code" property="planCode" />
+		<result column="order_content_id" property="orderContentId" />
+		<result column="order_name" property="orderName" />
+		<result column="priority" property="priority" />
+		<result column="duty_person_id" property="dutyPersonId" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="completed_quantity" property="completedQuantity" />
+		<result column="plan_state" property="planState" />
+		<result column="remarks" property="remarks" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="create_user_id" property="creatUserId" />
+		<result column="create_time" property="creatTime" />
+		<association property="orderContentDO" javaType="com.bootdo.factory.contractManage.domain.OrderContentDO">
+			<id column="content_id" property="contentId"/>
+			<result column="dealine" property="deadline"/>
+			<result column="count" property="count"/>
+		</association>
+		<association property="productDefinitionDO" javaType="com.bootdo.factory.productManage.domain.ProductDefinitionDO">
+			<id column="product_id" property="productId"/>
+			<result column="product_name" property="productName"/>
+			<result column="product_size" property="productSize"/>
+			<result column="product_code" property="productCode"/>
+			<result column="product_model" property="productModel"/>
+			<result column="unit" property="unit"/>
+		</association>
+	</resultMap>
+
+	<select id="get" resultType="com.bootdo.factory.productManage.domain.ProductPlanDO">
+		select `plan_id`,`plan_code`,`order_content_id`,`priority`,`duty_person_id`,`start_date`,`end_date`,`completed_quantity`,`plan_state`,`remarks`,`is_deleted`,`creat_user_id`,`creat_time` from product_plan where plan_id = #{value}
+	</select>
+
+	<select id="list" resultMap="productPlanMap">
+		select pp.plan_id,pp.plan_code,pp.order_content_id,oc.order_name,pp.priority,pp.duty_person_id,pp.start_date,pp.end_date,pp.completed_quantity
+		,pp.plan_state,pp.remarks,pp.is_deleted ,pp.creat_user_id,pp.creat_time,su.`name`
+		,oc.content_id,oc.deadline,oc.count,
+		pd.product_id,pd.product_name,pd.product_size,pd.product_code,pd.unit
+		from
+		(select content_id,product_id,oc.order_id,om.order_name,oc.deadline,oc.count from order_content oc
+		JOIN order_manage om
+		on oc.order_id= om.order_id
+		where om.is_deleted=0) oc
+		LEFT JOIN product_definition pd on oc.product_id=pd.product_id
+		LEFT JOIN product_plan pp on oc.content_id=pp.order_content_id
+		left JOIN sys_user su on duty_person_id=su.user_id
+		<where>
+			 IFNULL(pp.is_deleted,0) = 0
+			      <if test="planCode != null and planCode !=''">and plan_code like  CONCAT('%',#{planCode},'%')</if>
+			      <if test="productName != null and productName !=''">and product_name like  CONCAT('%',#{productName},'%')</if>
+		  		  <if test="planId != null and planId != ''"> and plan_id = #{planId} </if>
+		  		  <if test="orderContentId != null and orderContentId != ''"> and order_content_id = #{orderContentId} </if>
+		  		  <if test="priority != null and priority != ''"> and priority = #{priority} </if>
+		  		  <if test="dutyPersonId != null and dutyPersonId != ''"> and duty_person_id = #{dutyPersonId} </if>
+		  		  <if test="startDate != null and startDate != ''"> and start_date <![CDATA[>=]]> #{startDate} </if>
+		  		  <if test="endDate != null and endDate != ''"> and end_date <![CDATA[<=]]> #{endDate} </if>
+		  		  <if test="completedQuantity != null and completedQuantity != ''"> and completed_quantity = #{completedQuantity} </if>
+		  		  <if test="planState != null and planState != ''"> and plan_state = #{planState} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="creatUserId != null and creatUserId != ''"> and creat_user_id = #{creatUserId} </if>
+		  		  <if test="creatTime != null and creatTime != ''"> and creat_time = #{creatTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by plan_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from product_plan
+		 <where>
+				  is_deleted=0
+		  		  <if test="planId != null and planId != ''"> and plan_id = #{planId} </if>
+		  		  <if test="planCode != null and planCode != ''"> and plan_code = #{planCode} </if>
+		  		  <if test="orderContentId != null and orderContentId != ''"> and order_content_id = #{orderContentId} </if>
+		  		  <if test="priority != null and priority != ''"> and priority = #{priority} </if>
+		  		  <if test="dutyPersonId != null and dutyPersonId != ''"> and duty_person_id = #{dutyPersonId} </if>
+		  		  <if test="startDate != null and startDate != ''"> and start_date = #{startDate} </if>
+		  		  <if test="endDate != null and endDate != ''"> and end_date = #{endDate} </if>
+		  		  <if test="completedQuantity != null and completedQuantity != ''"> and completed_quantity = #{completedQuantity} </if>
+		  		  <if test="planState != null and planState != ''"> and plan_state = #{planState} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="creatUserId != null and creatUserId != ''"> and creat_user_id = #{creatUserId} </if>
+		  		  <if test="creatTime != null and creatTime != ''"> and creat_time = #{creatTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.productManage.domain.ProductPlanDO">
+		insert into product_plan
+		(
+			`plan_id`, 
+			`plan_code`, 
+			`order_content_id`, 
+			`priority`, 
+			`duty_person_id`, 
+			`start_date`, 
+			`end_date`, 
+			`completed_quantity`, 
+			`plan_state`, 
+			`remarks`, 
+			`is_deleted`, 
+			`creat_user_id`, 
+			`creat_time`
+		)
+		values
+		(
+			#{planId}, 
+			#{planCode}, 
+			#{orderContentId}, 
+			#{priority}, 
+			#{dutyPersonId}, 
+			#{startDate}, 
+			#{endDate}, 
+			#{completedQuantity}, 
+			#{planState}, 
+			#{remarks}, 
+			0,
+			#{creatUserId}, 
+			#{creatTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.productManage.domain.ProductPlanDO">
+		update product_plan 
+		<set>
+			<if test="planCode != null">`plan_code` = #{planCode}, </if>
+			<if test="orderContentId != null">`order_content_id` = #{orderContentId}, </if>
+			<if test="priority != null">`priority` = #{priority}, </if>
+			<if test="dutyPersonId != null">`duty_person_id` = #{dutyPersonId}, </if>
+			<if test="startDate != null">`start_date` = #{startDate}, </if>
+			<if test="endDate != null">`end_date` = #{endDate}, </if>
+			<if test="completedQuantity != null">`completed_quantity` = #{completedQuantity}, </if>
+			<if test="planState != null">`plan_state` = #{planState}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="creatUserId != null">`creat_user_id` = #{creatUserId}, </if>
+			<if test="creatTime != null">`creat_time` = #{creatTime}</if>
+		</set>
+		where plan_id = #{planId}
+	</update>
+	
+	<delete id="remove">
+		update product_plan set is_deleted=1 where plan_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		update product_plan set is_deleted=1 where plan_id in
+		<foreach item="planId" collection="array" open="(" separator="," close=")">
+			#{planId}
+		</foreach>
+	</delete>
+
+</mapper>

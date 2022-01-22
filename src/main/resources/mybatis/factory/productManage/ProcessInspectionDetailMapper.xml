@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.productManage.dao.ProcessInspectionDetailDao">
+
+    <select id="get" resultType="com.bootdo.factory.productManage.domain.ProcessInspectionDetailDO">
+		select `process_inspection_detail_id`,`process_inspection_report_id`,`process_id`,`process_name`,`component_id`,`component_name`,`format`,`unit`,`qualified_num`,`rework_num`,`scrap_num` from process_inspection_detail where process_inspection_report_id = #{value}
+	</select>
+
+    <select id="getOne" resultType="com.bootdo.factory.productManage.domain.ProcessInspectionDetailDO">
+		select `process_inspection_detail_id`,`process_inspection_report_id`,`process_id`,`process_name`,`component_id`,`component_name`,`format`,`unit`,`qualified_num`,`rework_num`,`scrap_num` from process_inspection_detail where process_inspection_detail_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.productManage.domain.ProcessInspectionDetailDO">
+        select
+        `process_inspection_detail_id`,`process_inspection_report_id`,`process_id`,`process_name`,`component_id`,`component_name`,`format`,`unit`,`qualified_num`,`rework_num`,`scrap_num`
+        from process_inspection_detail
+        <where>
+            <if test="processInspectionDetailId != null and processInspectionDetailId != ''">and
+                process_inspection_detail_id = #{processInspectionDetailId}
+            </if>
+            <if test="processInspectionReportId != null and processInspectionReportId != ''">and
+                process_inspection_report_id = #{processInspectionReportId}
+            </if>
+            <if test="processId != null and processId != ''">and process_id = #{processId}</if>
+            <if test="processName != null and processName != ''">and process_name = #{processName}</if>
+            <if test="componentId != null and componentId != ''">and component_Id = #{componentId}</if>
+            <if test="componentName != null and componentName != ''">and component_name = #{componentName}</if>
+            <if test="format != null and format != ''">and format = #{format}</if>
+            <if test="unit != null and unit != ''">and unit = #{unit}</if>
+            <if test="qualifiedNum != null and qualifiedNum != ''">and qualified_num = #{qualifiedNum}</if>
+            <if test="reworkNum != null and reworkNum != ''">and rework_num = #{reworkNum}</if>
+            <if test="scrapNum != null and scrapNum != ''">and scrap_num = #{scrapNum}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by process_inspection_detail_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from process_inspection_detail
+        <where>
+            <if test="processInspectionDetailId != null and processInspectionDetailId != ''">and
+                process_inspection_detail_id = #{processInspectionDetailId}
+            </if>
+            <if test="processInspectionReportId != null and processInspectionReportId != ''">and
+                process_inspection_report_id = #{processInspectionReportId}
+            </if>
+            <if test="processName != null and processName != ''">and process_name = #{processName}</if>
+            <if test="componentId != null and componentId != ''">and component_Id = #{componentId}</if>
+            <if test="componentName != null and componentName != ''">and component_name = #{componentName}</if>
+            <if test="format != null and format != ''">and format = #{format}</if>
+            <if test="unit != null and unit != ''">and unit = #{unit}</if>
+            <if test="qualifiedNum != null and qualifiedNum != ''">and qualified_num = #{qualifiedNum}</if>
+            <if test="reworkNum != null and reworkNum != ''">and rework_num = #{reworkNum}</if>
+            <if test="scrapNum != null and scrapNum != ''">and scrap_num = #{scrapNum}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.productManage.domain.ProcessInspectionDetailDO">
+		insert into process_inspection_detail
+		(
+			`process_inspection_detail_id`,
+			`process_inspection_report_id`,
+			`process_id`,
+			`process_name`,
+			`component_id`,
+			`component_name`, 
+			`format`, 
+			`unit`, 
+			`qualified_num`, 
+			`rework_num`, 
+			`scrap_num`
+		)
+		values
+		(
+			#{processInspectionDetailId},
+			#{processInspectionReportId},
+			#{processId},
+			#{processName},
+			#{componentId},
+			#{componentName}, 
+			#{format}, 
+			#{unit}, 
+			#{qualifiedNum}, 
+			#{reworkNum}, 
+			#{scrapNum}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.productManage.domain.ProcessInspectionDetailDO">
+        update process_inspection_detail
+        <set>
+            <if test="processId != null and processId != ''">process_id = #{processId},</if>
+            <if test="processName != null">`process_name` = #{processName},</if>
+            <if test="componentName != null">`component_name` = #{componentName},</if>
+            <if test="format != null">`format` = #{format},</if>
+            <if test="unit != null">`unit` = #{unit},</if>
+            <if test="qualifiedNum != null">`qualified_num` = #{qualifiedNum},</if>
+            <if test="reworkNum != null">`rework_num` = #{reworkNum},</if>
+            <if test="scrapNum != null">`scrap_num` = #{scrapNum}</if>
+        </set>
+        where process_inspection_detail_id = #{processInspectionDetailId}
+    </update>
+
+    <delete id="remove">
+		delete from process_inspection_detail where process_inspection_detail_id = #{value}
+	</delete>
+
+    <delete id="removeByReport">
+		delete from process_inspection_detail where process_inspection_report_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from process_inspection_detail where process_inspection_detail_id in
+        <foreach item="processInspectionDetailId" collection="array" open="(" separator="," close=")">
+            #{processInspectionDetailId}
+        </foreach>
+    </delete>
+
+</mapper>

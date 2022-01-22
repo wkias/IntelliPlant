@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg" onload="window.title='修改i合同'">
+<script type="text/javascript" src="/js/appjs/factory/orderManage/add.js">
+</script>
+<div class="wrapper wrapper-content ">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+					<form class="form-horizontal m-t" id="signupForm" enctype="multipart/form-data">
+						<input id="orderId"name="orderId"type="hidden" >
+						<input id="isDeleted"name="isDeleted"type="hidden" value="0">
+						<b>基本信息</b>
+						<table class="table table-striped table-bordered table-hover">
+							<tr>
+								<th>订单名称</th>
+								<td><input id="orderName" name="orderName" class="form-control" type="text" ></td>
+								<th>*订单负责人</th>
+								<td>
+									<input class="form-control" name="orderManagerId" id="orderManagerId"  type="hidden">
+
+									<input class="form-control" name="" id="orderManagerName" onclick="openUser()" type="text" >
+								</td>
+								<th>订单编号</th>
+
+								<td><input id="orderCode" name="orderCode" th:value="${orderCode}" class="form-control" type="text" readonly></td>
+								<th>订单类型</th>
+								<td><select id="orderType" name="orderType" class=" form-control" type="text" ></select></td>
+
+							</tr>
+							<tr>
+								<th>*合同编号</th>
+								<input id="contractId" name="contractId" class="form-control" type="hidden" >
+								<td><input id="contractCode" name="contractCode" class="form-control" onclick="getContract()" type="text" ></td>
+								<th>*合同名称</th>
+								<td><input id="contractName" name="contractName" class="form-control" type="text" readonly></td>
+								<th>*合同类型</th>
+
+								<td><input id="contractType" name="contractType" data-placeholder="合同类型" readonly class=" form-control"/></input></td>
+								<th>需求商</th>
+								<td>
+									<select id="demandId" name="demandId" class="form-control" tabindex="2" onclick="getDemand()" required></select>
+								</td>
+
+							</tr>
+							<tr>
+								<th>签订日期</th>
+								<td><input id="orderSigningDate" name="orderSigningDate" class="form-control" type="date" required></td>
+								<th>开始日期</th>
+								<td><input id="orderStartDate" name="orderStartDate" class="form-control" type="date" required ></td>
+								<th>截止日期</th>
+								<td><input id="orderDeadline" name="orderDeadline" class="form-control" type="date" required></td>
+								<th>订单发件人</th>
+								<td><input id="orderSender" name="orderSender" class="form-control" type="text" required></td>
+
+							</tr>
+							<tr>
+								<th>订单期次</th>
+
+								<td><input id="orderPeriod" name="orderPeriod" data-placeholder="订单期次" class="form-control" readonly /></td>
+								<th>订单状态</th>
+								<td><select id="state" name="state"  class="chosen-select form-control" type="text"></select></td>
+								<th>发货地</th>
+								<td><input id="senderPlace" name="senderPlace" class="form-control"  type="text" required>
+								</td>
+								<th>总金额(元)</th>
+								<td><input id="totalSum" name="totalSum"  class="chosen-select form-control" type="text" readonly></td>
+
+							</tr>
+						</table>
+
+						<button class="btn btn-primary"  type="button" onclick="addNoBatch()">新增</button>
+						<button class="btn btn-danger" type="button" onclick="delNoBatch()">删除</button>
+						<div name="noBatchItem">
+						<input name="noBatchId"type="hidden">
+						<input name="noBatchChecked"type="checkbox"/><b>订单内容</b>
+						<table class="table table-striped table-bordered table-hover">
+							<tr><th>产品编号</th><th>产品名称</th><th>产品型号</th><th>总数量</th><th>发往地点</th></tr>
+							<tr><td><input class="form-control" type="text" readonly></td><td><input class="form-control" type="text" readonly></td><td><input class="form-control" type="text" readonly></td><td><input class="form-control"  name="noCount" type="number" required min="0" ></td><td><input class="form-control" type="text" name="noDestination" ></td></tr>
+							<tr><th>单位</th><th>单价</th><th>总金额</th><th>到货日期</th><th>报缴仓库</th></tr>
+							<tr><td><input class="form-control" type="text"  readonly></td><td><input class="form-control" type="text" ></td><td><input class="form-control" name="noTotalSum" type="text" ></td><td><input class="form-control" required name="noDeadline" type="date" ></td><td><input class="form-control" type="text" name="noStoreHouse" ></td></tr>
+						</table>
+						</div>
+
+						<!--<button class="btn btn-primary"  onclick="addBatch()" type="button">新增</button>-->
+						<!--<button class="btn btn-danger"  onclick="delBatch()" type="button">删除</button>-->
+						<!--<div name="batchItem">-->
+						<!--<input name="batchId"type="hidden">-->
+						<!--<input name="batchChecked"type="checkbox"/><b>多批次订单内容1</b>-->
+						<!--<table class="table table-striped table-bordered table-hover">-->
+							<!--<tr><th>*产品名称</th><th>产品型号</th><th>产品规格</th><th>总数量</th><th>发往地点</th></tr>-->
+							<!--<tr><td><input class="form-control" type="text" readonly></td><td><input class="form-control" type="text" readonly></td><td><input class="form-control" type="text" readonly></td><td><input class="form-control" name="count" type="number" min="0"></td><td><input class="form-control" type="text" name="destination"></td></tr>-->
+							<!--<tr><th>单位</th><th>单价</th><th>总金额</th><th>到货日期</th><th>报缴仓库</th></tr>-->
+							<!--<tr><td><input class="form-control" type="text" value="元" readonly></td><td><input class="form-control" type="text" ></td><td><input class="form-control" name="TotalSum" type="text" ></td><td><input class="form-control" name="deadline" type="date" ></td><td><input class="form-control" type="text" name="storeHouse" ></td></tr>-->
+						<!--</table>-->
+						<!--</div>-->
+
+						<b>备注/附件</b>
+						<div class="form-group" style="display: flex;align-items: center">
+							<textarea style="height: 100px;margin-right: 20px"id="remark" name="remark" wrap="hard" row="20" cols="80"></textarea>
+							<label style="margin-right: 20px">附件上传</label><input id="filesFile"name="filesFile" class="form-control" type="file" >
+						</div>
+						<div class="form-group">
+							<div class="col-sm-8 col-sm-offset-3">
+								<button type="submit" class="btn btn-primary">提交</button>
+							</div>
+						</div>
+
+
+
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/orderManage/add.js">
+</script>
+</body>
+</html>

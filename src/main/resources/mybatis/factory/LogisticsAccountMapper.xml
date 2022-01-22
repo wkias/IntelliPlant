@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.warehouseManagement.dao.LogisticsAccountDao">
+
+	<select id="get" resultType="com.bootdo.factory.warehouseManagement.domain.LogisticsAccountDO">
+		select `logistics_id`,`form_id`,`form_type`,`forwarding_unit`,`logistics_number`,`logistics_company`,`receive_unit`,`total_quantity`,`total_weight`,`total_money`,`driver_name`,`phone_number`,`car_number`,`driver_license`,`driver_permit`,`weight_unit`,`weight`,`money`,`remarks`,`files`,`is_deleted`,`create_user_id`,`create_time` from logistics_account where logistics_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.warehouseManagement.domain.LogisticsAccountDO">
+		select `logistics_id`,`form_id`,`form_type`,`forwarding_unit`,`logistics_number`,`logistics_company`,`receive_unit`,`total_quantity`,`total_weight`,`total_money`,`driver_name`,`phone_number`,`car_number`,`driver_license`,`driver_permit`,`weight_unit`,`weight`,`money`,`remarks`,`files`,`is_deleted`,`create_user_id`,`create_time` from logistics_account
+		<where>
+			is_deleted = 0
+			<if test="logisticsId != null and logisticsId != ''"> and logistics_id = #{logisticsId} </if>
+			<if test="formId != null and formId != ''"> and form_id like CONCAT('%',#{formId},'%') </if>
+			<if test="formType != null and formType != ''"> and form_type = #{formType} </if>
+			<if test="forwardingUnit != null and forwardingUnit != ''"> and forwarding_unit = #{forwardingUnit} </if>
+			<if test="logisticsNumber != null and logisticsNumber != ''"> and logistics_number like CONCAT('%',#{logisticsNumber},'%')</if>
+			<if test="logisticsCompany != null and logisticsCompany != ''"> and logistics_company = #{logisticsCompany} </if>
+			<if test="receiveUnit != null and receiveUnit != ''"> and receive_unit = #{receiveUnit} </if>
+			<if test="totalQuantity != null and totalQuantity != ''"> and total_quantity = #{totalQuantity} </if>
+			<if test="totalWeight != null and totalWeight != ''"> and total_weight = #{totalWeight} </if>
+			<if test="totalMoney != null and totalMoney != ''"> and total_money = #{totalMoney} </if>
+			<if test="driverName != null and driverName != ''"> and driver_name = #{driverName} </if>
+			<if test="phoneNumber != null and phoneNumber != ''"> and phone_number = #{phoneNumber} </if>
+			<if test="carNumber != null and carNumber != ''"> and car_number = #{carNumber} </if>
+			<if test="driverLicense != null and driverLicense != ''"> and driver_license = #{driverLicense} </if>
+			<if test="driverPermit != null and driverPermit != ''"> and driver_permit = #{driverPermit} </if>
+			<if test="weightUnit != null and weightUnit != ''"> and weight_unit = #{weightUnit} </if>
+			<if test="weight != null and weight != ''"> and weight = #{weight} </if>
+			<if test="money != null and money != ''"> and money = #{money} </if>
+			<if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+			<if test="files != null and files != ''"> and files = #{files} </if>
+			<if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+			<if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by logistics_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from logistics_account
+		<where>
+			is_deleted = 0
+			<if test="logisticsId != null and logisticsId != ''"> and logistics_id = #{logisticsId} </if>
+			<if test="formId != null and formId != ''"> and form_id = #{formId} </if>
+			<if test="formType != null and formType != ''"> and form_type = #{formType} </if>
+			<if test="forwardingUnit != null and forwardingUnit != ''"> and forwarding_unit = #{forwardingUnit} </if>
+			<if test="logisticsNumber != null and logisticsNumber != ''"> and logistics_number = #{logisticsNumber} </if>
+			<if test="logisticsCompany != null and logisticsCompany != ''"> and logistics_company = #{logisticsCompany} </if>
+			<if test="receiveUnit != null and receiveUnit != ''"> and receive_unit = #{receiveUnit} </if>
+			<if test="totalQuantity != null and totalQuantity != ''"> and total_quantity = #{totalQuantity} </if>
+			<if test="totalWeight != null and totalWeight != ''"> and total_weight = #{totalWeight} </if>
+			<if test="totalMoney != null and totalMoney != ''"> and total_money = #{totalMoney} </if>
+			<if test="driverName != null and driverName != ''"> and driver_name = #{driverName} </if>
+			<if test="phoneNumber != null and phoneNumber != ''"> and phone_number = #{phoneNumber} </if>
+			<if test="carNumber != null and carNumber != ''"> and car_number = #{carNumber} </if>
+			<if test="driverLicense != null and driverLicense != ''"> and driver_license = #{driverLicense} </if>
+			<if test="driverPermit != null and driverPermit != ''"> and driver_permit = #{driverPermit} </if>
+			<if test="weightUnit != null and weightUnit != ''"> and weight_unit = #{weightUnit} </if>
+			<if test="weight != null and weight != ''"> and weight = #{weight} </if>
+			<if test="money != null and money != ''"> and money = #{money} </if>
+			<if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+			<if test="files != null and files != ''"> and files = #{files} </if>
+			<if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+			<if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.bootdo.factory.warehouseManagement.domain.LogisticsAccountDO">
+		insert into logistics_account
+		(
+			`logistics_id`,
+			`form_id`,
+			`form_type`,
+			`forwarding_unit`,
+			`logistics_number`,
+			`logistics_company`,
+			`receive_unit`,
+			`total_quantity`,
+			`total_weight`,
+			`total_money`,
+			`driver_name`,
+			`phone_number`,
+			`car_number`,
+			`driver_license`,
+			`driver_permit`,
+			`weight_unit`,
+			`weight`,
+			`money`,
+			`remarks`,
+			`files`,
+			`is_deleted`,
+			`create_user_id`,
+			`create_time`
+		)
+		values
+		(
+			#{logisticsId},
+			#{formId},
+			#{formType},
+			#{forwardingUnit},
+			#{logisticsNumber},
+			#{logisticsCompany},
+			#{receiveUnit},
+			#{totalQuantity},
+			#{totalWeight},
+			#{totalMoney},
+			#{driverName},
+			#{phoneNumber},
+			#{carNumber},
+			#{driverLicense},
+			#{driverPermit},
+			#{weightUnit},
+			#{weight},
+			#{money},
+			#{remarks},
+			#{files},
+			#{isDeleted},
+			#{createUserId},
+			#{createTime}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.bootdo.factory.warehouseManagement.domain.LogisticsAccountDO">
+		update logistics_account
+		<set>
+			<if test="formId != null">`form_id` = #{formId}, </if>
+			<if test="formType != null">`form_type` = #{formType}, </if>
+			<if test="forwardingUnit != null">`forwarding_unit` = #{forwardingUnit}, </if>
+			<if test="logisticsNumber != null">`logistics_number` = #{logisticsNumber}, </if>
+			<if test="logisticsCompany != null">`logistics_company` = #{logisticsCompany}, </if>
+			<if test="receiveUnit != null">`receive_unit` = #{receiveUnit}, </if>
+			<if test="totalQuantity != null">`total_quantity` = #{totalQuantity}, </if>
+			<if test="totalWeight != null">`total_weight` = #{totalWeight}, </if>
+			<if test="totalMoney != null">`total_money` = #{totalMoney}, </if>
+			<if test="driverName != null">`driver_name` = #{driverName}, </if>
+			<if test="phoneNumber != null">`phone_number` = #{phoneNumber}, </if>
+			<if test="carNumber != null">`car_number` = #{carNumber}, </if>
+			<if test="driverLicense != null">`driver_license` = #{driverLicense}, </if>
+			<if test="driverPermit != null">`driver_permit` = #{driverPermit}, </if>
+			<if test="weightUnit != null">`weight_unit` = #{weightUnit}, </if>
+			<if test="weight != null">`weight` = #{weight}, </if>
+			<if test="money != null">`money` = #{money}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}, </if>
+			<if test="files != null">`files` = #{files}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where logistics_id = #{logisticsId}
+	</update>
+
+	<delete id="remove">
+		update logistics_account
+		<set>
+		is_deleted = 1
+		where logistics_id = #{value}
+		</set>
+	</delete>
+
+	<delete id="batchRemove">
+		update logistics_account
+		set is_deleted = 1
+		where logistics_id in
+		<foreach item="logisticsId" collection="array" open="(" separator="," close=")">
+			#{logisticsId}
+		</foreach>
+	</delete>
+
+</mapper>

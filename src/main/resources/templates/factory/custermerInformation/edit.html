@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+                            <input id="custermerId" name="custermerId" th:value="${custermerInformation.custermerId}"
+                                   type="hidden">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*客户名称（全称）</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="custermerName"
+                                           name="custermerName" th:value="${custermerInformation.custermerName}"
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*客户类型</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control chosen-select" data-placeholder="--选择设备类型--"
+                                            id="custermerType"
+                                            name="custermerType" required tabindex="2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">纳税人识别号</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="taxpayerIdNumbers"
+                                           name="taxpayerIdNumbers" th:value="${custermerInformation.taxpayerIdNumbers}"
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">统一社会信用代码</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="socialCreditCode"
+                                           name="socialCreditCode" th:value="${custermerInformation.socialCreditCode}"
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">地址</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="address" name="address"
+                                           th:value="${custermerInformation.address}" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">联系电话</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="custermerTel"
+                                           name="custermerTel" th:value="${custermerInformation.custermerTel}"
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">电子邮箱</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="email" name="email"
+                                           th:value="${custermerInformation.email}" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">传真</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="fax" name="fax"
+                                           th:value="${custermerInformation.fax}" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">开户行</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="bank" name="bank"
+                                           th:value="${custermerInformation.bank}" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">开户行账号</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="bankAccount"
+                                           name="bankAccount" th:value="${custermerInformation.bankAccount}"
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="form-group" style="display:none">
+                                <label class="col-sm-3 control-label">删除标记</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="isDeleted" name="isDeleted"
+                                           th:value="${custermerInformation.isDeleted}" type="hidden">
+                                </div>
+                            </div>
+                            <div class="form-group" style="display:none">
+                                <label class="col-sm-3 control-label">创建者</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="createUserId"
+                                           name="createUserId" th:value="${custermerInformation.createUserId}"
+                                           type="hidden">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注</label>
+                                <div class="col-sm-8">
+                                    <input id="remarks" name="remarks" th:value="${custermerInformation.remarks}"
+                                           class="form-control" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/factory/custermerInformation/edit.js">
+	</script>
+</body>
+</html>

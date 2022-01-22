@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" style="margin:10px" id="signupForm">
+                        <input id="taskId" name="taskId" th:value="${purchaseOrder.taskId}" type="hidden">
+                        <input id="purchaseId" name="purchaseId" th:value="${purchaseOrder.purchaseId}"  type="hidden">
+                        <div class="form-group">
+                            <b>基本信息</b>
+                            <table class="table table-striped table-bordered table-hover">
+                                <tr><th>审批状态</th><td>		<input id="auditState" class="form-control" th:value="${purchaseOrder.auditState}" type="text" disabled></td>
+                                    <th>采购状态</th><td>		<input id="oldPurchaseState"class="form-control" th:value="${purchaseOrder.purchaseState}"type="hidden">
+                                        <select id="purchaseState" name="purchaseState"class="chosen-select form-control" type="text"></select></td>
+                                    <th></th><td></td>
+                                </tr>
+
+                                <tr><th>采购订单编号</th><td>	<input id="orderCode" name="orderCode" th:value="${purchaseOrder.orderCode}"class="form-control" type="text" disabled></td>
+                                    <th>申请采购部门</th><td>	<input id="applyDeptId" name="applyDeptId" th:value="${purchaseOrder.applyDeptId}"class="form-control" type="hidden">
+                                        <input id="applyDeptName" name="applyDeptName" class="form-control" th:value="${purchaseOrder.applyDeptName}"type="text" onclick="openDeptSelect()" disabled></td>
+                                    <th>采购负责人</th><td>		<input id="dutyPersonId" name="dutyPersonId"  th:value="${purchaseOrder.dutyPersonId}"class="form-control" type="hidden">
+                                        <input id="dutyPersonName" name="dutyPersonName" class="form-control" th:value="${purchaseOrder.dutyPersonName}"type="text" onclick="openUser()" disabled></td>
+                                </tr>
+                                <tr><th>申请日期</th><td>		<input id="applyDate" name="applyDate" th:value="${#dates.format(purchaseOrder.applyDate,'yyyy-MM-dd')}"class="form-control" type="date" disabled></td>
+                                    <th>请求到货日期</th><td>	<input id="arrivalDate" name="arrivalDate" th:value="${#dates.format(purchaseOrder.arrivalDate,'yyyy-MM-dd')}"class="form-control" type="date" disabled></td>
+                                    <th>业务类型</th><td>
+                                        <input id="oldBusinessType" name="oldBusinessType" th:value="${purchaseOrder.businessType}"
+                                               type="hidden">
+                                        <select class="chosen-select form-control" th:value="${purchaseOrder.businessType}"id="businessType" name="businessType"type="text" disabled>
+                                        </select></td>
+                                </tr>
+
+                                <tr><th>采购单位</th><td>		<input id="supplier" name="supplier" th:value="${purchaseOrder.supplier}"class="form-control" type="text" disabled></td>
+                                    <th>收货单位</th><td>		<input id="demander" name="demander" th:value="${purchaseOrder.demander}"class="form-control" type="text" disabled></td>
+                                    <th></th><td></td>
+                                </tr>
+                                <tr><th>总数量</th><td>			<input id="totalNumber" name="totalNumber"th:value="${purchaseOrder.totalNumber}" class="form-control" type="number" disabled></td>
+                                    <th>总重量（kg）</th><td>			<input id="totalWeight" name="totalWeight" th:value="${purchaseOrder.totalWeight}"class="form-control" type="number" disabled></td>
+                                    <th>总金额</th><td>			<input id="totalMoney" name="totalMoney" th:value="${purchaseOrder.totalMoney}"class="form-control" type="number" disabled></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!--							<div class="form-group">-->
+                        <!--								<button class="btn btn-primary" id="addDetailBtn" type="button" onclick="addDetail()">新增</button>-->
+                        <!--								<button class="btn btn-danger" id="delDetailBtn" type="button" onclick="delDetail()">删除</button>-->
+                        <!--							</div>-->
+                        <div class="form-group" style="overflow: auto">
+                            <table class="table table-striped table-bordered table-hover" style="table-layout: auto;width:100%;">
+                                <tr><th></th><th>物资名称</th><th>物资型号</th><th>材料</th><th>数量单位</th><th>重量单位</th><th>单重</th><th>数量</th><th>单价（元）</th><th>金额（元）</th></tr>
+                                <tr name="detailItem" th:each="purchaseDetail:${purchaseOrder.details}">
+                                    <input name="productId" th:value="${purchaseDetail.productId}" type="hidden">
+                                    <td><input  name="detailCheck" type="checkbox"></td>
+                                    <td><input  class="form-control" name="materialName" th:value="${purchaseDetail.productDetail.productName}"type="text" disabled></td>
+                                    <td><input  class="form-control" name="materialModel"th:value="${purchaseDetail.productDetail.model}" type="text" disabled></td>
+                                    <td><input  class="form-control"name="materiaStuff" th:value="${purchaseDetail.productDetail.material}"type="text" disabled></td>
+                                    <td><input  class="form-control"name="numberUnit"th:value="${purchaseDetail.productDetail.quantityUnitName}" type="text" disabled></td>
+                                    <td><input  class="form-control"name="weightUnit" th:value="${purchaseDetail.productDetail.weightUnitName}"type="text" disabled></td>
+                                    <td><input  class="form-control"name="singleWeight" th:value="${purchaseDetail.productDetail.weight}"type="text" disabled></td>
+                                    <td><input  class="form-control"name="number"th:value="${purchaseDetail.number}" type="number" disabled></td>
+                                    <td><input  class="form-control"name="singleMoney" th:value="${purchaseDetail.productDetail.price}"type="number" disabled></td>
+                                    <td><input  class="form-control"name="totalMoney"th:value="${purchaseDetail.totalMoney}" type="number" disabled></td></tr>
+                                <tr></tr>
+                            </table>
+                        </div>
+<!--                        <div class="form-group" ><h3>已有的物资用途/附件</h3></div>-->
+                        <div class="form-group" th:each="attach:${attachments}"style="display: flex;flex-direction:row;">
+                            <div style="flex: 1;overflow: auto;">
+                                <b th:text="${attach.name}+'的物资用途'"></b>
+                                <div width="100%"><textarea
+                                        th:text="${attach.description}"
+                                        style="height: 100px;" wrap="hard"
+                                        row="20" cols="70" disabled></textarea></div>
+                            </div>
+                            <div style="flex: 1;overflow: auto;">
+                                <b th:text="'下载'+${attach.name}+'的附件'"></b>
+                                <input name="fileName"th:value="${attach.url}" type="hidden" disabled>
+                                <div>
+                                    <button type="button"
+                                            onclick="downloadFile(this)">附件下载
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+<!--                        <div class="form-group" ><h3>已有的审批意见</h3></div>-->
+                        <div class="form-group"  th:each="comment:${comments}"style="display:flex;flex-direction:row;">
+                            <div style="flex: 1;overflow: hidden;">
+                                <div><b th:text="${comment.userId}+'的审批意见'"></b></div>
+                                <textarea th:text="${comment.fullMessage}" style="height: 100px;" name="auditComment" wrap="hard" row="20" cols="70" disabled></textarea>
+                            </div>
+                            <div class="form-group"style="flex: 1;overflow: hidden;">
+                                <div><b  th:text="${comment.userId}+'的审批结果'"></b></div>
+                                <input name="taskPass"th:value="${comment.action}"type="text" disabled>
+                            </div>
+                        </div>
+                        <h3>物资用途</h3>
+                        <div class="form-group" style="display: flex;flex-direction:row;">
+                            <div style="flex: 2;overflow: auto;">
+                                <div width="100%"><textarea style="height: 100px;" id="purpose"  th:text="${purchaseOrder.purpose}" name="purpose" wrap="hard"
+                                                            row="20" cols="60"></textarea></div>
+                            </div>
+                            <div style="flex: 1;overflow: auto;">
+                                <label style="margin-right: 20px">上传附件</label><input id="file"name="file" type="file" onchange="uploadFile()"/>
+                            </div>
+                            <div style="flex: 1;overflow: auto;">
+                                <b>下载附件</b>
+                                <input name="fileName" th:value="${purchaseOrder.fileName}" type="hidden">
+                                <div>
+                                    <button type="button"
+                                            onclick="downloadFile(this)">附件下载
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3" align="center">
+                                <button type="submit" style="margin-left: -200px;"class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/warehouseManagement/purchaseOrder/edit.js">
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.contractManage.dao.CustermerInformationDao">
+
+    <select id="get" resultType="com.bootdo.factory.contractManage.domain.CustermerInformationDO">
+		select ci.custermer_id,cp.is_deleted,cp.name,ci.is_supplier,cp.contact_person_tel,cp.is_main_person,ci.custermer_name,ci.custermer_type,ci.taxpayer_id_numbers,ci.social_credit_code,ci.address,ci.custermer_tel,ci.bank,ci.bank_account,ci.email,ci.fax,ci.main_contact_person,ci.main_contact_tel,ci.remarks,ci.is_deleted,ci.create_user_id,ci.create_time
+        from custermer_information ci left join custermer_contact_person cp
+        on ci.custermer_id=cp.custermer_id and cp.is_main_person = 1 and cp.is_deleted=0
+        where ci.custermer_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.contractManage.domain.CustermerInformationDO">
+        select
+        ci.custermer_id,cp.is_deleted,cp.name,ci.is_supplier,cp.contact_person_tel,cp.is_main_person,ci.custermer_name,ci.custermer_type,ci.taxpayer_id_numbers,ci.social_credit_code,ci.address,ci.custermer_tel,ci.bank,ci.bank_account,ci.email,ci.fax,ci.main_contact_person,ci.main_contact_tel,ci.remarks,ci.is_deleted,ci.create_user_id,ci.create_time
+        from custermer_information ci left join custermer_contact_person cp
+        on ci.custermer_id=cp.custermer_id and cp.is_main_person = 1 and cp.is_deleted=0
+        <where>
+            <if test='getAll != "1"'>ci.is_deleted=0</if>
+            <if test="custermerId != null and custermerId != ''">and ci.custermer_id = #{custermerId}</if>
+            <if test="custermerName != null and custermerName != ''">and custermer_name like
+                CONCAT('%',#{custermerName},'%')
+            </if>
+            <if test="custermerType != null and custermerType != ''">and custermer_type = #{custermerType}</if>
+            <if test="isSupplier !=null and isSupplier !=''">and ci.is_supplier= #{isSupplier} </if>
+            <if test="taxpayerIdNumbers != null and taxpayerIdNumbers != ''">and taxpayer_id_numbers =
+                #{taxpayerIdNumbers}
+            </if>
+            <if test="socialCreditCode != null and socialCreditCode != ''">and social_credit_code =
+                #{socialCreditCode}
+            </if>
+            <if test="address != null and address != ''">and address = #{address}</if>
+            <if test="custermerTel != null and custermerTel != ''">and custermer_tel = #{custermerTel}</if>
+            <if test="bank != null and bank != ''">and bank = #{bank}</if>
+            <if test="bankAccount != null and bankAccount != ''">and bank_account = #{bankAccount}</if>
+            <if test="email != null and email != ''">and email = #{email}</if>
+            <if test="fax != null and fax != ''">and fax = #{fax}</if>
+            <if test="mainContactPerson != null and mainContactPerson != ''">and main_contact_person =
+                #{mainContactPerson}
+            </if>
+            <if test="mainContactTel != null and mainContactTel != ''">and main_contact_tel = #{mainContactTel}</if>
+            <if test="remarks != null and remarks != ''">and remarks = #{remarks}</if>
+            <if test="isDeleted != null and isDeleted != ''">and ci.is_deleted = #{isDeleted}</if>
+            <if test="isDeleted != null and isDeleted != ''">and cp.is_deleted = #{isDeleted}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+            <if test="contactPersonTel != null and contactPersonTel != ''">and cp.contact_person_tel =
+                #{contactPersonTel}
+            </if>
+            <if test="name != null and name != ''">and cp.name = #{name}</if>
+            <if test="isMainPerson != null and isMainPerson != ''">and cp.is_main_person = #{isMainPerson}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by custermer_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from custermer_information
+        <where>is_deleted=0
+            <if test="custermerId != null and custermerId != ''">and custermer_id = #{custermerId}</if>
+            <if test="custermerName != null and custermerName != ''">and custermer_name = #{custermerName}</if>
+            <if test="custermerType != null and custermerType != ''">and custermer_type = #{custermerType}</if>
+            <if test="isSupplier !=null and isSupplier !=''">and is_supplier=#{isSupplier}</if>
+            <if test="taxpayerIdNumbers != null and taxpayerIdNumbers != ''">and taxpayer_id_numbers =
+                #{taxpayerIdNumbers}
+            </if>
+            <if test="socialCreditCode != null and socialCreditCode != ''">and social_credit_code =
+                #{socialCreditCode}
+            </if>
+            <if test="address != null and address != ''">and address = #{address}</if>
+            <if test="custermerTel != null and custermerTel != ''">and custermer_tel = #{custermerTel}</if>
+            <if test="bank != null and bank != ''">and bank = #{bank}</if>
+            <if test="bankAccount != null and bankAccount != ''">and bank_account = #{bankAccount}</if>
+            <if test="email != null and email != ''">and email = #{email}</if>
+            <if test="fax != null and fax != ''">and fax = #{fax}</if>
+            <if test="mainContactPerson != null and mainContactPerson != ''">and main_contact_person =
+                #{mainContactPerson}
+            </if>
+            <if test="mainContactTel != null and mainContactTel != ''">and main_contact_tel = #{mainContactTel}</if>
+            <if test="remarks != null and remarks != ''">and remarks = #{remarks}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.contractManage.domain.CustermerInformationDO">
+		insert into custermer_information
+		(
+			`custermer_id`, 
+			`custermer_name`, 
+			`custermer_type`,
+			`is_supplier`,
+			`taxpayer_id_numbers`, 
+			`social_credit_code`, 
+			`address`, 
+			`custermer_tel`, 
+			`bank`, 
+			`bank_account`, 
+			`email`,
+            `main_contact_person`,
+            `main_contact_tel`,
+			`fax`,
+            `remarks`,
+			`create_user_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{custermerId}, 
+			#{custermerName}, 
+			#{custermerType},
+			#{isSupplier},
+			#{taxpayerIdNumbers}, 
+			#{socialCreditCode}, 
+			#{address}, 
+			#{custermerTel}, 
+			#{bank}, 
+			#{bankAccount}, 
+			#{email},
+            #{mainContactPerson},
+            #{mainContactTel},
+			#{fax},
+            #{remarks},
+			#{createUserId}, 
+			#{createTime}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.contractManage.domain.CustermerInformationDO">
+        update custermer_information
+        <set>
+            <if test="custermerName != null">`custermer_name` = #{custermerName},</if>
+            <if test="custermerType != null">`custermer_type` = #{custermerType},</if>
+            <if test="taxpayerIdNumbers != null">`taxpayer_id_numbers` = #{taxpayerIdNumbers},</if>
+            <if test="socialCreditCode != null">`social_credit_code` = #{socialCreditCode},</if>
+            <if test="address != null">`address` = #{address},</if>
+            <if test="custermerTel != null">`custermer_tel` = #{custermerTel},</if>
+            <if test="bank != null">`bank` = #{bank},</if>
+            <if test="bankAccount != null">`bank_account` = #{bankAccount},</if>
+            <if test="email != null">`email` = #{email},</if>
+            <if test="fax != null">`fax` = #{fax},</if>
+            <if test="mainContactPerson != null">`main_contact_person` = #{mainContactPerson},</if>
+            <if test="mainContactTel != null">`main_contact_tel` = #{mainContactTel},</if>
+            <if test="remarks != null">`remarks` = #{remarks},</if>
+            <if test="isDeleted != null">`is_deleted` = #{isDeleted},</if>
+            <if test="createUserId != null">`create_user_id` = #{createUserId},</if>
+            <if test="createTime != null">`create_time` = #{createTime}</if>
+        </set>
+        where custermer_id = #{custermerId}
+    </update>
+
+    <delete id="remove">
+		update custermer_information set is_deleted=1 where custermer_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        update custermer_information set is_deleted=1 where custermer_id in
+        <foreach item="custermerId" collection="array" open="(" separator="," close=")">
+            #{custermerId}
+        </foreach>
+    </delete>
+
+</mapper>

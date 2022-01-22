@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.contractManage.dao.OrderManageDao">
+
+	<select id="getVO" resultType="com.bootdo.factory.contractManage.vo.OrderManageVO">
+		select `order_id`,`order_code`,`order_name`,`order_type`,`order_manager_id`,`order_signing_date`,
+		`order_start_date`,`order_deadline`,`order_period`,`order_sender`,ord.`state`,`sender_place`,ord.`contract_id`,ord.`demand_id`,
+		`total_sum`,`remark`,ord.`is_deleted`,`files`,con.`contract_code` as contract_code,
+		con.`contract_name` as contract_name ,con.`contract_type` as contract_type from order_manage ord join contract_manage con on ord.contract_id=con.contract_id where order_id = #{value} and ord.`is_deleted`=0
+	</select>
+	<select id="listVO" resultType="com.bootdo.factory.contractManage.vo.OrderManageVO">
+		select `order_id`,`order_code`,`order_name`,`order_type`,`order_manager_id`,`order_signing_date`,
+		`order_start_date`,`order_deadline`,`order_period`,`order_sender`,ord.`state`,`sender_place`,ord.`contract_id`,
+		`total_sum`,`demand_id`,`remark`,ord.`is_deleted`,`files`,con.`contract_code` as contract_code,
+		con.`contract_name` as contract_name ,con.`contract_type` as contract_type from order_manage ord join contract_manage con on ord.contract_id=con.contract_id
+		<where>
+		<if test="demandId !=null and demandId !=''"> and demand_id =#{demandId}</if>
+		<if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+		<if test="orderCode != null and orderCode != ''"> and order_code like concat('%',#{orderCode},'%') </if>
+		<if test="orderName != null and orderName != ''"> and order_name like concat('%',#{orderName},'%') </if>
+		<if test="orderType != null and orderType != ''"> and order_type = #{orderType} </if>
+		<if test="orderManagerId != null and orderManagerId != ''"> and order_manager_id = #{orderManagerId} </if>
+		<if test="orderSigningDate != null and orderSigningDate != ''"> and order_signing_date = #{orderSigningDate} </if>
+		<if test="orderStartDate != null and orderStartDate != ''"> and order_start_date = #{orderStartDate} </if>
+		<if test="orderDeadline != null and orderDeadline != ''"> and order_deadline = #{orderDeadline} </if>
+		<if test="orderPeriod != null and orderPeriod != ''"> and order_period = #{orderPeriod} </if>
+		<if test="orderSender != null and orderSender != ''"> and order_sender = #{orderSender} </if>
+		<if test="state != null and state != ''"> and state = #{state} </if>
+		<if test="senderPlace != null and senderPlace != ''"> and sender_place = #{senderPlace} </if>
+		<if test="contractId != null and contractId != ''"> and ord.contract_id = #{contractId} </if>
+		<if test="totalSum != null and totalSum != ''"> and total_sum = #{totalSum} </if>
+		<if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		and ord.`is_deleted`=0
+		<if test="files != null and files != ''"> and files = #{files} </if>
+	</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by order_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<select id="get" resultType="com.bootdo.factory.contractManage.domain.OrderManageDO">
+		select `order_id`,`order_code`,`order_name`,`order_type`,`order_manager_id`,`order_signing_date`,`order_start_date`,`order_deadline`,`order_period`,`order_sender`,`state`,`sender_place`,`contract_id`,`total_sum`,`remark`,`is_deleted`,`files` from order_manage where order_id = #{value} and `is_deleted`=0
+	</select>
+
+	<select id="getMaxPeriodById" resultType="String">
+		select count(`order_period`) from order_manage where `contract_id`=#{value} and `is_deleted` = 0
+
+	</select>
+	<select id="list" resultType="com.bootdo.factory.contractManage.domain.OrderManageDO">
+		select `order_id`,`order_code`,`order_name`,`order_type`,`order_manager_id`,`order_signing_date`,`order_start_date`,`order_deadline`,`order_period`,`order_sender`,`state`,`sender_place`,`contract_id`,`total_sum`,`remark`,`is_deleted`,`files` from order_manage
+		<where>
+			<if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+			<if test="orderCode != null and orderCode != ''"> and order_code = #{orderCode} </if>
+			<if test="orderName != null and orderName != ''"> and order_name = #{orderName} </if>
+			<if test="orderType != null and orderType != ''"> and order_type = #{orderType} </if>
+			<if test="orderManagerId != null and orderManagerId != ''"> and order_manager_id = #{orderManagerId} </if>
+			<if test="orderSigningDate != null and orderSigningDate != ''"> and order_signing_date = #{orderSigningDate} </if>
+			<if test="orderStartDate != null and orderStartDate != ''"> and order_start_date = #{orderStartDate} </if>
+			<if test="orderDeadline != null and orderDeadline != ''"> and order_deadline = #{orderDeadline} </if>
+			<if test="orderPeriod != null and orderPeriod != ''"> and order_period = #{orderPeriod} </if>
+			<if test="orderSender != null and orderSender != ''"> and order_sender = #{orderSender} </if>
+			<if test="state != null and state != ''"> and state = #{state} </if>
+			<if test="senderPlace != null and senderPlace != ''"> and sender_place = #{senderPlace} </if>
+			<if test="contractId != null and contractId != ''"> and contract_id = #{contractId} </if>
+			<if test="totalSum != null and totalSum != ''"> and total_sum = #{totalSum} </if>
+			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
+			 and is_deleted = 0
+			<if test="files != null and files != ''"> and files = #{files} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by order_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from order_manage
+		<where>
+			<if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+			<if test="orderCode != null and orderCode != ''"> and order_code = #{orderCode} </if>
+			<if test="orderName != null and orderName != ''"> and order_name = #{orderName} </if>
+			<if test="orderType != null and orderType != ''"> and order_type = #{orderType} </if>
+			<if test="orderManagerId != null and orderManagerId != ''"> and order_manager_id = #{orderManagerId} </if>
+			<if test="orderSigningDate != null and orderSigningDate != ''"> and order_signing_date = #{orderSigningDate} </if>
+			<if test="orderStartDate != null and orderStartDate != ''"> and order_start_date = #{orderStartDate} </if>
+			<if test="orderDeadline != null and orderDeadline != ''"> and order_deadline = #{orderDeadline} </if>
+			<if test="orderPeriod != null and orderPeriod != ''"> and order_period = #{orderPeriod} </if>
+			<if test="orderSender != null and orderSender != ''"> and order_sender = #{orderSender} </if>
+			<if test="state != null and state != ''"> and state = #{state} </if>
+			<if test="senderPlace != null and senderPlace != ''"> and sender_place = #{senderPlace} </if>
+			<if test="contractId != null and contractId != ''"> and contract_id = #{contractId} </if>
+			<if test="totalSum != null and totalSum != ''"> and total_sum = #{totalSum} </if>
+			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
+			 and `is_deleted`=0
+			<if test="files != null and files != ''"> and files = #{files} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.bootdo.factory.contractManage.domain.OrderManageDO">
+		insert into order_manage
+		(
+			`order_id`,
+			`order_code`,
+			`order_name`,
+			`order_type`,
+			`order_manager_id`,
+			`order_signing_date`,
+			`order_start_date`,
+			`order_deadline`,
+			`order_period`,
+			`order_sender`,
+			`state`,
+			`demand_id`,
+			`sender_place`,
+			`contract_id`,
+			`total_sum`,
+			`remark`,
+			`is_deleted`,
+			`files`
+		)
+		values
+		(
+			#{orderId},
+			#{orderCode},
+			#{orderName},
+			#{orderType},
+			#{orderManagerId},
+			#{orderSigningDate},
+			#{orderStartDate},
+			#{orderDeadline},
+			#{orderPeriod},
+			#{orderSender},
+			#{state},
+			#{demandId},
+			#{senderPlace},
+			#{contractId},
+			#{totalSum},
+			#{remark},
+			#{isDeleted},
+			#{files}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.bootdo.factory.contractManage.domain.OrderManageDO">
+		update order_manage
+		<set>
+			<if test="orderCode != null">`order_code` = #{orderCode}, </if>
+			<if test="orderName != null">`order_name` = #{orderName}, </if>
+			<if test="orderType != null">`order_type` = #{orderType}, </if>
+			<if test="orderManagerId != null">`order_manager_id` = #{orderManagerId}, </if>
+			<if test="orderSigningDate != null">`order_signing_date` = #{orderSigningDate}, </if>
+			<if test="orderStartDate != null">`order_start_date` = #{orderStartDate}, </if>
+			<if test="orderDeadline != null">`order_deadline` = #{orderDeadline}, </if>
+			<if test="orderPeriod != null">`order_period` = #{orderPeriod}, </if>
+			<if test="orderSender != null">`order_sender` = #{orderSender}, </if>
+			<if test="state != null">`state` = #{state}, </if>
+			<if test="demandId != null">`demand_id` = #{demandId}, </if>
+			<if test="senderPlace != null">`sender_place` = #{senderPlace}, </if>
+			<if test="contractId != null and contractId != ''">`contract_id` = #{contractId}, </if>
+			<if test="totalSum != null">`total_sum` = #{totalSum}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="files != null">`files` = #{files}</if>
+		</set>
+		where order_id = #{orderId}
+	</update>
+
+	<delete id="remove">
+		update order_manage set `is_deleted`=1 where order_id = #{value}
+	</delete>
+	<update id="batchRemove">
+		update order_manage set `is_deleted`=1 where order_id in
+		<foreach item="orderId" collection="array" open="(" separator="," close=")">
+			#{orderId}
+		</foreach>
+	</update>
+	<!--<delete id="batchRemove">-->
+		<!--delete from order_manage where order_id in-->
+		<!--<foreach item="orderId" collection="array" open="(" separator="," close=")">-->
+			<!--#{orderId}-->
+		<!--</foreach>-->
+	<!--</delete>-->
+
+</mapper>

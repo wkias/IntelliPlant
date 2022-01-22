@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group">
+                            <div class="form-group" hidden>
+                                <input class="form-control" id="contractId" name="contractId" readonly required
+                                       type="text">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*合同名称</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="contractName" name="contractName"
+                                           onclick="contractSelect()" readonly required type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*合同编号</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="contractCode" name="contractCode" readonly required
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="form-group" hidden>
+                                <label class="col-sm-3 control-label">*合同类型</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="contractType" name="contractType" readonly required
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">合作商</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="demander" name="demander" readonly type="hidden">
+                                    <input class="form-control" id="demanderName" name="demanderName" readonly
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="form-group" hidden id="cutm-table">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                    <table data-mobile-responsive="true" id="exampleTable">
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group" id="planB">
+                                <label class="col-sm-3 control-label">回款计划期次</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control chosen-select" id="planBatch" name="planBatch"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*回款类型</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control chosen-select" id="receiveType" name="receiveType"
+                                            required></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*回款金额(元)</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="receiveAmount" name="receiveAmount" required
+                                           type="number">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*付款方式</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control chosen-select" id="paymentMethod" name="paymentMethod"
+                                            required></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*回款日期</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="date" name="date" required type="date">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">*收款人</label>
+                                <div class="col-sm-8" hidden>
+                                    <input class="form-control" id="payee" name="payee" required type="text">
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="payeeName" name="payeeName" onclick="userSelect()"
+                                           readonly required type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">附件</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="file" name="file" type="file">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="note" name="note"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    <button class="btn btn-primary" type="submit">提交</button>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div th:include="include::footer"></div>
+<script src="/js/appjs/factory/receiveRecord/add.js" type="text/javascript">
+</script>
+</body>
+</html>

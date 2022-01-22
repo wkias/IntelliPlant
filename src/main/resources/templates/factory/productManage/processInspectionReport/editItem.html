@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="processInspectionDetailId" name="processInspectionDetailId"
+                               th:value="${processInspectionDetail.processInspectionDetailId}" type="hidden">
+                        <input class="form-control" id="processInspectionReportId"
+                               name="processInspectionReportId"
+                               th:value="${processInspectionDetail.processInspectionReportId}" type="hidden">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">工序名称</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="processId"
+                                       name="processId" th:value="${processInspectionDetail.processId}"
+                                       type="hidden">
+                                <input class="form-control" id="processName"
+                                       name="processName" th:value="${processInspectionDetail.processName}"
+                                       onclick="selectProcess()" readonly type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">部件名称</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="componentId"
+                                       name="componentId" th:value="${processInspectionDetail.componentId}"
+                                       type="hidden">
+                                <input class="form-control" id="componentName"
+                                       name="componentName" th:value="${processInspectionDetail.componentName}"
+                                       onclick="selectProduct()" readonly type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">规格</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="format" name="format"
+                                       readonly th:value="${processInspectionDetail.format}" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">数量单位</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="unitt" name="unitt"
+                                       readonly th:value="${processInspectionDetail.unit}" type="hidden">
+                                <select class="form-control chosen-select" id="unit" name="unit" readonly></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">合格数量</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="qualifiedNum"
+                                       name="qualifiedNum" th:value="${processInspectionDetail.qualifiedNum}"
+                                       type="number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">返工数量</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="reworkNum" name="reworkNum"
+                                       th:value="${processInspectionDetail.reworkNum}" type="number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">报废数量</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="scrapNum" name="scrapNum"
+                                       th:value="${processInspectionDetail.scrapNum}" type="number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button class="btn btn-primary" type="submit">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script src="/js/appjs/factory/processInspectionReport/editItem.js" type="text/javascript">
+</script>
+</body>
+</html>

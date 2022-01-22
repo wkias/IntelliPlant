@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.reimburse.dao.LoanApplicationDao">
+
+	<select id="get" resultType="com.bootdo.factory.reimburse.domain.LoanApplicationDO">
+		select `loan_application_id`,la.`bank_account_id`,`user_id`,`loan_state`,`loan_code`,`loan_purpose`,`loan_date`,`repayment_date`,`loan_account`,`note`,`file_name`,la.`is_deleted`,la.`create_user_id`,la.`create_time`,
+               ba.`collection_account`as collection_account ,ba.`bank_account` as bank_account ,ba.`bank_name` as bank_name,`summary`
+        from loan_application la left join bank_account ba on la.bank_account_id=ba.bank_account_id
+        where loan_application_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.reimburse.domain.LoanApplicationDO">
+		select `loan_application_id`,la.`bank_account_id`,la.`user_id`,`loan_state`,`loan_code`,`loan_purpose`,`loan_date`,`repayment_date`,`loan_account`,`note`,`file_name`,la.`is_deleted`,la.`create_user_id`,la.`create_time`,
+		su.`name` as 'userName',ba.`collection_account`as collection_account ,ba.`bank_account` as bank_account ,ba.`bank_name` as bank_name,`summary`
+		from loan_application la LEFT JOIN sys_user su on la.user_id=su.user_id
+        left join bank_account ba on la.bank_account_id=ba.bank_account_id
+        <where>
+			la.is_deleted=0
+			<if test="userName!=null and userName!=''">and su.`name`=#{userName}</if>
+		  		  <if test="loanApplicationId != null and loanApplicationId != ''"> and loan_application_id = #{loanApplicationId} </if>
+		  		  <if test="bankAccountId != null and bankAccountId != ''"> and bank_account_id = #{bankAccountId} </if>
+		  		  <if test="userId != null and userId != ''"> and la.user_id = #{userId} </if>
+		  		  <if test="loanState != null and loanState != ''"> and loan_state = #{loanState} </if>
+		  		  <if test="loanCode != null and loanCode != ''"> and loan_code = #{loanCode} </if>
+		  		  <if test="loanPurpose != null and loanPurpose != ''"> and loan_purpose = #{loanPurpose} </if>
+		  		 <!-- <if test="loanDate != null and loanDate != ''"> and loan_date = #{loanDate} </if>-->
+			<if test="dateBefore != null and dateBefore != ''">AND loan_date <![CDATA[>=]]> #{dateBefore}</if>
+			<if test="dateLater != null and dateLater != ''">AND loan_date <![CDATA[<=]]>#{dateLater}</if>
+		  		  <if test="repaymentDate != null and repaymentDate != ''"> and repayment_date = #{repaymentDate} </if>
+		  		  <if test="loanAccount != null and loanAccount != ''"> and loan_account = #{loanAccount} </if>
+		  		  <if test="note != null and note != ''"> and note = #{note} </if>
+		  		  <if test="fileName != null and fileName != ''"> and file_name = #{fileName} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="summary != null and summary != ''"> and summary = #{summary} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by loan_application_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from loan_application
+		 <where>  
+		  		  <if test="loanApplicationId != null and loanApplicationId != ''"> and loan_application_id = #{loanApplicationId} </if>
+		  		  <if test="bankAccountId != null and bankAccountId != ''"> and bank_account_id = #{bankAccountId} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="loanState != null and loanState != ''"> and loan_state = #{loanState} </if>
+		  		  <if test="loanCode != null and loanCode != ''"> and loan_code = #{loanCode} </if>
+		  		  <if test="loanPurpose != null and loanPurpose != ''"> and loan_purpose = #{loanPurpose} </if>
+		  		  <if test="loanDate != null and loanDate != ''"> and loan_date = #{loanDate} </if>
+		  		  <if test="repaymentDate != null and repaymentDate != ''"> and repayment_date = #{repaymentDate} </if>
+		  		  <if test="loanAccount != null and loanAccount != ''"> and loan_account = #{loanAccount} </if>
+		  		  <if test="note != null and note != ''"> and note = #{note} </if>
+		  		  <if test="fileName != null and fileName != ''"> and file_name = #{fileName} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			 <if test="summary != null and summary != ''"> and summary = #{summary} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.reimburse.domain.LoanApplicationDO">
+		insert into loan_application
+		(
+			`loan_application_id`, 
+			`bank_account_id`, 
+			`user_id`, 
+			`loan_state`, 
+			`loan_code`, 
+			`loan_purpose`, 
+			`loan_date`, 
+			`repayment_date`, 
+			`loan_account`, 
+			`note`, 
+			`file_name`,
+			`create_user_id`, 
+			`create_time`,
+			`summary`
+		)
+		values
+		(
+			#{loanApplicationId}, 
+			#{bankAccountId}, 
+			#{userId}, 
+			#{loanState}, 
+			#{loanCode}, 
+			#{loanPurpose}, 
+			#{loanDate}, 
+			#{repaymentDate}, 
+			#{loanAccount}, 
+			#{note}, 
+			#{fileName},
+			#{createUserId}, 
+			#{createTime},
+		 #{summary}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.reimburse.domain.LoanApplicationDO">
+		update loan_application 
+		<set>
+			<if test="bankAccountId != null">`bank_account_id` = #{bankAccountId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="loanState != null">`loan_state` = #{loanState}, </if>
+			<if test="loanCode != null">`loan_code` = #{loanCode}, </if>
+			<if test="loanPurpose != null">`loan_purpose` = #{loanPurpose}, </if>
+			<if test="loanDate != null">`loan_date` = #{loanDate}, </if>
+			<if test="repaymentDate != null">`repayment_date` = #{repaymentDate}, </if>
+			<if test="loanAccount != null">`loan_account` = #{loanAccount}, </if>
+			<if test="note != null">`note` = #{note}, </if>
+			<if test="fileName != null">`file_name` = #{fileName}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime},</if>
+			<if test="summary != null">`summary` = #{summary} </if>
+		</set>
+		where loan_application_id = #{loanApplicationId}
+	</update>
+	
+	<delete id="remove">
+		update loan_application set is_deleted=1 where loan_application_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		update loan_application set is_deleted=1 where loan_application_id in
+		<foreach item="loanApplicationId" collection="array" open="(" separator="," close=")">
+			#{loanApplicationId}
+		</foreach>
+	</delete>
+
+</mapper>

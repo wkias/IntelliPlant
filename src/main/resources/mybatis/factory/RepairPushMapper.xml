@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.equipmentManage.dao.RepairPushDao">
+
+    <select id="get" resultType="com.bootdo.factory.equipmentManage.domain.RepairPushDO">
+        select
+        m.equipment_id,
+        m.equipment_type,
+        m.code,
+        m.name,
+        m.purchase_date,
+        p.push_info_id,
+        p.last_repair_date,
+        p.state
+        from
+        equipment_manage m
+        right outer join
+        equipment_repair_push p
+        on
+        m.equipment_id = p.equipment_id
+        where
+        p.push_info_id=#{push_info_id}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.equipmentManage.domain.RepairPushDO">
+        select
+        m.equipment_id,
+        m.equipment_type,
+        m.code,
+        m.name,
+        m.purchase_date,
+        p.push_info_id,
+        p.last_repair_date,
+        p.state
+        from
+        equipment_manage m
+        right outer join
+        equipment_repair_push p
+        on
+        m.equipment_id = p.equipment_id
+        <where>
+            <if test="equipment_id != null and equipment_id != ''">and m.equipment_id = #{equipmentId}</if>
+            <if test="equipment_type != null and equipment_type != ''">and m.equipment_type = #{equipmentType}</if>
+            <if test="code != null and code != ''">and m.code = #{code}</if>
+            <if test="name != null and name != ''">and m.name like #{name}</if>
+            <if test="purchase_date != null and purchase_date != ''">and m.purchase_date = #{purchaseDate}</if>
+            <if test="push_info_id != null and push_info_id != ''">and p.push_info_id = #{pushInfoId}</if>
+            <if test="last_repair_date != null and last_repair_date != ''">and p.last_repair_date =
+                #{lastRepairDate}
+            </if>
+            and p.state = 0
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by p.state
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <update id="repair">
+        update equipment_repair_push set state=2 where push_info_id=#{pushInfoId}
+    </update>
+
+    <select id="count" resultType="int">
+        select count(*)
+        from
+        equipment_manage m
+        right outer join
+        equipment_repair_push p
+        on
+        m.equipment_id = p.equipment_id
+        <where>
+            <if test="equipment_id != null and equipment_id != ''">and m.equipment_id = #{equipmentId}</if>
+            <if test="equipment_type != null and equipment_type != ''">and m.equipment_type = #{equipmentType}</if>
+            <if test="code != null and code != ''">and m.code = #{code}</if>
+            <if test="name != null and name != ''">and m.name like #{name}</if>
+            <if test="purchase_date != null and purchase_date != ''">and m.purchase_date = #{purchaseDate}</if>
+            <if test="push_info_id != null and push_info_id != ''">and p.push_info_id = #{pushInfoId}</if>
+            <if test="last_repair_date != null and last_repair_date != ''">and p.last_repair_date =
+                #{lastRepairDate}
+            </if>
+            and p.state = 0
+        </where>
+        <where>
+            <if test="equipmentId != null and equipmentId != ''">and equipment_id = #{equipmentId}</if>
+            <if test="pushInfoId != null and pushInfoId != ''">and push_info_id = #{pushInfoId}</if>
+            <if test="lastRepairDate != null and lastRepairDate != ''">and last_repair_date = #{lastRepairDate}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.equipmentManage.domain.RepairPushDO">
+		insert into equipment_repair_push
+		(
+			`equipment_id`,
+			`push_info_id`,
+			`last_repair_date`,
+			`state`
+		)
+		values
+		(
+			#{equipmentId},
+			#{pushInfoId},
+			#{lastRepairDate},
+			#{state}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.equipmentManage.domain.RepairPushDO">
+        update equipment_repair_push
+        <set>
+            <if test="equipmentId != null">`equipment_id` = #{equipmentId},</if>
+            <if test="lastRepairDate != null">`last_repair_date` = #{lastRepairDate},</if>
+            <if test="state != null">`state` = #{state}</if>
+        </set>
+        where push_info_id = #{pushInfoId}
+    </update>
+
+    <delete id="remove">
+		update equipment_repair_push set is_deleted = 1 where push_info_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        update equipment_repair_push set is_deleted = 1 in
+        <foreach item="pushInfoId" collection="array" open="(" separator="," close=")">
+            #{pushInfoId}
+        </foreach>
+    </delete>
+
+</mapper>

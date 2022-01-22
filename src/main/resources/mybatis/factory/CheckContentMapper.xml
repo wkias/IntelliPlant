@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.equipmentManage.dao.CheckContentDao">
+
+	<select id="get" resultType="com.bootdo.factory.equipmentManage.domain.CheckContentDO">
+		select `id`,`check_id`,`equipment_type`,`check_content`,`photo`,`is_deleted`,`creat_user_id`,`creat_date` from equipment_check_content where check_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.equipmentManage.domain.CheckContentDO">
+		select `id`,`check_id`,`equipment_type`,`check_content`,`photo`,`is_deleted`,`creat_user_id`,`creat_date` from equipment_check_content
+        <where>
+				  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="checkId != null and checkId != ''"> and check_id = #{checkId} </if>
+		  		  <if test="equipmentType != null and equipmentType != ''"> and equipment_type = #{equipmentType} </if>
+		  		  <if test="checkContent != null and checkContent != ''"> and check_content = #{checkContent} </if>
+		  		  <if test="photo != null and photo != ''"> and photo = #{photo} </if>
+		  		   and is_deleted = 0
+		  		  <if test="creatUserId != null and creatUserId != ''"> and creat_user_id = #{creatUserId} </if>
+		  		  <if test="creatDate != null and creatDate != ''"> and creat_date = #{creatDate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by check_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from equipment_check_content
+		 <where>  
+		  		  <if test="checkId != null and checkId != ''"> and check_id = #{checkId} </if>
+		  		  <if test="equipmentType != null and equipmentType != ''"> and equipment_type = #{equipmentType} </if>
+		  		  <if test="checkContent != null and checkContent != ''"> and check_content = #{checkContent} </if>
+		  		  <if test="photo != null and photo != ''"> and photo = #{photo} </if>
+		  		   and is_deleted = 0
+		  		  <if test="creatUserId != null and creatUserId != ''"> and creat_user_id = #{creatUserId} </if>
+		  		  <if test="creatDate != null and creatDate != ''"> and creat_date = #{creatDate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.equipmentManage.domain.CheckContentDO">
+		insert into equipment_check_content
+		(	`id`,
+			`check_id`, 
+			`equipment_type`, 
+			`check_content`, 
+			`photo`, 
+			`is_deleted`, 
+			`creat_user_id`, 
+			`creat_date`
+		)
+		values
+		(
+			#{id},
+			#{checkId}, 
+			#{equipmentType}, 
+			#{checkContent}, 
+			#{photo}, 
+			#{isDeleted}, 
+			#{creatUserId}, 
+			#{creatDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.equipmentManage.domain.CheckContentDO">
+		update equipment_check_content 
+		<set>
+			<if test="equipmentType != null">`equipment_type` = #{equipmentType}, </if>
+			<if test="checkContent != null">`check_content` = #{checkContent}, </if>
+			<if test="photo != null">`photo` = #{photo}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="creatUserId != null">`creat_user_id` = #{creatUserId}, </if>
+			<if test="creatDate != null">`creat_date` = #{creatDate}</if>
+		</set>
+		where check_id = #{checkId}
+	</update>
+	<update id="remove">
+		update equipment_check_content set is_deleted = 1 where check_id =#{value}
+	</update>
+	<!--<delete id="remove">-->
+		<!--delete from equipment_check_content where check_id = #{value}-->
+	<!--</delete>-->
+	<update id="batchRemove">
+		update equipment_check_content set is_deleted = 1 where check_id in
+		<foreach item="checkId" collection="array" open="(" separator="," close=")">
+			#{checkId}
+		</foreach>
+	</update>
+
+
+</mapper>

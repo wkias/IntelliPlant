@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="invoiceId" name="invoiceId" th:value="${invoiceRecord.invoiceId}"  type="hidden">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">开票名称</label>
+                            <div class="col-sm-8">
+                                <input id="invoiceName" name="invoiceName" th:value="${invoiceRecord.invoiceName}"
+                                       class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">合同编号</label>
+                            <div class="col-sm-8">
+                                <input id="contractNumber" name="contractNumber"
+                                       th:value="${invoiceRecord.contractNumber}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">合同名称</label>
+                            <div class="col-sm-8">
+                                <input id="contractName" name="contractName"
+                                       th:value="${invoiceRecord.contractName}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">合同类型</label>
+                            <div class="col-sm-8">
+                                <input id="contractType" name="contractType"
+                                       th:value="${invoiceRecord.contractType}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">开票金额</label>
+                            <div class="col-sm-8">
+                                <input id="invoiceMoney" name="invoiceMoney"
+                                       th:value="${invoiceRecord.invoiceMoney}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">开票日期</label>
+                            <div class="col-sm-8">
+                                <input id="invoiceDate" name="invoiceDate" th:value="${#dates.format(invoiceRecord.invoiceDate,'yyyy-MM-dd')}"
+                                       class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">开票类型</label>
+                            <div class="col-sm-8">
+                                <input id="invoiceType" name="invoiceType" th:value="${invoiceRecord.invoiceTypeName}"
+                                       class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">发票代码</label>
+                            <div class="col-sm-8">
+                                <input id="invoiceCode" name="invoiceCode" th:value="${invoiceRecord.invoiceCode}"
+                                       class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">发票号码</label>
+                            <div class="col-sm-8">
+                                <input id="invoiceNumber" name="invoiceNumber"
+                                       th:value="${invoiceRecord.invoiceNumber}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">经手人</label>
+                            <div class="col-sm-8">
+                                <input id="handlerPerson" name="handlerPerson"
+                                       th:value="${invoiceRecord.handlerPerson}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <div id="buyingnameID"></div>
+                                <table class="table table-striped table-bordered table-hover">
+                                    <tr>
+                                        <th>*名称</th>
+                                        <th>*纳税人识别号</th>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input id="buyingName" name="buyingName" th:value="${invoiceRecord.buyingName}"
+                                                   class="form-control" type="text" readonly>
+                                        </td>
+                                        <td><input id="buyingTin" name="buyingTin" th:value="${invoiceRecord.buyingTin}"
+                                                   class="form-control" type="text" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>*地址</th>
+                                        <th>*电话</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="buyingAddress" name="buyingAddress"
+                                                   th:value="${invoiceRecord.buyingAddress}" class="form-control" type="text" readonly></td>
+                                        <td><input id="buyingPhoneNumber" name="buyingPhoneNumber"
+                                                   th:value="${invoiceRecord.buyingPhoneNumber}" class="form-control"
+                                                   type="text" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <th>*开户行</th>
+                                        <th>*开户行账号</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="buyingBank" name="buyingBank" th:value="${invoiceRecord.buyingBank}"
+                                                   class="form-control" type="text" readonly></td>
+                                        <td><input id="buyingBankNumber" name="buyingBankNumber"
+                                                   th:value="${invoiceRecord.buyingBankNumber}" class="form-control"
+                                                   type="text" readonly></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <div id="sellingnameID"></div>
+                                <table class="table table-striped table-bordered table-hover">
+                                <tr>
+                                        <th>*名称</th>
+                                        <th>*纳税人识别号</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="sellingName" name="sellingName" th:value="${invoiceRecord.sellingName}"
+                                                   class="form-control" type="text" readonly>
+                                        </td>
+                                        <td><input id="sellingTin" name="sellingTin" th:value="${invoiceRecord.sellingTin}"
+                                                   class="form-control" type="text" readonly>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>*地址</th>
+                                        <th>*电话</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="sellingAddress" name="sellingAddress"
+                                                   th:value="${invoiceRecord.sellingAddress}" class="form-control" type="text" readonly></td>
+                                        <td><input id="sellingPhoneNumber" name="sellingPhoneNumber"
+                                                   th:value="${invoiceRecord.sellingPhoneNumber}" class="form-control"
+                                                   type="text" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <th>*开户行</th>
+                                        <th>*开户行账号</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="sellingBank" name="sellingBank" th:value="${invoiceRecord.sellingBank}"
+                                                   class="form-control" type="text" readonly></td>
+                                        <td><input id="sellingBankNumber" name="sellingBankNumber"
+                                                   th:value="${invoiceRecord.sellingBankNumber}" class="form-control"
+                                                   type="text" readonly></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group" style="overflow: auto" >
+                            <div name="productItems" th:each="billContent:${invoiceRecord.billContent}">
+                            <table name="detailItem" class="table table-striped table-bordered table-hover"
+                                   style="table-layout: auto;width:100%;">
+                                <tr>
+                                    <th></th>
+                                    <th>*产品名称</th>
+                                    <th>*规格型号</th>
+                                    <th>*单位</th>
+                                    <th>*数量</th>
+                                    <th>*单价（元）</th>
+                                    <th>*金额（元）</th>
+                                    <th>税率（%）</th>
+                                    <th>税额（元）</th>
+                                </tr>
+                                <td onclick="(function(e){e.stopPropagation()})(event)"><input readonly
+                                                                                               name="processCheck"
+                                                                                               type="checkbox"></td>
+                                <td><input class="form-control" th:value="${billContent.productName}"
+                                           name="productName" type="text" readonly></td>
+                                <td><input class="form-control" th:value="${billContent.specification}" name="specification" type="text" readonly></td>
+                                <td><input class="form-control" th:value="${billContent.unit}"
+                                           name="unit" type="text" readonly></td>
+                                <td><input class="form-control" th:value="${billContent.quantity}"
+                                           name="quantity" type="text" readonly></td>
+                                <td><input class="form-control" th:value="${billContent.unitPrice}"
+                                           name="unitPrice" type="text" readonly></td>
+                                <td><input class="form-control" th:value="${billContent.amount}"
+                                           name="amount" type="text"  readonly></td>
+                                <td><input class="form-control" th:value="${billContent.taxRate}"
+                                           name="taxRate" type="text" readonly></td>
+                                <td><input class="form-control" th:value="${billContent.taxAmount}"
+                                           name="taxAmount" type="text" readonly></td>
+                                </tr>
+                            </table>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">添加人</label>
+                            <div class="col-sm-8">
+                                <input id="addtionPerson" name="addtionPerson"
+                                       th:value="${invoiceRecord.addtionPerson}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">添加时间</label>
+                            <div class="col-sm-8">
+                                <input id="addtionDate" name="addtionDate" th:value="${#dates.format(invoiceRecord.addtionDate,'yyyy-MM-dd')}"
+                                       class="form-control" type="date" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">备注</label>
+                            <div class="col-sm-8">
+                                <input id="remarks" name="remarks" th:value="${invoiceRecord.remarks}"
+                                       class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">附件</label>
+                            <div class="col-sm-8">
+                                <input id="files" name="files" th:value="${invoiceRecord.files}"
+                                       class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/invoiceRecord/details.js">
+</script>
+</body>
+</html>

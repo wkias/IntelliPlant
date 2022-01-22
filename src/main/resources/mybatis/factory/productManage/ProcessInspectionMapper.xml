@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.productManage.dao.ProcessInspectionDao">
+
+	<select id="get" resultType="com.bootdo.factory.productManage.domain.ProcessInspectionDO">
+		select `process_inspection_id`,`process_id`,`state`,`result`,`represent`,`is_deleted`,`create_user_id`,`create_date` from process_inspection where process_inspection_id = #{value}
+	</select>
+
+	<select id="list"  resultType="com.bootdo.factory.productManage.domain.ProcessInspectionDO">
+		select `process_inspection_id`,process_inspection.`process_id`,process_inspection.`state`,`result`,`represent`,process_inspection.`is_deleted`,process_inspection.`create_user_id`,`create_date`,process_definition.process_name
+		from process_inspection left join process_definition on process_inspection.process_id=process_definition.process_id
+        <where>
+			process_inspection.is_deleted = 0
+		  		  <if test="processInspectionId != null and processInspectionId != ''"> and process_inspection_id = #{processInspectionId} </if>
+		  		  <if test="processId != null and processId != ''"> and process_inspection.process_id = #{processId} </if>
+
+			<if test="processName != null and processName != ''"> and process_name like CONCAT('%',#{processName},'%')</if>
+		  		  <if test="state != null and state != ''"> and process_inspection.state = #{state} </if>
+		  		  <if test="result != null and result != ''"> and result = #{result} </if>
+		  		  <if test="represent != null and represent != ''"> and represent = #{represent} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and process_inspection.is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and process_inspection.create_user_id = #{createUserId} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by process_inspection_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from process_inspection
+		 <where>  
+		  		  <if test="processInspectionId != null and processInspectionId != ''"> and process_inspection_id = #{processInspectionId} </if>
+		  		  <if test="processId != null and processId != ''"> and process_id = #{processId} </if>
+
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="result != null and result != ''"> and result = #{result} </if>
+		  		  <if test="represent != null and represent != ''"> and represent = #{represent} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.productManage.domain.ProcessInspectionDO">
+		insert into process_inspection
+		(
+			`process_inspection_id`, 
+			`process_id`,
+
+			`state`, 
+			`result`, 
+			`represent`,
+
+			`create_user_id`, 
+			`create_date`
+		)
+		values
+		(
+			#{processInspectionId}, 
+			#{processId},
+
+			#{state}, 
+			#{result}, 
+			#{represent},
+
+			#{createUserId}, 
+			#{createDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.productManage.domain.ProcessInspectionDO">
+		update process_inspection 
+		<set>
+			<if test="processId != null">`process_id` = #{processId}, </if>
+
+			<if test="state != null">`state` = #{state}, </if>
+			<if test="result != null">`result` = #{result}, </if>
+			<if test="represent != null">`represent` = #{represent}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}</if>
+		</set>
+		where process_inspection_id = #{processInspectionId}
+	</update>
+	
+	<delete id="remove">
+		update process_inspection set is_deleted=1 where process_inspection_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		update process_inspection set is_deleted=1 where process_inspection_id in
+		<foreach item="processInspectionId" collection="array" open="(" separator="," close=")">
+			#{processInspectionId}
+		</foreach>
+	</delete>
+
+</mapper>

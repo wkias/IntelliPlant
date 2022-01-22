@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg" onload="window.title='修改合同'">
+<script src="js/appjs/factory/contractManage/contractManage.js"></script>
+<div class="wrapper wrapper-content ">
+    <div class="page-header text-success" align="center">
+        <h1>更新合同
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" style="margin:10px" id="signupForm" method="post"
+                          enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input id="contractId" name="contractId" type="hidden"
+                                   th:value="${contractManage.contractId}">
+                            <b>基本信息</b>
+                            <table class="table table-striped table-bordered table-hover">
+                                <tr>
+                                    <th>创建时间</th>
+                                    <td><input id="createTime" name="createTime"
+                                               th:value="${#dates.format(contractManage.createTime,'yyyy-MM-dd HH:mm:ss')}"
+                                               class="form-control" type="text" readonly></td>
+                                    <th>*合同负责人</th>
+                                    <td><input id="dutyUserId" name="dutyUserId" th:value="${contractManage.dutyUserId}"
+                                               type="hidden">
+                                        <input class="form-control" id="dutyUserName"
+                                               th:value="${contractManage.dutyUserName}" onclick="openUser()"
+                                               type="text"
+                                               readonly>
+                                    </td>
+                                    <th>承办部门</th>
+                                    <input id="dutyDeptId" name="dutyDeptId" th:value="${contractManage.dutyDeptId}"
+                                           type="hidden">
+                                    <td><input id="dutyDeptName" name="dutyDeptName"
+                                               th:value="${contractManage.dutyDeptName}" class="form-control"
+                                               type="text"
+                                               readonly></td>
+                                </tr>
+                                <tr>
+                                    <th>*合同编号</th>
+                                    <td><input id="contractCode" name="contractCode"
+                                               th:value="${contractManage.contractCode}" class="form-control"
+                                               type="text">
+                                    </td>
+                                    <th>*合同名称</th>
+                                    <td><input id="contractName" name="contractName"
+                                               th:value="${contractManage.contractName}" class="form-control"
+                                               type="text">
+                                    </td>
+                                    <th>*合同类型</th>
+                                    <input id="oldType" name="oldType" th:value="${contractManage.contractType}"
+                                           type="hidden">
+                                    <td><select id="contractType" name="contractType"
+                                                th:value="${contractManage.contractType}" data-placeholder="合同类型"
+                                                class="chosen-select form-control"/></td>
+                                </tr>
+                                <tr>
+                                    <th>签订日期</th>
+                                    <td><input id="signDate" name="signDate"
+                                               th:value="${#dates.format(contractManage.signDate,'yyyy-MM-dd')}"
+                                               class="form-control" type="date"></td>
+                                    <th>开始日期</th>
+                                    <td><input id="startDate" name="startDate"
+                                               th:value="${#dates.format(contractManage.startDate,'yyyy-MM-dd')}"
+                                               class="form-control" type="date"></td>
+                                    <th>截止日期</th>
+                                    <td><input id="endDate" name="endDate"
+                                               th:value="${#dates.format(contractManage.endDate,'yyyy-MM-dd')}"
+                                               class="form-control" type="date"></td>
+                                </tr>
+                                <tr>
+                                    <th>*合同状态</th>
+                                    <input id="oldState" name="oldState" th:value="${contractManage.state}"
+                                           type="hidden">
+                                    <td><select id="state" name="state" th:value="${contractManage.state}"
+                                                data-placeholder="合同状态" class="chosen-select form-control"/></td>
+                                    <th>签订地点</th>
+                                    <td><input id="signPlace" name="signPlace" th:value="${contractManage.signPlace}"
+                                               class="form-control" type="text"></td>
+                                    <th>总金额(元)</th>
+                                    <td><input id="contractAmount" name="contractAmount"
+                                               th:value="${#numbers.formatDecimal(contractManage.contractAmount,1,2,'POINT')}" class="form-control"
+                                               type="number">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" id="addSupplier" type="button" onclick="addSup()">新增
+                            </button>
+                            <button class="btn btn-danger" id="delSupplier" type="button" onclick="delSup()">删除</button>
+                        </div>
+                        <div class="form-group" th:object="${contractManage}">
+                            <div name="supplierItem" th:each="supplier,stat:${contractManage.suppliers}">
+                                <input name="suppliers[][contactPersonId]"
+                                       th:value="${supplier.contactPersonId}" type="hidden">
+                                <input name="suppliers[][trader][custermerId]" th:value="${supplier.trader.custermerId}"
+                                       type="hidden">
+
+                                <input name="delSupChecked" type="checkbox"/><b>供应商</b>
+                                <table class="table table-striped table-bordered table-hover">
+                                    <tr>
+                                        <th>*供应商名称（全称）</th>
+                                        <th>供应商发货地址</th>
+                                        <th>供应商联系人</th>
+                                        <th>供应商电话</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input class="form-control" type="text"
+                                                   name="suppliers[][trader][custermerName]"
+                                                   th:value="${supplier.trader.custermerName}"
+                                                   readonly></td>
+                                        <td><input class="form-control" name="suppliers[][deliverAddress]"
+                                                   th:value="${supplier.deliverAddress}"
+                                                   type="text"></td>
+                                        <td><input class="form-control" type="text"
+                                                   name="suppliers[][contactPersonName]"
+                                                   th:value="${supplier.contactPersonName}"
+                                                   onclick="selectContractPerson($(this))"
+                                                   readonly></td>
+                                        <td><input class="form-control" type="text"
+                                                   name="suppliers[][trader][custermerTel]"
+                                                   th:value="${supplier.trader.custermerTel}"
+                                                   readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <th>纳税人识别号</th>
+                                        <th>地址</th>
+                                        <th>开户行</th>
+                                        <th>开户行账号</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input class="form-control" type="text"
+                                                   name="suppliers[][trader][taxpayerIdNumbers]"
+                                                   th:value="${supplier.trader.taxpayerIdNumbers}"
+                                                   readonly></td>
+                                        <td><input class="form-control" type="text" name="suppliers[][trader][address]"
+                                                   th:value="${supplier.trader.address}" readonly>
+                                        </td>
+                                        <td><input class="form-control" type="text" name="suppliers[][trader][bank]"
+                                                   th:value="${supplier.trader.bank}" readonly></td>
+                                        <td><input class="form-control" type="text"
+                                                   name="suppliers[][trader][bankAccount]"
+                                                   th:value="${supplier.trader.bankAccount}"
+                                                   readonly></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" id="addDemander" type="button" onclick="addDem()">新增
+                            </button>
+                            <button class="btn btn-danger" id="delDemander" type="button" onclick="delDem()">删除
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <div name="demanderItem"
+                                 th:each="demander,stat:${contractManage.demanders}">
+                                <input name="demanders[][contactPersonId]"
+                                       th:value="${demander.contactPersonId}"
+                                       type="hidden">
+                                <input name="demanders[][trader][custermerId]"
+                                       th:value="${demander.trader.custermerId}" type="hidden">
+                                <input name="delDemChecked" type="checkbox"/><b>需求商</b>
+
+
+                                <table class="table table-striped table-bordered table-hover">
+
+                                    <tr>
+                                        <th>*需求商名称（全称）</th>
+                                        <th>需求商收货地址</th>
+                                        <th>需求商联系人</th>
+                                        <th>需求商电话</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input class="form-control"
+                                                   name="demanders[][trader][custermerName]"
+                                                   th:value="${demander.trader.custermerName}" readonly></td>
+                                        <td><input class="form-control"
+                                                   name="demanders[][deliverAddress]"
+                                                   th:value="${demander.deliverAddress}" type="text"></td>
+                                        <td><input class="form-control" type="text"
+                                                   name="demanders[][contactPersonName]"
+                                                   onclick="selectContractPerson($(this))"
+                                                   th:value="${demander.contactPersonName}" readonly></td>
+                                        <td><input class="form-control" type="text"
+                                                   name="demanders[][trader][custermerTel]"
+                                                   th:value="${demander.trader.custermerTel}" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <th>纳税人识别号</th>
+                                        <th>地址</th>
+                                        <th>开户行</th>
+                                        <th>开户行账号</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input class="form-control" type="text"
+                                                   name="demanders[][trader][taxpayerIdNumbers]"
+                                                   th:value="${demander.trader.taxpayerIdNumbers}" readonly>
+                                        </td>
+                                        <td><input class="form-control" type="text"
+                                                   name="demanders[][trader][address]"
+                                                   th:value="${demander.trader.address}" readonly></td>
+                                        <td><input class="form-control" type="text"
+                                                   name="demanders[][trader][bank]"
+                                                   th:value="${demander.trader.bank}"
+                                                   readonly></td>
+                                        <td><input class="form-control" type="text"
+                                                   name="demanders[][trader][bankAccount]"
+                                                   th:value="${demander.trader.bankAccount}" readonly></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <b>合同内容</b>
+                            <textarea style="height: 100px" id="contractContent" name="contractContent"
+                                      th:text="${contractManage.contractContent}" wrap="hard" row="100"
+                                      cols="150"></textarea>
+                        </div>
+                        <b>备注/附件</b>
+                        <div class="form-group" style="display: flex;align-items: center">
+                            <textarea style="height: 100px;margin-right: 20px" id="remarks" name="remarks"
+                                      th:text="${contractManage.remarks}" wrap="hard" row="20" cols="80"></textarea>
+                            <label style="white-space:nowrap;margin-right: 20px">附件上传</label>
+                            <input id="file" name="file" style="margin-right: -40px" type="file" onchange="uploadFile()"/>
+                            <label style="white-space:nowrap;margin-right: 20px">附件下载</label><input id="fileName" name="fileName"
+                                                                                 th:value="${contractManage.fileName}"
+                                                                                 type="hidden" readonly>
+                            <button  style="white-space:nowrap" type="button"
+                                    onclick="window.location='/common/sysFile/files/'+$('#fileName').val()">附件下载
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/contractManage/edit.js">
+</script>
+</body>
+</html>

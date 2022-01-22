@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.equipmentManage.dao.EquipmentManageDao">
+
+	<select id="get" resultType="com.bootdo.factory.equipmentManage.domain.EquipmentManageDO">
+			select `equipment_id`,`equipment_type`,`code`,`name`,`photo`,`provider`,`model`,`factory_number`,`production_date`,`purchaser`,`cost`,`purchase_date`,`duty_user_id`,`remarks`,`files`,`is_deleted`,`create_user_id`,`create_time` from equipment_manage where equipment_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.equipmentManage.domain.EquipmentManageDO">
+		select `equipment_id`,`equipment_type`,`code`,`name`,`photo`,`provider`,`model`,`factory_number`,`production_date`,`purchaser`,`cost`,`purchase_date`,`duty_user_id`,`remarks`,`files`,`is_deleted`,`create_user_id`,`create_time` from equipment_manage
+        <where>
+        		  is_deleted=0
+		  		  <if test="equipmentId != null and equipmentId != ''"> and equipment_id = #{equipmentId} </if>
+		  		  <if test="equipmentType != null and equipmentType != ''"> and equipment_type = #{equipmentType} </if>
+		  		  <if test="code != null and code != ''"> and code like CONCAT('%',#{code},'%')  </if>
+		  		  <if test="name != null and name != ''"> and `name` like CONCAT('%',#{name},'%')</if>
+		  		  <if test="photo != null and photo != ''"> and photo = #{photo} </if>
+		  		  <if test="provider != null and provider != ''"> and provider = #{provider} </if>
+		  		  <if test="model != null and model != ''"> and model = #{model} </if>
+		  		  <if test="factoryNumber != null and factoryNumber != ''"> and factory_number = #{factoryNumber} </if>
+		  		  <if test="productionDate != null and productionDate != ''"> and production_date = #{productionDate} </if>
+		  		  <if test="purchaser != null and purchaser != ''"> and purchaser = #{purchaser} </if>
+		  		  <if test="cost != null and cost != ''"> and cost = #{cost} </if>
+		  		  <if test="purchaseDate != null and purchaseDate != ''"> and purchase_date = #{purchaseDate} </if>
+		  		  <if test="dutyUserId != null and dutyUserId != ''"> and duty_user_id = #{dutyUserId} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="files != null and files != ''"> and files = #{files} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by equipment_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from equipment_manage
+		 <where>
+			 	  is_deleted=0
+		  		  <if test="equipmentId != null and equipmentId != ''"> and equipment_id = #{equipmentId} </if>
+		  		  <if test="equipmentType != null and equipmentType != ''"> and equipment_type = #{equipmentType} </if>
+		  		  <if test="code != null and code != ''"> and `code` like CONCAT('%',#{code},'%') </if>
+		  		  <if test="name != null and name != ''"> and `name` like CONCAT('%',#{name},'%') </if>
+		  		  <if test="photo != null and photo != ''"> and photo = #{photo} </if>
+		  		  <if test="provider != null and provider != ''"> and provider = #{provider} </if>
+		  		  <if test="model != null and model != ''"> and model = #{model} </if>
+		  		  <if test="factoryNumber != null and factoryNumber != ''"> and factory_number = #{factoryNumber} </if>
+		  		  <if test="productionDate != null and productionDate != ''"> and production_date = #{productionDate} </if>
+		  		  <if test="purchaser != null and purchaser != ''"> and purchaser = #{purchaser} </if>
+		  		  <if test="cost != null and cost != ''"> and cost = #{cost} </if>
+		  		  <if test="purchaseDate != null and purchaseDate != ''"> and purchase_date = #{purchaseDate} </if>
+		  		  <if test="dutyUserId != null and dutyUserId != ''"> and duty_user_id = #{dutyUserId} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="files != null and files != ''"> and files = #{files} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.equipmentManage.domain.EquipmentManageDO">
+		insert into equipment_manage
+		(
+			`equipment_id`, 
+			`equipment_type`, 
+			`code`, 
+			`name`, 
+			`photo`, 
+			`provider`, 
+			`model`, 
+			`factory_number`, 
+			`production_date`, 
+			`purchaser`, 
+			`cost`, 
+			`purchase_date`, 
+			`duty_user_id`, 
+			`remarks`, 
+			`files`,
+			`create_user_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{equipmentId}, 
+			#{equipmentType}, 
+			#{code}, 
+			#{name}, 
+			#{photo}, 
+			#{provider}, 
+			#{model}, 
+			#{factoryNumber}, 
+			#{productionDate}, 
+			#{purchaser}, 
+			#{cost}, 
+			#{purchaseDate}, 
+			#{dutyUserId}, 
+			#{remarks}, 
+			#{files},
+			#{createUserId}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.equipmentManage.domain.EquipmentManageDO">
+		update equipment_manage 
+		<set>
+			<if test="equipmentType != null">`equipment_type` = #{equipmentType}, </if>
+			<if test="code != null">`code` = #{code}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="photo != null">`photo` = #{photo}, </if>
+			<if test="provider != null">`provider` = #{provider}, </if>
+			<if test="model != null">`model` = #{model}, </if>
+			<if test="factoryNumber != null">`factory_number` = #{factoryNumber}, </if>
+			<if test="productionDate != null">`production_date` = #{productionDate}, </if>
+			<if test="purchaser != null">`purchaser` = #{purchaser}, </if>
+			<if test="cost != null">`cost` = #{cost}, </if>
+			<if test="purchaseDate != null">`purchase_date` = #{purchaseDate}, </if>
+			<if test="dutyUserId != null">`duty_user_id` = #{dutyUserId}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}, </if>
+			<if test="files != null">`files` = #{files}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where equipment_id = #{equipmentId}
+	</update>
+	
+	<delete id="remove">
+		update equipment_manage set is_deleted=1 where equipment_id = #{value}
+	</delete>
+	<select id="listAllType" resultType="long">
+		select d.id from sys_dict d join equipment_manage m where d.value = m.equipment_type
+	</select>
+	<delete id="batchRemove" >
+		update equipment_manage set is_deleted=1 where equipment_id in
+		<foreach item="equipmentId" collection="array" open="(" separator="," close=")">
+			#{equipmentId}
+		</foreach>
+	</delete>
+
+</mapper>

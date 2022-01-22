@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.reimburse.dao.ConsumeDao">
+
+    <select id="get" resultType="com.bootdo.factory.reimburse.domain.ConsumeDO">
+		select `consume_id`,`reimburse_id`,`consume_type`,`amount`,`payer`,`time`,`invoice_num`,`note`,`file` from reimbursement_consume where consume_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.reimburse.domain.ConsumeDO">
+        select `consume_id`,`reimburse_id`,`consume_type`,`amount`,`payer`,`time`,`invoice_num`,`note`,`file` from
+        reimbursement_consume
+        <where>
+            <if test="consumeId != null and consumeId != ''">and consume_id = #{consumeId}</if>
+            <if test="reimburseId != null and reimburseId != ''">and reimburse_id = #{reimburseId}</if>
+            <if test="consumeType != null and consumeType != ''">and consume_type = #{consumeType}</if>
+            <if test="amount != null and amount != ''">and amount = #{amount}</if>
+            <if test="payer != null and payer != ''">and payer = #{payer}</if>
+            <if test="time != null and time != ''">and time = #{time}</if>
+            <if test="invoiceNum != null and invoiceNum != ''">and invoice_num = #{invoiceNum}</if>
+            <if test="note != null and note != ''">and note = #{note}</if>
+            <if test="file != null and file != ''">and file = #{file}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by consume_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from reimbursement_consume
+        <where>
+            <if test="consumeId != null and consumeId != ''">and consume_id = #{consumeId}</if>
+            <if test="reimburseId != null and reimburseId != ''">and reimburse_id = #{reimburseId}</if>
+            <if test="consumeType != null and consumeType != ''">and consume_type = #{consumeType}</if>
+            <if test="amount != null and amount != ''">and amount = #{amount}</if>
+            <if test="payer != null and payer != ''">and payer = #{payer}</if>
+            <if test="time != null and time != ''">and time = #{time}</if>
+            <if test="invoiceNum != null and invoiceNum != ''">and invoice_num = #{invoiceNum}</if>
+            <if test="note != null and note != ''">and note = #{note}</if>
+            <if test="file != null and file != ''">and file = #{file}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.reimburse.domain.ConsumeDO">
+		insert into reimbursement_consume
+		(
+			`consume_id`, 
+			`reimburse_id`, 
+			`consume_type`, 
+			`amount`, 
+			`payer`, 
+			`time`, 
+			`invoice_num`, 
+			`note`, 
+			`file`
+		)
+		values
+		(
+			#{consumeId}, 
+			#{reimburseId}, 
+			#{consumeType}, 
+			#{amount}, 
+			#{payer}, 
+			#{time}, 
+			#{invoiceNum}, 
+			#{note}, 
+			#{file}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.reimburse.domain.ConsumeDO">
+        update reimbursement_consume
+        <set>
+            <if test="reimburseId != null">`reimburse_id` = #{reimburseId},</if>
+            <if test="consumeType != null">`consume_type` = #{consumeType},</if>
+            <if test="amount != null">`amount` = #{amount},</if>
+            <if test="payer != null">`payer` = #{payer},</if>
+            <if test="time != null">`time` = #{time},</if>
+            <if test="invoiceNum != null">`invoice_num` = #{invoiceNum},</if>
+            <if test="note != null">`note` = #{note},</if>
+            <if test="file != null">`file` = #{file}</if>
+        </set>
+        where consume_id = #{consumeId}
+    </update>
+
+    <delete id="remove">
+		delete from reimbursement_consume where consume_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from reimbursement_consume where consume_id in
+        <foreach item="consumeId" collection="array" open="(" separator="," close=")">
+            #{consumeId}
+        </foreach>
+    </delete>
+
+</mapper>

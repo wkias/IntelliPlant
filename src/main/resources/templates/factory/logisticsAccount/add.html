@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg" onload="window.title='新增物流信息'">
+<div class="wrapper wrapper-content ">
+    <div class="page-header text-success" align="center">
+        <h1>新增物流信息</h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" style="margin:10px" id="signupForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <button class="btn btn-primary" id="addDetailBtn" type="button" onclick="openSelect()">
+                               出库单
+                            </button>
+                            <button class="btn btn-primary" id="delDetailBtn" type="button" onclick="openPurchase()">
+                                入库单
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <b>基本信息</b>
+                            <table class="table table-striped table-bordered table-hover">
+                                <tr>
+                                    <th>*表单编号</th>
+                                    <td><input id="formId" name="formId" class="form-control" type="text" required
+                                               readonly></td>
+                                    <th>*表单类型</th>
+                                    <td><input id="formType" name="formType" class="form-control" type="hidden">
+                                        <input id="formTypeName" name="formTypeName" class="form-control" type="text" required
+                                               readonly>
+                                    </td>
+                                    <th>*物流台账编号</th>
+                                    <td><input id="logisticsNumber" name="logisticsNumber" class="form-control"
+                                               type="text" readonly required th:value="${uuid}"></td>
+                                </tr>
+                                <tr>
+                                    <th>*总数量</th>
+                                    <td><input id="totalQuantity" name="totalQuantity" class="form-control" type="text"
+                                               required>
+                                    </td>
+                                    <th>总重量</th>
+                                    <td><input id="totalWeight" name="totalWeight" class="form-control" type="text">
+                                    </td>
+                                    <th>*运费总金额（元）</th>
+                                    <td><input id="totalMoney" name="totalMoney" class="form-control" type="text"
+                                               required></td>
+                                </tr>
+                                <tr>
+                                    <th>*发货单位</th>
+                                    <td><input id="forwardingUnit" name="forwardingUnit" class="form-control"
+                                               type="text" ></td>
+                                    <th>*收货单位</th>
+                                    <td><input id="receiveUnit" name="receiveUnit" class="form-control" type="text"
+                                               >
+                                    </td>
+                                    <th>*物流公司</th>
+                                    <td><select id="logisticsCompany" name="logisticsCompany" data-placeholder="物流公司"
+                                                class="chosen-select form-control"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <div><b>运输人员信息</b>
+                                <table class="table table-striped table-bordered table-hover">
+                                    <tr>
+                                        <th>*司机名称</th>
+                                        <th>*联系电话</th>
+                                        <th>*车牌号</th>
+                                        <th>驾照</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="driverName" name="driverName" class="form-control" type="text"
+                                                   required>
+                                        </td>
+                                        <td><input id="phoneNumber" name="phoneNumber" class="form-control" type="text"
+                                                   required>
+                                        </td>
+                                        <td><input id="carNumber" name="carNumber" class="form-control" type="text"
+                                                   required>
+                                        </td>
+                                        <td><input id="driverLicense" name="driverLicense" class="form-control"
+                                                   type="text"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>行驶证</th>
+                                        <th>重量单位</th>
+                                        <th>重量</th>
+                                        <th>*金额（元）</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input id="driverPermit" name="driverPermit" class="form-control"
+                                                   type="text"></td>
+                                        <td><select id="weightUnit" name="weightUnit" data-placeholder="重量单位"
+                                                    class="chosen-select form-control"/></td>
+                                        <td><input id="weight" name="weight" class="form-control" type="text"></td>
+                                        <td><input id="money" name="money" class="form-control" type="text" required>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group"><b>备注/附件</b></div>
+                        <div class="form-group" style="display: flex;align-items: center">
+                            <textarea style="height: 100px;margin-right: 100px" id="remarks" name="remarks" wrap="hard"
+                                      row="20" cols="110"></textarea>
+                            <label style="margin-right: 20px"></label><input id="filesFile" name="filesFile"
+                                                                             type="file"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/logisticsAccount/add.js">
+</script>
+</body>
+</html>

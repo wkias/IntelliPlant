@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.productManage.dao.ProductCraftDao">
+
+	<select id="get" resultType="com.bootdo.factory.productManage.domain.ProductCraftDO">
+		select `product_craft_id`,`product_id`,`craft_id`,`description`,`is_deleted`,`create_user_id`,`create_time` from product_craft where product_craft_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.productManage.domain.ProductCraftDO">
+		select `product_craft_id`,`product_id`,`craft_id`,`description`,`is_deleted`,`create_user_id`,`create_time` from product_craft
+        <where>
+			is_deleted=0
+		  		  <if test="productCraftId != null and productCraftId != ''"> and product_craft_id = #{productCraftId} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="craftId != null and craftId != ''"> and craft_id = #{craftId} </if>
+		  		  <if test="description != null and description != ''"> and description = #{description} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by product_craft_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from product_craft
+		 <where>
+			 is_deleted=0
+		  		  <if test="productCraftId != null and productCraftId != ''"> and product_craft_id = #{productCraftId} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="craftId != null and craftId != ''"> and craft_id = #{craftId} </if>
+		  		  <if test="description != null and description != ''"> and description = #{description} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.productManage.domain.ProductCraftDO">
+		insert into product_craft
+		(
+			`product_craft_id`, 
+			`product_id`, 
+			`craft_id`, 
+			`description`, 
+			`is_deleted`, 
+			`create_user_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{productCraftId}, 
+			#{productId}, 
+			#{craftId}, 
+			#{description}, 
+			#{isDeleted}, 
+			#{createUserId}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.productManage.domain.ProductCraftDO">
+		update product_craft 
+		<set>
+			<if test="productId != null">`product_id` = #{productId}, </if>
+			<if test="craftId != null">`craft_id` = #{craftId}, </if>
+			<if test="description != null">`description` = #{description}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where product_craft_id = #{productCraftId}
+	</update>
+	
+	<delete id="remove">
+		update product_craft set is_deleted=1 where product_craft_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		update product_craft set is_deleted=1 where product_craft_id in
+		<foreach item="productCraftId" collection="array" open="(" separator="," close=")">
+			#{productCraftId}
+		</foreach>
+	</delete>
+
+</mapper>

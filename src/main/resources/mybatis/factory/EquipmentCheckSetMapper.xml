@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.equipmentManage.dao.EquipmentCheckSetDao">
+
+    <select id="get" resultType="com.bootdo.factory.equipmentManage.domain.EquipmentCheckSetDO">
+		select `check_set_id`,`equipment_id`,`check_cycle`,`unit`,`deadline`,`checker_id`,`is_deleted`,`create_user_id`,`create_time` from equipment_check_set where check_set_id = #{value}
+	</select>
+
+    <select id="getVO" resultType="com.bootdo.factory.equipmentManage.vo.EquipmentCheckSetVO">
+		select `check_set_id`,m.`equipment_id`,m.`code` as equipment_code,m.`equipment_type` ,m.`name` as equipment_name,`check_cycle`,`unit`
+		,`deadline`,`checker_id`,cs.`is_deleted`,cs.`create_user_id`,cs.`create_time`
+		from equipment_check_set cs,equipment_manage m where m.`equipment_id`=cs.`equipment_id` and check_set_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.equipmentManage.vo.EquipmentCheckSetVO">
+        select `check_set_id`,m.`equipment_id`,m.`code` as equipment_code,m.`equipment_type` ,m.`name` as
+        equipment_name,`check_cycle`,`unit`
+        ,`deadline`,`checker_id`,cs.`is_deleted`,cs.`create_user_id`,cs.`create_time`
+        from equipment_check_set cs,equipment_manage m
+        <where>
+            m.`equipment_id`=cs.`equipment_id`
+            and cs.`is_deleted`=0
+            <if test="equipmentType != null and equipmentType != ''">and m.`equipment_type` = #{equipmentType}</if>
+            <if test="code != null and code != ''">and m.`code` like CONCAT('%',#{code},'%')</if>
+            <if test="name != null and name != ''">and m.`name` like CONCAT('%',#{name},'%')</if>
+            <if test="checkSetId != null and checkSetId != ''">and check_set_id = #{checkSetId}</if>
+            <if test="equipmentId != null and equipmentId != ''">and cs.`equipment_id` = #{equipmentId}</if>
+            <if test="checkCycle != null and checkCycle != ''">and check_cycle = #{checkCycle}</if>
+            <if test="unit != null and unit != ''">and unit = #{unit}</if>
+            <if test="deadline != null and deadline != ''">and deadline = #{deadline}</if>
+            <if test="checkerId != null and checkerId != ''">and checker_id = #{checkerId}</if>
+            <if test="isDeleted != null and isDeleted != ''">and cs.is_deleted = #{isDeleted}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by check_set_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from equipment_check_set cs,equipment_manage m
+        <where>
+            m.`equipment_id`=cs.`equipment_id`
+            and cs.`is_deleted`=0
+            <if test="equipmentType != null and equipmentType != ''">and m.`equipment_type` = #{equipmentType}</if>
+            <if test="code != null and code != ''">and m.`code` like CONCAT('%',#{code},'%')</if>
+            <if test="name != null and name != ''">and m.`name` like CONCAT('%',#{name},'%')</if>
+            <if test="checkSetId != null and checkSetId != ''">and check_set_id = #{checkSetId}</if>
+            <if test="equipmentId != null and equipmentId != ''">and equipment_id = #{equipmentId}</if>
+            <if test="checkCycle != null and checkCycle != ''">and check_cycle = #{checkCycle}</if>
+            <if test="unit != null and unit != ''">and unit = #{unit}</if>
+            <if test="deadline != null and deadline != ''">and deadline = #{deadline}</if>
+            <if test="checkerId != null and checkerId != ''">and checker_id = #{checkerId}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.equipmentManage.domain.EquipmentCheckSetDO">
+		insert into equipment_check_set
+		(
+			`check_set_id`, 
+			`equipment_id`, 
+			`check_cycle`, 
+			`unit`, 
+			`deadline`, 
+			`checker_id`, 
+			`is_deleted`, 
+			`create_user_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{checkSetId}, 
+			#{equipmentId}, 
+			#{checkCycle}, 
+			#{unit}, 
+			#{deadline}, 
+			#{checkerId}, 
+			#{isDeleted}, 
+			#{createUserId}, 
+			#{createTime}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.equipmentManage.domain.EquipmentCheckSetDO">
+        update equipment_check_set
+        <set>
+            <if test="equipmentId != null">`equipment_id` = #{equipmentId},</if>
+            <if test="checkCycle != null">`check_cycle` = #{checkCycle},</if>
+            <if test="unit != null">`unit` = #{unit},</if>
+            <if test="deadline != null">`deadline` = #{deadline},</if>
+            <if test="checkerId != null">`checker_id` = #{checkerId},</if>
+            <if test="isDeleted != null">`is_deleted` = #{isDeleted},</if>
+            <if test="createUserId != null">`create_user_id` = #{createUserId},</if>
+            <if test="createTime != null">`create_time` = #{createTime}</if>
+        </set>
+        where check_set_id = #{checkSetId}
+    </update>
+
+    <delete id="remove">
+		delete from equipment_check_set where check_set_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from equipment_check_set where check_set_id in
+        <foreach item="checkSetId" collection="array" open="(" separator="," close=")">
+            #{checkSetId}
+        </foreach>
+    </delete>
+    <update id="setChecker">
+        update equipment_check_set set checker_id=#{checkerId} where check_set_id
+        in
+        <foreach collection="checkSetIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

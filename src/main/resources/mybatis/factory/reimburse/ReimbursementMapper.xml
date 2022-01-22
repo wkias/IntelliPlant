@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.reimburse.dao.ReimbursementDao">
+
+    <select id="get" resultType="com.bootdo.factory.reimburse.domain.ReimbursementDO">
+select `reimburse_id`,`invoice_type`,`invoice_id`,`date_from`,`date_to`,`reason`,`note`,`payee`,`bank`,`bank_account`,`amount_to_be_reimbursed`,`amount_to_be_repaid`,`cumulative_reimbursement_amount`,`file`,`is_draft`,`state`,`create_time`,`creat_user`,`is_deleted` from reimbursement where reimburse_id = #{value}	</select>
+
+    <select id="list" resultType="com.bootdo.factory.reimburse.domain.ReimbursementDO">
+        select
+        `reimburse_id`,`invoice_type`,`invoice_id`,`date_from`,`date_to`,`reason`,`note`,`payee`,`bank`,`bank_account`,`amount_to_be_reimbursed`,`amount_to_be_repaid`,`cumulative_reimbursement_amount`,`file`,`is_draft`,`state`,`create_time`,`creat_user`,`is_deleted`
+        from reimbursement
+        <where>
+            <if test="reimburseId != null and reimburseId != ''">and reimburse_id = #{reimburseId}</if>
+            <if test="invoiceType != null and invoiceType != ''">and invoice_type = #{invoiceType}</if>
+            <if test="invoiceId != null and invoiceId != ''">and invoice_id = #{invoiceId}</if>
+            <if test="dateFrom != null and dateFrom != ''">and date_from = #{dateFrom}</if>
+            <if test="startDate != null and startDate != ''">and create_time <![CDATA[>=]]> #{startDate}</if>
+            <if test="endDate != null and endDate != ''">and create_time <![CDATA[<=]]> #{endDate}</if>
+            <if test="dateFrom != null and dateFrom != ''">and date_from = #{dateFrom}</if>
+            <if test="dateTo != null and dateTo != ''">and date_to = #{dateTo}</if>
+            <if test="reason != null and reason != ''">and reason = #{reason}</if>
+            <if test="note != null and note != ''">and note = #{note}</if>
+            <if test="payee != null and payee != ''">and payee = #{payee}</if>
+            <if test="bank != null and bank != ''">and bank = #{bank}</if>
+            <if test="bankAccount != null and bankAccount != ''">and bank_account = #{bankAccount}</if>
+            <if test="amountToBeReimbursed != null and amountToBeReimbursed != ''">and amount_to_be_reimbursed =
+                #{amountToBeReimbursed}
+            </if>
+            <if test="amountToBeRepaid != null and amountToBeRepaid != ''">and amount_to_be_repaid =
+                #{amountToBeRepaid}
+            </if>
+            <if test="cumulativeReimbursementAmount != null and cumulativeReimbursementAmount != ''">and
+                cumulative_reimbursement_amount = #{cumulativeReimbursementAmount}
+            </if>
+            <if test="file != null and file != ''">and file = #{file}</if>
+            <if test="isDraft != null and isDraft != ''">and is_draft = #{isDraft}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+            <if test="creatUser != null and creatUser != ''">and creat_user = #{creatUser}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by reimburse_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from reimbursement
+        <where>
+            <if test="reimburseId != null and reimburseId != ''">and reimburse_id = #{reimburseId}</if>
+            <if test="invoiceType != null and invoiceType != ''">and invoice_type = #{invoiceType}</if>
+            <if test="invoiceId != null and invoiceId != ''">and invoice_id = #{invoiceId}</if>
+            <if test="dateFrom != null and dateFrom != ''">and date_from = #{dateFrom}</if>
+            <if test="dateTo != null and dateTo != ''">and date_to = #{dateTo}</if>
+            <if test="reason != null and reason != ''">and reason = #{reason}</if>
+            <if test="note != null and note != ''">and note = #{note}</if>
+            <if test="payee != null and payee != ''">and payee = #{payee}</if>
+            <if test="bank != null and bank != ''">and bank = #{bank}</if>
+            <if test="bankAccount != null and bankAccount != ''">and bank_account = #{bankAccount}</if>
+            <if test="amountToBeReimbursed != null and amountToBeReimbursed != ''">and amount_to_be_reimbursed =
+                #{amountToBeReimbursed}
+            </if>
+            <if test="amountToBeRepaid != null and amountToBeRepaid != ''">and amount_to_be_repaid =
+                #{amountToBeRepaid}
+            </if>
+            <if test="cumulativeReimbursementAmount != null and cumulativeReimbursementAmount != ''">and
+                cumulative_reimbursement_amount = #{cumulativeReimbursementAmount}
+            </if>
+            <if test="file != null and file != ''">and file = #{file}</if>
+            <if test="isDraft != null and isDraft != ''">and is_draft = #{isDraft}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+            <if test="creatUser != null and creatUser != ''">and creat_user = #{creatUser}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.reimburse.domain.ReimbursementDO">
+		insert into reimbursement
+		(
+			`reimburse_id`, 
+			`invoice_type`, 
+			`invoice_id`, 
+			`date_from`,
+			`date_to`,
+			`reason`,
+			`note`,
+			`payee`,
+			`bank`,
+			`bank_account`,
+			`amount_to_be_reimbursed`,
+			`amount_to_be_repaid`,
+			`cumulative_reimbursement_amount`,
+			`file`,
+			`is_draft`,
+			`state`,
+			`create_time`,
+			`creat_user`,
+			`is_deleted`
+		)
+		values
+		(
+			#{reimburseId},
+			#{invoiceType},
+			#{invoiceId},
+			#{dateFrom},
+			#{dateTo},
+			#{reason}, 
+			#{note}, 
+			#{payee}, 
+			#{bank}, 
+			#{bankAccount}, 
+			#{amountToBeReimbursed}, 
+			#{amountToBeRepaid}, 
+			#{cumulativeReimbursementAmount}, 
+			#{file}, 
+			#{isDraft}, 
+			#{state}, 
+			#{createTime}, 
+			#{creatUser}, 
+			#{isDeleted}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.reimburse.domain.ReimbursementDO">
+        update reimbursement
+        <set>
+            <if test="invoiceType != null">`invoice_type` = #{invoiceType},</if>
+            <if test="invoiceId != null">`invoice_id` = #{invoiceId},</if>
+            <if test="dateFrom != null">`date_from` = #{dateFrom},</if>
+            <if test="dateTo != null">`date_to` = #{dateTo},</if>
+            <if test="reason != null">`reason` = #{reason},</if>
+            <if test="note != null">`note` = #{note},</if>
+            <if test="payee != null">`payee` = #{payee},</if>
+            <if test="bank != null">`bank` = #{bank},</if>
+            <if test="bankAccount != null">`bank_account` = #{bankAccount},</if>
+            <if test="amountToBeReimbursed != null">`amount_to_be_reimbursed` = #{amountToBeReimbursed},</if>
+            <if test="amountToBeRepaid != null">`amount_to_be_repaid` = #{amountToBeRepaid},</if>
+            <if test="cumulativeReimbursementAmount != null">`cumulative_reimbursement_amount` =
+                #{cumulativeReimbursementAmount},
+            </if>
+            <if test="file != null">`file` = #{file},</if>
+            <if test="isDraft != null">`is_draft` = #{isDraft},</if>
+            <if test="state != null">`state` = #{state},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="creatUser != null">`creat_user` = #{creatUser},</if>
+            <if test="isDeleted != null">`is_deleted` = #{isDeleted}</if>
+        </set>
+        where reimburse_id = #{reimburseId}
+    </update>
+
+    <delete id="remove">
+		delete from reimbursement where reimburse_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from reimbursement where reimburse_id in
+        <foreach item="reimburseId" collection="array" open="(" separator="," close=")">
+            #{reimburseId}
+        </foreach>
+    </delete>
+
+</mapper>

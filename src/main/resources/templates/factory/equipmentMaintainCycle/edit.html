@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="maintainCycleId" name="maintainCycleId" th:value="${equipmentMaintainCycle.maintainCycleId}"  type="hidden">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">设备类型</label>
+                            <div class="col-sm-8">
+                                <input id="Ttype" name="Ttype" th:value="${equipmentMaintainCycle.equipmentType}" type="hidden">
+                                <select data-placeholder="--选择设备类型--" id="equipmentType" name="equipmentType"
+                                        th:value="${equipmentMaintainCycle.equipmentType}"
+                                        class="form-control chosen-select" tabindex="2" required>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">维保周期</label>
+                            <div class="col-sm-8">
+                                <input id="maintainCycle" name="maintainCycle" th:value="${equipmentMaintainCycle.maintainCycle}" class="form-control" type="number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">单位</label>
+                            <div class="col-sm-8">
+                                <input id="unit" name="unit" value="天" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <label class="col-sm-3 control-label">删除标记</label>
+                            <div class="col-sm-8">
+                                <input id="isDeleted" name="isDeleted" th:value="${equipmentMaintainCycle.isDeleted}" class="form-control" type="hidden">
+                            </div>
+                        </div>
+                        <div class="form-group"  style="display:none">
+                            <label class="col-sm-3 control-label">创建者</label>
+                            <div class="col-sm-8">
+                                <input id="createUserId" name="createUserId" th:value="${equipmentMaintainCycle.createUserId}" class="form-control" type="hidden">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/equipmentMaintainCycle/edit.js">
+</script>
+</body>
+</html>

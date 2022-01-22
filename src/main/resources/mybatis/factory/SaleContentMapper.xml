@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.saleManage.dao.SaleContentDao">
+
+	<select id="getBySaleId" resultType="com.bootdo.factory.saleManage.domain.SaleContentDO">
+		select `sale_content_id`,`sale_id`,`product_id`,`count`,`product_name`,`product_type`,`product_code`,`quantity_unit`,`deadline`,`storehouse` from sale_content where `sale_id` = #{value}
+	</select>
+
+	<select id="get" resultType="com.bootdo.factory.saleManage.domain.SaleContentDO">
+		select `sale_content_id`,`sale_id`,`product_id`,`count`,`product_name`,`product_type`,`product_code`,`quantity_unit`,`deadline`,`storehouse` from sale_content where sale_content_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.saleManage.domain.SaleContentDO">
+		select `sale_content_id`,`sale_id`,`product_id`,`count`,`product_name`,`product_type`,`product_code`,`quantity_unit`,`deadline`,`storehouse` from sale_content
+        <where>  
+		  		  <if test="saleContentId != null and saleContentId != ''"> and sale_content_id = #{saleContentId} </if>
+		  		  <if test="saleId != null and saleId != ''"> and sale_id = #{saleId} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="count != null and count != ''"> and count = #{count} </if>
+		  		  <if test="productName != null and productName != ''"> and product_name = #{productName} </if>
+		  		  <if test="productType != null and productType != ''"> and product_type = #{productType} </if>
+		  		  <if test="productCode != null and productCode != ''"> and product_code = #{productCode} </if>
+		  		  <if test="quantityUnit != null and quantityUnit != ''"> and quantity_unit = #{quantityUnit} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by sale_content_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sale_content
+		 <where>  
+		  		  <if test="saleContentId != null and saleContentId != ''"> and sale_content_id = #{saleContentId} </if>
+		  		  <if test="saleId != null and saleId != ''"> and sale_id = #{saleId} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="count != null and count != ''"> and count = #{count} </if>
+		  		  <if test="productName != null and productName != ''"> and product_name = #{productName} </if>
+		  		  <if test="productType != null and productType != ''"> and product_type = #{productType} </if>
+		  		  <if test="productCode != null and productCode != ''"> and product_code = #{productCode} </if>
+		  		  <if test="quantityUnit != null and quantityUnit != ''"> and quantity_unit = #{quantityUnit} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.saleManage.domain.SaleContentDO">
+		insert into sale_content
+		(
+			`sale_content_id`, 
+			`sale_id`, 
+			`product_id`, 
+			`count`, 
+			`product_name`, 
+			`product_type`, 
+			`product_code`, 
+			`quantity_unit`,
+			`deadline`,
+			`storehouse`
+		)
+		values
+		(
+			#{saleContentId}, 
+			#{saleId}, 
+			#{productId}, 
+			#{count}, 
+			#{productName}, 
+			#{productType}, 
+			#{productCode}, 
+			#{quantityUnit},
+			#{deadline},
+			#{storehouse}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.saleManage.domain.SaleContentDO">
+		update sale_content 
+		<set>
+			<if test="saleId != null">`sale_id` = #{saleId}, </if>
+			<if test="productId != null">`product_id` = #{productId}, </if>
+			<if test="count != null">`count` = #{count}, </if>
+			<if test="productName != null">`product_name` = #{productName}, </if>
+			<if test="productType != null">`product_type` = #{productType}, </if>
+			<if test="productCode != null">`product_code` = #{productCode}, </if>
+			<if test="quantityUnit != null">`quantity_unit` = #{quantityUnit}</if>
+		</set>
+		where sale_content_id = #{saleContentId}
+	</update>
+	
+	<delete id="remove">
+		delete from sale_content where sale_content_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sale_content where sale_content_id in 
+		<foreach item="saleContentId" collection="array" open="(" separator="," close=")">
+			#{saleContentId}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">设备编码</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="code" name="code" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">状态(0待点检，1已点检，2异常)</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="state" name="state" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">点检日期</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="checkDate" name="checkDate" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">点检人</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="checkerId" name="checkerId" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">备注</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="remarks" name="remarks" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">删除标记；默认值：0；0，未删除；1已删除</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="isDeleted" name="isDeleted" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">创建者</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="createUserId" name="createUserId" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">创建时间</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="createTime" name="createTime" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/equipmentCheckHistory/add.js">
+</script>
+</body>
+</html>

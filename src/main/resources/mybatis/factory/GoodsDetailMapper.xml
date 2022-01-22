@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.warehouseManagement.dao.GoodsDetailDao">
+
+    <select id="get" resultType="com.bootdo.factory.warehouseManagement.domain.GoodsDetailDO">
+		select `goods_id`,`order_id`,`product_id`,`product_name`,`product_type_name`,`quantity`,`quantity_unit_name`,`weight_unit_name`,`total_weight`,`amount` from goods_detail where goods_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.warehouseManagement.domain.GoodsDetailDO">
+        select
+        `goods_id`,`order_id`,`product_id`,`product_name`,`product_type_name`,`quantity`,`quantity_unit_name`,`weight_unit_name`,`total_weight`,`amount`
+        from goods_detail
+        <where>
+            <if test="goodsId != null and goodsId != ''">and goods_id = #{goodsId}</if>
+            <if test="orderId != null and orderId != ''">and order_id = #{orderId}</if>
+            <if test="productId != null and productId != ''">and product_id = #{productId}</if>
+            <if test="productName != null and productName != ''">and product_name = #{productName}</if>
+            <if test="productTypeName != null and productTypeName != ''">and product_type_name = #{productTypeName}</if>
+            <if test="quantity != null and quantity != ''">and quantity = #{quantity}</if>
+            <if test="quantityUnitName != null and quantityUnitName != ''">and quantity_unit_name =
+                #{quantityUnitName}
+            </if>
+            <if test="weightUnitName != null and weightUnitName != ''">and weight_unit_name = #{weightUnitName}</if>
+            <if test="totalWeight != null and totalWeight != ''">and total_weight = #{totalWeight}</if>
+            <if test="amount != null and amount != ''">and amount = #{amount}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by goods_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from goods_detail
+        <where>
+            <if test="goodsId != null and goodsId != ''">and goods_id = #{goodsId}</if>
+            <if test="orderId != null and orderId != ''">and order_id = #{orderId}</if>
+            <if test="productId != null and productId != ''">and product_id = #{productId}</if>
+            <if test="productName != null and productName != ''">and product_name = #{productName}</if>
+            <if test="productTypeName != null and productTypeName != ''">and product_type_name = #{productTypeName}</if>
+            <if test="quantity != null and quantity != ''">and quantity = #{quantity}</if>
+            <if test="quantityUnitName != null and quantityUnitName != ''">and quantity_unit_name =
+                #{quantityUnitName}
+            </if>
+            <if test="weightUnitName != null and weightUnitName != ''">and weight_unit_name = #{weightUnitName}</if>
+            <if test="totalWeight != null and totalWeight != ''">and total_weight = #{totalWeight}</if>
+            <if test="amount != null and amount != ''">and amount = #{amount}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.warehouseManagement.domain.GoodsDetailDO">
+		insert into goods_detail
+		(
+			`goods_id`,
+			`order_id`,
+			`product_id`,
+			`product_name`,
+			`product_type_name`,
+			`quantity`,
+			`quantity_unit_name`,
+			`weight_unit_name`,
+			`total_weight`,
+			`amount`,
+			`is_product`
+		)
+		values
+		(
+			#{goodsId},
+			#{orderId},
+			#{productId},
+			#{productName},
+			#{productTypeName},
+			#{quantity},
+			#{quantityUnitName},
+			#{weightUnitName},
+			#{totalWeight},
+			#{amount},
+			#{isProduct}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.warehouseManagement.domain.GoodsDetailDO">
+        update goods_detail
+        <set>
+            <if test="orderId != null">`order_id` = #{orderId},</if>
+            <if test="productId != null">`product_id` = #{productId},</if>
+            <if test="productName != null">`product_name` = #{productName},</if>
+            <if test="productTypeName != null">`product_type_name` = #{productTypeName},</if>
+            <if test="quantity != null">`quantity` = #{quantity},</if>
+            <if test="quantityUnitName != null">`quantity_unit_name` = #{quantityUnitName},</if>
+            <if test="weightUnitName != null">`weight_unit_name` = #{weightUnitName},</if>
+            <if test="totalWeight != null">`total_weight` = #{totalWeight},</if>
+            <if test="amount != null">`amount` = #{amount}</if>
+        </set>
+        where goods_id = #{goodsId}
+    </update>
+
+    <delete id="removeByOrder">
+        delete from goods_detail where order_id = #{orderId}
+    </delete>
+
+    <delete id="remove">
+		delete from goods_detail where goods_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from goods_detail where goods_id in
+        <foreach item="goodsId" collection="array" open="(" separator="," close=")">
+            #{goodsId}
+        </foreach>
+    </delete>
+
+</mapper>

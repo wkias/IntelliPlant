@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="productId" name="productId" th:value="${productDetail.productId}"  type="hidden">
+							<b>编辑物品明细</b>
+							<table width="50%" cellpadding="0" cellspacing="0" class="table table-striped table-bordered table-hover">
+								<tr>
+									<th>物品名称</th>
+									<td><input id="productName" name="productName" th:value="${productDetail.productName}"  class="form-control" type="text" ></td>
+									<th>物品类型</th>
+
+									<td><input type="hidden" class="form-control" id="oldType" th:value="${productDetail.productType}">
+										<select id="productType" name="productType"   class=" form-control"  type="text" ></select></td>
+
+								</tr>
+								<tr>
+									<th>规格</th>
+									<td>
+										<input id="model" name="model" th:value="${productDetail.model}" class="form-control"  >
+									</td>
+									<th>尺寸</th>
+									<td><input id="size" name="size" th:value="${productDetail.size}" class="form-control" type="text" ></td>
+
+								</tr>
+								<tr>
+									<th>材料</th>
+									<td><input id="material" name="material" th:value="${productDetail.material}" class="form-control" type="text" ></td>
+									<th>规值</th>
+									<td><input id="gaugeValue" name="gaugeValue" th:value="${productDetail.gaugeValue}" class="form-control" type="text" ></td>
+
+								</tr>
+								<tr>
+									<th>数量单位</th>
+
+									<td>
+										<input type="hidden" id="oldQuantity" th:value="${productDetail.quantityUnit}">
+										<select id="quantityUnit" name="quantityUnit" data-placeholder="订单期次" class="form-control" /></td>
+									<th>重量单位</th>
+									<td>
+										<input type="hidden" id="oldWeight"th:value="${productDetail.weightUnit}">
+										<select id="weightUnit" name="weightUnit"  class="form-control" type="text"></select></td>
+
+								</tr>
+								<tr>
+									<th>单重</th>
+
+									<td><input id="weight" name="weight" th:value="${productDetail.weight}"type="text" class="form-control" /></td>
+									<th>单价(元)</th>
+									<td><input id="price" name="price" th:value="${productDetail.price}" class="form-control" type="text"></td>
+
+								</tr>
+
+
+
+
+							</table>
+							<table>	<tr><b>备注/附件</b></tr>
+								<tr>
+									<td>
+										<div class="form-group" style="display: flex;align-items: center">
+											<textarea style="height: 100px;margin-right: 20px;margin-left: 20px"id="remark" name="remark" th:text="${productDetail.remark}" wrap="hard" row="20" cols="80"></textarea>
+										</div>
+									</td><td>
+									<div><label style="margin-right: 20px">附件上传</label><input id="filesFile"name="filesFile" th:value="${productDetail.files}" class="form-control" type="file" >
+									</div>
+								</td>
+
+								</tr></table>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3" style="margin-right: 20px">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/factory/productManage/productDetail/edit.js">
+	</script>
+</body>
+</html>

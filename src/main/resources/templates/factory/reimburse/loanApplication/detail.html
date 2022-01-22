@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<script type="text/javascript">
+    function downloadFile(){
+        var fileName=$("#filesFile").val();
+        //$.get(""+fileName);
+        var  url="/reimburse/loanApplication/files/"+fileName;
+        window.location=url;
+    }
+</script>
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="loan_application_id" name="loan_application_id" th:value="${loanApplication.loanApplicationId}"  type="hidden">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">单据编号</label>
+                            <div class="col-sm-8">
+                                <input id="loanCode" name="loanCode" th:value="${loanApplication.loanCode}" class="form-control" type="text"readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">借款金额(元)</label>
+                            <div class="col-sm-8">
+                                <input id="loanAccount" name="loanAccount" th:value="${loanApplication.loanAccount}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">还款日期</label>
+                            <div class="col-sm-8">
+                                <input id="repaymentDate" name="repaymentDate"  th:value="${#dates.format(loanApplication.repaymentDate, 'yyyy-MM-dd')}" class="form-control" type="date" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">收款账户</label>
+                            <div class="col-sm-8">
+                                <input id="collectionAccount" name="collectionAccount" th:value="${loanApplication.collectionAccount}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">银行账户</label>
+                            <div class="col-sm-8">
+                                <input id="bankAccount" name="bankAccount" th:value="${loanApplication.bankAccount}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">开户行</label>
+                            <div class="col-sm-8">
+                                <input id="bankName" name="bankName" th:value="${loanApplication.bankName}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">申请事由</label>
+                            <div class="col-sm-8">
+                                <textarea id="loanPurpose" name="loanPurpose" th:text="${loanApplication.loanPurpose}" class="form-control" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">备注</label>
+                            <div class="col-sm-8">
+                                <textarea id="note" name="note" th:text="${loanApplication.note}" class="form-control" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">附件</label>
+                            <div class="col-sm-7">
+                                <input id="filesFile" name="filesFile" th:value="${loanApplication.fileName}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                            <button type="button" class="btn  btn-info" onclick="downloadFile()">
+                                下载
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">汇总(元)</label>
+                            <div class="col-sm-8">
+                                <input id="summary" name="summary" th:value="${loanApplication.summary}" class="form-control" readonly type="text">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/reimburse/loanApplication/edit.js">
+</script>
+</body>
+</html>

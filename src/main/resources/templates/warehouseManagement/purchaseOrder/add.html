@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t"  style="margin:10px" id="signupForm">
+							<input name="procdefId" th:value=${procdefId} type="hidden"/>
+							<div class="form-group">
+								<b>基本信息</b>
+							<table class="table table-striped table-bordered table-hover">
+								<tr><th>审批状态</th><td>		<input id="auditState" class="form-control" value="未提交" type="text" readonly></td>
+									<th>采购状态</th><td>		<input id="purchaseState"class="form-control" value="未采购"type="text"readonly></td>
+									<th></th><td></td>
+								</tr>
+
+								<tr><th>采购订单编号</th><td>	<input id="orderCode" th:value="${orderCode}"name="orderCode" class="form-control" type="text"></td>
+									<th>申请采购部门</th><td>	<input id="applyDeptId" name="applyDeptId" class="form-control" type="hidden">
+																<input id="applyDeptName" name="applyDeptName" class="form-control" type="text" onclick="openDeptSelect()" readonly></td>
+									<th>采购负责人</th><td>		<input id="dutyPersonId" name="dutyPersonId" class="form-control" type="hidden">
+																<input id="dutyPersonName" name="dutyPersonName" class="form-control" type="text" onclick="openUser()" readonly></td>
+								</tr>
+								<tr><th>申请日期</th><td>		<input id="applyDate" name="applyDate" class="form-control" type="date"></td>
+									<th>请求到货日期</th><td>	<input id="arrivalDate" name="arrivalDate" class="form-control" type="date"></td>
+									<th>业务类型</th><td>		<select class="chosen-select form-control" id="businessType" name="businessType"type="text">
+																</select></td>
+								</tr>
+
+								<tr><th>采购单位</th><td>		<input id="supplier" name="supplier" class="form-control" type="text"></td>
+									<th>收货单位</th><td>		<input id="demander" name="demander" class="form-control" type="text"></td>
+									<th></th><td></td>
+								</tr>
+								<tr><th>总数量</th><td>			<input id="totalNumber" name="totalNumber" class="form-control" type="number" readonly></td>
+									<th>总重量（kg）</th><td>			<input id="totalWeight" name="totalWeight" class="form-control" type="number"></td>
+									<th>总金额</th><td>			<input id="totalMoney" name="totalMoney" class="form-control" type="number" readonly></td>
+								</tr>
+							</table>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-primary" id="addDetailBtn" type="button" onclick="addDetail()">新增</button>
+								<button class="btn btn-danger" id="delDetailBtn" type="button" onclick="delDetail()">删除</button>
+							</div>
+							<div class="form-group" style="overflow: auto">
+								<table class="table table-striped table-bordered table-hover" style="table-layout: auto;width:100%;">
+									<tr><th></th><th>物品名称</th><th>物品型号</th><th>材料</th><th>数量单位</th><th>重量单位</th><th>单重</th><th>数量</th><th>单价（元）</th><th>金额（元）</th></tr>
+									<tr onclick="openProductSelect(this)" name="detailItem">
+										<input name="productId" type="hidden">
+										<td onclick="(function(e){e.stopPropagation()})(event)"><input  name="detailCheck" type="checkbox" ></td>
+										<td><input  class="form-control"name="materialName" type="text" readonly></td>
+										<td><input  class="form-control" name="materialModel" type="text" readonly></td>
+										<td><input  class="form-control"name="materiaStuff" type="text" readonly></td>
+										<td><input  class="form-control"name="numberUnit" type="text" readonly></td>
+										<td><input  class="form-control"name="weightUnit" type="text" readonly></td>
+										<td><input  class="form-control"name="singleWeight" type="text" readonly></td>
+										<td onclick="(function(e){e.stopPropagation()})(event)"><input  class="form-control"name="number" type="number" min="1" required></td>
+										<td onclick="(function(e){e.stopPropagation()})(event)"><input  class="form-control"name="singleMoney" type="number"></td>
+										<td><input  class="form-control"name="money" type="number" readonly></td></tr>
+									<tr></tr>
+								</table>
+							</div>
+							<div class="form-group" ><h3>物资用途/附件</h3></div>
+
+							<div class="form-group" style="display: flex;flex-direction:row;">
+								<div style="flex: 1;overflow: auto;">
+									<b>物资用途</b>
+									<div width="100%"><textarea style="height: 100px;" id="purpose" name="purpose" wrap="hard"
+																			  row="20" cols="70"></textarea></div>
+								</div>
+								<div style="flex: 1;overflow: auto;">
+									<label style="margin-right: 20px">上传附件</label><input id="file"name="file" type="file" onchange="uploadFile()"/><input id="fileName" name="fileName" type="hidden">
+								</div>
+							</div>
+<!--							<div class="form-group"><h3>审批结果</h3></div>-->
+<!--							<div class="form-group"  style="display:flex;flex-direction:row;">-->
+<!--								<div style="flex: 1;overflow: auto;">-->
+<!--									<div width="100%"><select style="width: 85%"data-placeholder="常用审批意见" id="commonPhrase" name="commonPhrase"></select>-->
+<!--									</div>-->
+<!--										<textarea style="height: 100px;" id="auditResult" name="auditResult" wrap="hard"-->
+<!--											  row="20" cols="70"></textarea>-->
+<!--								</div>-->
+<!--								<div class="form-group"style="flex: 1;overflow: hidden;">-->
+<!--									<b>审批结论</b>-->
+<!--										<div class="form-control"><label><input name="pass"type="radio" value="1">通过</label></div>-->
+<!--										<div class="form-control"><label><input name="pass"type="radio" value="2">不通过</label></div>-->
+<!--								</div>-->
+<!--							</div>-->
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3" align="center">
+									<button type="submit" class="btn btn-primary"style="margin-left: -200px;">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/warehouseManagement/purchaseOrder/add.js">
+	</script>
+</body>
+</html>

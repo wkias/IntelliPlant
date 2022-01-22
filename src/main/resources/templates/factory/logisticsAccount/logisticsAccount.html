@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <div class="fixed-table-toolbar form-inline">
+                    <div class="columns pull-left">
+                        <button shiro:hasPermission="factory:logisticsAccount:add" type="button"
+                                class="btn  btn-primary" onclick="add()">
+                            <i class="fa fa-plus " aria-hidden="true"></i>添加
+                        </button>
+                        <button shiro:hasPermission="factory:logisticsAccount:batchRemove" type="button"
+                                class="btn  btn-danger"
+                                onclick="batchRemove()">
+                            <i class="fa fa-trash" aria-hidden="true"></i>删除
+                        </button>
+                        <button class="btn  btn-info" onclick="exportFile()"
+                                shiro:hasPermission="factory:logisticsAccount:exportFile"
+                                type="button">
+                            <i aria-hidden="true" class="glyphicon glyphicon-file s_exportFile_h"></i>导出
+                        </button>
+                    </div>
+                    <div class="columns pull-right">
+                        <div class="form-group">
+                            <input id="formId" type="text" class="form-control"
+                                   placeholder="请输入出入库单编号"></div>
+                        <div class="form-group">
+                            <input id="logisticsNumber" type="text" class="form-control"
+                                   placeholder="请输入物流单编号"></div>
+                        <div class="form-group">
+                            <button class="btn btn-success" onclick="reLoad()">查询</button>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-success" onclick="reset()">重置</button>
+                        </div>
+                    </div>
+                <table id="exampleTable" data-mobile-responsive="true">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <script type="text/javascript">
+        var s_attachment_h = 'hidden';
+        var s_exportFile_h = 'hidden';
+        var s_details_h = 'hidden';
+        var s_resetPwd_h = 'hidden';
+    </script>
+</div>
+<div shiro:hasPermission="factory:logisticsAccount:exportFile">
+    <script type="text/javascript">
+        var s_exportFile_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="factory:logisticsAccount:attachment">
+    <script type="text/javascript">
+        s_attachment_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="factory:logisticsAccount:details">
+    <script type="text/javascript">
+        s_details_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="factory:logisticsAccount:resetPwd">
+    <script type="text/javascript">
+        var s_resetPwd_h = '';
+    </script>
+</div>
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/logisticsAccount/logisticsAccount.js"></script>
+</body>
+</html>

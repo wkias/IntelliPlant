@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.contractManage.dao.CustermerContactPersonDao">
+
+	<select id="get" resultType="com.bootdo.factory.contractManage.domain.CustermerContactPersonDO">
+		select `custermer_id`,`contact_person_id`,`name`,`sex`,`contact_person_tel`,`wechat`,`qq`,`position`,`is_main_person`,`is_deleted`,`create_user_id`,`create_time` from custermer_contact_person where contact_person_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.contractManage.domain.CustermerContactPersonDO">
+        select `custermer_id`,`contact_person_id`,`name`,`sex`,`contact_person_tel`,`wechat`,`qq`,`position`,`is_main_person`,`is_deleted`,`create_user_id`,`create_time` from custermer_contact_person
+        <where>
+            is_deleted=0
+            <if test="custermerId != null and custermerId != ''"> and custermer_id = #{custermerId} </if>
+            <if test="contactPersonId != null and contactPersonId != ''"> and contact_person_id = #{contactPersonId} </if>
+            <if test="name != null and name != ''"> and name = #{name} </if>
+            <if test="sex != null and sex != ''"> and sex = #{sex} </if>
+            <if test="contactPersonTel != null and contactPersonTel != ''"> and contact_person_tel = #{contactPersonTel} </if>
+            <if test="wechat != null and wechat != ''"> and wechat = #{wechat} </if>
+            <if test="qq != null and qq != ''"> and qq = #{qq} </if>
+            <if test="position != null and position != ''"> and position = #{position} </if>
+            <if test="isMainPerson != null and isMainPerson != ''"> and is_main_person = #{isMainPerson} </if>
+            <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+            <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+            <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by is_main_person desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from custermer_contact_person
+		 <where>
+                  is_deleted=0
+		  		  <if test="custermerId != null and custermerId != ''"> and custermer_id = #{custermerId} </if>
+		  		  <if test="contactPersonId != null and contactPersonId != ''"> and contact_person_id = #{contactPersonId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="sex != null and sex != ''"> and sex = #{sex} </if>
+		  		  <if test="contactPersonTel != null and contactPersonTel != ''"> and contact_person_tel = #{contactPersonTel} </if>
+		  		  <if test="wechat != null and wechat != ''"> and wechat = #{wechat} </if>
+		  		  <if test="qq != null and qq != ''"> and qq = #{qq} </if>
+		  		  <if test="position != null and position != ''"> and position = #{position} </if>
+		  		  <if test="isMainPerson != null and isMainPerson != ''"> and is_main_person = #{isMainPerson} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.contractManage.domain.CustermerContactPersonDO">
+		insert into custermer_contact_person
+		(
+			`custermer_id`, 
+			`contact_person_id`, 
+			`name`, 
+			`sex`, 
+			`contact_person_tel`, 
+			`wechat`, 
+			`qq`, 
+			`position`, 
+			`is_main_person`, 
+
+			`create_user_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{custermerId}, 
+			#{contactPersonId}, 
+			#{name}, 
+			#{sex}, 
+			#{contactPersonTel}, 
+			#{wechat}, 
+			#{qq}, 
+			#{position}, 
+			#{isMainPerson}, 
+
+			#{createUserId}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.contractManage.domain.CustermerContactPersonDO">
+		update custermer_contact_person 
+		<set>
+			<if test="custermerId != null">`custermer_id` = #{custermerId}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="contactPersonTel != null">`contact_person_tel` = #{contactPersonTel}, </if>
+			<if test="wechat != null">`wechat` = #{wechat}, </if>
+			<if test="qq != null">`qq` = #{qq}, </if>
+			<if test="position != null">`position` = #{position}, </if>
+			<if test="isMainPerson != null">`is_main_person` = #{isMainPerson}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where contact_person_id = #{contactPersonId}
+	</update>
+	
+	<delete id="remove">
+        update custermer_contact_person set is_deleted=1 where contact_person_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+        update custermer_contact_person set is_deleted=1 where contact_person_id in
+		<foreach item="contactPersonId" collection="array" open="(" separator="," close=")">
+			#{contactPersonId}
+		</foreach>
+	</delete>
+
+</mapper>

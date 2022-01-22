@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.activiti.dao.LeaveBillDao">
+
+    <select id="get" resultType="com.bootdo.activiti.domain.LeaveBillDO">
+		select `bill_id`,`proc_ins_id`,`user_id`,`office_id`,`leave_type`,`leave_days`,`start_date`,`end_date`,`content`,`state`,`create_by`,`create_date`,`update_by`,`update_date`,`is_deleted` from leave_bill where bill_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.activiti.vo.LeaveBillVO">
+        select `bill_id`,lb.`user_id`,su.`name` as 'applyUserName',sd.`name` as
+        'deptName',`leave_type`,`leave_days`,`start_date`,`end_date`,
+        `content`,`state`,`create_by`,`create_date`,`update_by`,`update_date`,`is_deleted`
+        from leave_bill lb LEFT JOIN sys_user su on lb.user_id=su.user_id
+        left JOIN sys_dept sd on lb.office_id = sd.dept_id
+        <where>
+            <if test="applyUserName!=null and applyUserName!=''">and su.`name` like CONCAT('%',#{applyUserName},'%')</if>
+            <if test="billId != null and billId != ''">and bill_id = #{billId}</if>
+            <if test="procInsId != null and procInsId != ''">and proc_ins_id = #{procInsId}</if>
+            <if test="userId != null and userId != ''">and lb.user_id = #{userId}</if>
+            <if test="officeId != null and officeId != ''">and office_id = #{officeId}</if>
+            <if test="leaveType != null and leaveType != ''">and leave_type = #{leaveType}</if>
+            <if test="leaveDays != null and leaveDays != ''">and leave_days = #{leaveDays}</if>
+            <if test="startDate != null and startDate != ''">and start_date = #{startDate}</if>
+            <if test="endDate != null and endDate != ''">and end_date = #{endDate}</if>
+            <if test="content != null and content != ''">and content = #{content}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="createBy != null and createBy != ''">and create_by = #{createBy}</if>
+            <if test="createDate != null and createDate != ''">and create_date = #{createDate}</if>
+            <if test="updateBy != null and updateBy != ''">and update_by = #{updateBy}</if>
+            <if test="updateDate != null and updateDate != ''">and update_date = #{updateDate}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by bill_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from leave_bill
+        <where>
+            <if test="billId != null and billId != ''">and bill_id = #{billId}</if>
+            <if test="procInsId != null and procInsId != ''">and proc_ins_id = #{procInsId}</if>
+            <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+            <if test="officeId != null and officeId != ''">and office_id = #{officeId}</if>
+            <if test="leaveType != null and leaveType != ''">and leave_type = #{leaveType}</if>
+            <if test="leaveDays != null and leaveDays != ''">and leave_days = #{leaveDays}</if>
+            <if test="startDate != null and startDate != ''">and start_date = #{startDate}</if>
+            <if test="endDate != null and endDate != ''">and end_date = #{endDate}</if>
+            <if test="content != null and content != ''">and content = #{content}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="createBy != null and createBy != ''">and create_by = #{createBy}</if>
+            <if test="createDate != null and createDate != ''">and create_date = #{createDate}</if>
+            <if test="updateBy != null and updateBy != ''">and update_by = #{updateBy}</if>
+            <if test="updateDate != null and updateDate != ''">and update_date = #{updateDate}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.activiti.domain.LeaveBillDO">
+		insert into leave_bill
+		(
+			`bill_id`, 
+			`proc_ins_id`, 
+			`user_id`, 
+			`office_id`, 
+			`leave_type`, 
+			`leave_days`, 
+			`start_date`, 
+			`end_date`, 
+			`content`, 
+			`state`, 
+			`create_by`, 
+			`create_date`, 
+			`update_by`, 
+			`update_date`, 
+			`is_deleted`
+		)
+		values
+		(
+			#{billId}, 
+			#{procInsId}, 
+			#{userId}, 
+			#{officeId}, 
+			#{leaveType}, 
+			#{leaveDays}, 
+			#{startDate}, 
+			#{endDate}, 
+			#{content}, 
+			#{state}, 
+			#{createBy}, 
+			#{createDate}, 
+			#{updateBy}, 
+			#{updateDate}, 
+			#{isDeleted}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.activiti.domain.LeaveBillDO">
+        update leave_bill
+        <set>
+            <if test="procInsId != null">`proc_ins_id` = #{procInsId},</if>
+            <if test="userId != null">`user_id` = #{userId},</if>
+            <if test="officeId != null">`office_id` = #{officeId},</if>
+            <if test="leaveType != null">`leave_type` = #{leaveType},</if>
+            <if test="leaveDays != null">`leave_days` = #{leaveDays},</if>
+            <if test="startDate != null">`start_date` = #{startDate},</if>
+            <if test="endDate != null">`end_date` = #{endDate},</if>
+            <if test="content != null">`content` = #{content},</if>
+            <if test="state != null">`state` = #{state},</if>
+            <if test="createBy != null">`create_by` = #{createBy},</if>
+            <if test="createDate != null">`create_date` = #{createDate},</if>
+            <if test="updateBy != null">`update_by` = #{updateBy},</if>
+            <if test="updateDate != null">`update_date` = #{updateDate},</if>
+            <if test="isDeleted != null">`is_deleted` = #{isDeleted}</if>
+        </set>
+        where bill_id = #{billId}
+    </update>
+
+    <delete id="remove">
+		delete from leave_bill where bill_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from leave_bill where bill_id in
+        <foreach item="billId" collection="array" open="(" separator="," close=")">
+            #{billId}
+        </foreach>
+    </delete>
+
+</mapper>

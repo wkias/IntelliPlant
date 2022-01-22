@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="factory:equipmentManage:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="factory:equipmentManage:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+							<button shiro:hasPermission="factory:equipmentManage:export" type="button" class="btn  btn-info"
+									onclick="exportFile()">
+								<i class="glyphicon glyphicon-file" aria-hidden="true"></i>导出
+							</button>
+						</div>
+						<div shiro:hasPermission="factory:equipmentManage:queryAll" class="columns pull-right">
+							<div class="form-inline">
+								<div shiro:hasPermission="factory:equipmentManage:queryAll" class="form-group">
+									<input id="searchCode" type="text" class="form-control"
+										   placeholder="设备编码">
+								</div>
+								<div shiro:hasPermission="factory:equipmentManage:queryAll" class="form-group">
+									<input id="searchName" type="text" class="form-control"
+										   placeholder="设备名称">
+								</div>
+								<button class="btn btn-success" onclick="reLoad()">查询</button>
+								<button class="btn btn-success" onclick="reset()">重置</button>
+							</div>
+						</div>
+
+
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+				var s_details_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="factory:equipmentManage:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="factory:equipmentManage:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="factory:equipmentManage:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="factory:equipmentManage:details">
+			<script type="text/javascript">
+				var s_details_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/factory/equipmentManage/equipmentManage.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:include="include :: header">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div th:include="include :: footer"></div>
+<body>
+<script>
+    function loadFlowType(){
+        var html = "";
+        $.ajax({
+            url: '/common/dict/list/workflow_type',
+            success: function (data) {
+                // 加载数据
+                for (var i = 0; i < data.length; i++) {
+                    html += '<button class="btn btn-info" type="button" onclick="refreshIframe(\''+data[i].value+'\')">' + data[i].name + '</button>\n'
+                }
+                $("#buttonRow").append(html);
+                //$(".chosen-select").val($("#Ttype").val());
+                //$(".chosen-select").trigger("chosen:updated");
+                // 点击事件
+                // $('.chosen-select').on('change', function (e, params) {
+                //
+                // });
+            }
+        });
+    }
+    function refreshIframe(type){
+        $("#flowType").val(type);
+        $("form").submit();
+    }
+    $(function () {
+        loadFlowType();
+    })
+</script>
+<!--<div class="wrapper wrapper-content">-->
+    <form action="/activiti/process/actDistribute" method="post" target="startFormIframe">
+            <input type="hidden" id="flowType" name="flowType">
+    </form>
+<!--</div>-->
+<div id="typeContainer" class="container">
+    <div id="buttonRow"class="row" align="center"></div>
+</div>
+<div id="iframeContainer" class="container" style="height: 100%">
+    <iframe frameborder="0" name="startFormIframe" style="width:100%;height:100%"></iframe>
+</div>
+</body>
+</html>

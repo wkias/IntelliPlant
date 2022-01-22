@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="saleManage:saleManage:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="saleManage:saleManage:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+							<button shiro:hasPermission="saleManage:saleManage:export" type="button" class="btn  btn-info"
+									onclick="exportFile()">
+								<i class="glyphicon glyphicon-file" aria-hidden="true"></i>导出
+							</button>
+						</div>
+						<div class="columns pull-right form-inline" >
+
+							<div class="form-group">
+
+								<input type="date" dateFormate="yyyy-MM-dd" id="saleDate" class="form-control" />
+							</div>
+
+							<div class="form-group">
+								<input type="text" id="saleCode" name="saleCode" placeholder="销售发货单编号" class="form-control"/>
+
+							</div>
+							<div class="form-group">
+
+								<select type="text" id="saleState"  name="saleState" placeholder="销售发货单状态" class="form-control"></select>
+							</div>
+							<div class="form-group">
+								<input type="hidden" id="custermerId"  name="custermerId"  class="form-control">
+								<input type="text" id="custermer"  name="custermer" placeholder="订货单位" class="form-control"></input>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-success" type="button" onclick="reLoad()">查询</button>
+								<button class="btn btn-success" type="button" onclick="reset()">重置</button>
+							</div>
+
+
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_export_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="saleManage:saleManage:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="saleManage:saleManage:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="saleManage:saleManage:export">
+			<script type="text/javascript">
+				var s_export_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/factory/saleManage/saleManage.js"></script>
+</body>
+</html>

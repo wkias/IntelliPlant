@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.contractManage.dao.ContractManageDao">
+    <select id="get" resultType="com.bootdo.factory.contractManage.domain.ContractManageDO">
+        select `contract_id`,`contract_code`,`contract_name`,`contract_type`,
+    `duty_user_id`,
+    `duty_dept_id`,
+    `sign_date`,`start_date`,`end_date`,`sign_place`,
+    `contract_amount`,`contract_content`,`remarks`,`file_name`,`state`,`is_deleted`,
+    `create_user_id`,`create_time`
+    from contract_manage WHERE contract_id=#{contractId};
+	</select>
+
+    <select id="getVO" resultType="com.bootdo.factory.contractManage.vo.ContractManageVO">
+        select `contract_id`,`contract_code`,`contract_name`,`contract_type`,
+        `duty_user_id`,su.`name` as duty_user_name,
+        `duty_dept_id`,sd.`name` as duty_dept_name,
+        `sign_date`,`start_date`,`end_date`,`sign_place`,
+        `contract_amount`,`contract_content`,`remarks`,`file_name`,`state`,`is_deleted`,
+        `create_user_id`,`create_time`
+        from contract_manage cm
+        LEFT JOIN sys_user su on cm.duty_user_id=su.user_id
+        LEFT JOIN sys_dept sd on cm.duty_dept_id = sd.dept_id
+        where contract_id=#{contractId}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.contractManage.vo.ContractManageVO">
+            select `contract_id`,`contract_code`,`contract_name`,`contract_type`,
+            `duty_user_id`,su.`name` as duty_user_name,
+            `duty_dept_id`,sd.`name` as duty_dept_name,
+            `sign_date`,`start_date`,`end_date`,`sign_place`,
+            `contract_amount`,`contract_content`,`remarks`,`file_name`,`state`,`is_deleted`,
+            `create_user_id`,`create_time`
+            from contract_manage cm LEFT JOIN sys_user su on cm.duty_user_id=su.user_id
+            LEFT JOIN sys_dept sd on cm.duty_dept_id = sd.dept_id
+        <where>
+            is_deleted=0
+            <if test="contractId != null and contractId != ''">and contract_id = #{contractId}</if>
+            <if test="contractCode != null and contractCode != ''">and contract_code like concat('%',#{contractCode},'%')</if>
+            <if test="contractName != null and contractName != ''">and contract_name like concat('%',#{contractName},'%')</if>
+            <if test="contractType != null and contractType != ''">and contract_type = #{contractType}</if>
+            <if test="dutyUserId != null and dutyUserId != ''">and duty_user_id = #{dutyUserId}</if>
+            <if test="dutyDeptId != null and dutyDeptId != ''">and duty_dept_id = #{dutyDeptId}</if>
+            <if test="signDate != null and signDate != ''">and sign_date = #{signDate}</if>
+            <if test="startDate != null and startDate != ''">and start_date = #{startDate}</if>
+            <if test="endDate != null and endDate != ''">and end_date = #{endDate}</if>
+            <if test="signPlace != null and signPlace != ''">and sign_place = #{signPlace}</if>
+            <if test="contractAmount != null and contractAmount != ''">and contract_amount = #{contractAmount}</if>
+            <if test="contractContent !=null and contractContent !=''">and contract_content =#{contractContent}</if>
+            <if test="remarks!=null and remarks!=''">and remarks=#{remarks}</if>
+            <if test="fileName !=null and fileName !=''">and file_name=#{fileName}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by contract_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from contract_manage
+        <where>
+            is_deleted=0
+            <if test="contractId != null and contractId != ''">and contract_id = #{contractId}</if>
+            <if test="contractCode != null and contractCode != ''">and contract_code like concat('%',#{contractCode},'%')</if>
+            <if test="contractName != null and contractName != ''">and contract_name like concat('%',#{contractName},'%')</if>
+            <if test="contractType != null and contractType != ''">and contract_type = #{contractType}</if>
+            <if test="dutyUserId != null and dutyUserId != ''">and duty_user_id = #{dutyUserId}</if>
+            <if test="dutyDeptId != null and dutyDeptId != ''">and duty_dept_id = #{dutyDeptId}</if>
+            <if test="signDate != null and signDate != ''">and sign_date = #{signDate}</if>
+            <if test="startDate != null and startDate != ''">and start_date = #{startDate}</if>
+            <if test="endDate != null and endDate != ''">and end_date = #{endDate}</if>
+            <if test="signPlace != null and signPlace != ''">and sign_place = #{signPlace}</if>
+            <if test="contractAmount != null and contractAmount != ''">and contract_amount = #{contractAmount}</if>
+            <if test="contractContent !=null and contractContent !=''">and contract_content =#{contractContent}</if>
+            <if test="remarks!=null and remarks!=''">and remarks=#{remarks}</if>
+            <if test="fileName !=null and fileName !=''">and file_name=#{fileName}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.contractManage.domain.ContractManageDO">
+		insert into contract_manage
+		(
+			`contract_id`, 
+			`contract_code`, 
+			`contract_name`, 
+			`contract_type`, 
+			`duty_user_id`, 
+			`duty_dept_id`, 
+			`sign_date`, 
+			`start_date`, 
+			`end_date`, 
+			`sign_place`, 
+			`contract_amount`,
+			`contract_content`,
+			`remarks`,
+			`file_name`,
+			`state`, 
+			`is_deleted`, 
+			`create_user_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{contractId}, 
+			#{contractCode}, 
+			#{contractName}, 
+			#{contractType}, 
+			#{dutyUserId}, 
+			#{dutyDeptId}, 
+			#{signDate}, 
+			#{startDate}, 
+			#{endDate}, 
+			#{signPlace}, 
+			#{contractAmount},
+			#{contractContent},
+			#{remarks},
+			#{fileName},
+			#{state}, 
+			0,
+			#{createUserId}, 
+			#{createTime}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.contractManage.domain.ContractManageDO">
+        update contract_manage
+        <set>
+            <if test="contractCode != null">`contract_code` = #{contractCode},</if>
+            <if test="contractName != null">`contract_name` = #{contractName},</if>
+            <if test="contractType != null">`contract_type` = #{contractType},</if>
+            <if test="dutyUserId != null">`duty_user_id` = #{dutyUserId},</if>
+            <if test="dutyDeptId != null">`duty_dept_id` = #{dutyDeptId},</if>
+            <if test="signDate != null">`sign_date` = #{signDate},</if>
+            <if test="startDate != null">`start_date` = #{startDate},</if>
+            <if test="endDate != null">`end_date` = #{endDate},</if>
+            <if test="signPlace != null">`sign_place` = #{signPlace},</if>
+            <if test="contractAmount != null">`contract_amount` = #{contractAmount},</if>
+            <if test="contractContent !=null and contractContent !=''">contract_content =#{contractContent},</if>
+            <if test="remarks!=null and remarks!=''">remarks=#{remarks},</if>
+            <if test="fileName !=null and fileName !=''">file_name=#{fileName},</if>
+            <if test="state != null">`state` = #{state},</if>
+            <if test="isDeleted != null">`is_deleted` = #{isDeleted},</if>
+            <if test="createUserId != null">`create_user_id` = #{createUserId},</if>
+            <if test="createTime != null">`create_time` = #{createTime}</if>
+        </set>
+        where contract_id = #{contractId}
+    </update>
+
+    <delete id="remove">
+	    update contract_manage set is_deleted=1 where contract_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        update contract_manage set is_deleted=1 where contract_id in
+        <foreach item="contractId" collection="array" open="(" separator="," close=")">
+            #{contractId}
+        </foreach>
+    </delete>
+
+</mapper>

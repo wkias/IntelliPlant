@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.productManage.dao.DailyProductionContentDao">
+
+	<select id="get" resultType="com.bootdo.factory.productManage.domain.DailyProductionContentDO">
+		select `daily_production_content_id`,`daily_production_id`,`process_id`,`product_id`,`count` from daily_production_content where daily_production_content_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.productManage.domain.DailyProductionContentDO">
+		select `daily_production_content_id`,`daily_production_id`,`process_id`,`product_id`,`count` from daily_production_content
+        <where>  
+		  		  <if test="dailyProductionContentId != null and dailyProductionContentId != ''"> and daily_production_content_id = #{dailyProductionContentId} </if>
+		  		  <if test="dailyProductionId != null and dailyProductionId != ''"> and daily_production_id = #{dailyProductionId} </if>
+		  		  <if test="processId != null and processId != ''"> and process_id = #{processId} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="count != null and count != ''"> and count = #{count} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by daily_production_content_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from daily_production_content
+		 <where>  
+		  		  <if test="dailyProductionContentId != null and dailyProductionContentId != ''"> and daily_production_content_id = #{dailyProductionContentId} </if>
+		  		  <if test="dailyProductionId != null and dailyProductionId != ''"> and daily_production_id = #{dailyProductionId} </if>
+		  		  <if test="processId != null and processId != ''"> and process_id = #{processId} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="count != null and count != ''"> and count = #{count} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.productManage.domain.DailyProductionContentDO">
+		insert into daily_production_content
+		(
+			`daily_production_content_id`, 
+			`daily_production_id`, 
+			`process_id`, 
+			`product_id`, 
+			`count`
+		)
+		values
+		(
+			#{dailyProductionContentId}, 
+			#{dailyProductionId}, 
+			#{processId}, 
+			#{productId}, 
+			#{count}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.productManage.domain.DailyProductionContentDO">
+		update daily_production_content 
+		<set>
+			<if test="dailyProductionId != null">`daily_production_id` = #{dailyProductionId}, </if>
+			<if test="processId != null">`process_id` = #{processId}, </if>
+			<if test="productId != null">`product_id` = #{productId}, </if>
+			<if test="count != null">`count` = #{count}</if>
+		</set>
+		where daily_production_content_id = #{dailyProductionContentId}
+	</update>
+	
+	<delete id="remove">
+		delete from daily_production_content where daily_production_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from daily_production_content where daily_production_content_id in 
+		<foreach item="dailyProductionContentId" collection="array" open="(" separator="," close=")">
+			#{dailyProductionContentId}
+		</foreach>
+	</delete>
+
+</mapper>

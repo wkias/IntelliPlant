@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="custermerId" name="custermerId" th:value="${supplierInformation.custermerId}"  type="hidden">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">*供应商名称（全称）</label>
+                            <div class="col-sm-8">
+                                <input id="custermerName" name="custermerName" th:value="${supplierInformation.custermerName}" class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">*供应商类型</label>
+                            <div class="col-sm-8">
+                                <!--<select data-placeholder="&#45;&#45;选择设备类型&#45;&#45;" name="custermerType" id="custermerType"
+                                        class="form-control chosen-select" tabindex="2" required readonly="readonly">
+                                </select>-->
+                                <input th:value="${supplierInformation.custermerType}"name="custermerType" id="custermerType"
+                                       class="form-control" readonly="readonly"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">纳税人识别号</label>
+                            <div class="col-sm-8">
+                                <input id="taxpayerIdNumbers" name="taxpayerIdNumbers" th:value="${supplierInformation.taxpayerIdNumbers}" class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">统一社会信用代码</label>
+                            <div class="col-sm-8">
+                                <input id="socialCreditCode" name="socialCreditCode" th:value="${supplierInformation.socialCreditCode}" class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">地址</label>
+                            <div class="col-sm-8">
+                                <input id="address" name="address" th:value="${supplierInformation.address}" class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">联系电话</label>
+                            <div class="col-sm-8">
+                                <input id="custermerTel" name="custermerTel" th:value="${supplierInformation.custermerTel}" class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">电子邮箱</label>
+                            <div class="col-sm-8">
+                                <input id="email" name="email" th:value="${supplierInformation.email}" class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">传真</label>
+                            <div class="col-sm-8">
+                                <input id="fax" name="fax" th:value="${supplierInformation.fax}" class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">开户行</label>
+                            <div class="col-sm-8">
+                                <input id="bank" name="bank" th:value="${supplierInformation.bank}" class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">开户行账号</label>
+                            <div class="col-sm-8">
+                                <input id="bankAccount" name="bankAccount" th:value="${supplierInformation.bankAccount}" class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <label class="col-sm-3 control-label">删除标记</label>
+                            <div class="col-sm-8">
+                                <input id="isDeleted" name="isDeleted" th:value="${supplierInformation.isDeleted}" class="form-control" type="hidden" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <label class="col-sm-3 control-label">创建者</label>
+                            <div class="col-sm-8">
+                                <input id="createUserId" name="createUserId" th:value="${supplierInformation.createUserId}" class="form-control" type="hidden" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">备注</label>
+                            <div class="col-sm-8">
+                                <input id="remarks" name="remarks" th:value="${supplierInformation.remarks}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+
+
+</body>
+</html>

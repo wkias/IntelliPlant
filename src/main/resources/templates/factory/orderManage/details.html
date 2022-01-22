@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg" onload="window.title='修改i合同'">
+<script src="js/appjs/factory/contractManage/contractManage.js"></script>
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm" enctype="multipart/form-data">
+                        <input id="orderId"name="orderId"type="hidden" th:value="${orderManage.orderId}">
+                        <b>基本信息</b>
+                        <table class="table table-striped table-bordered table-hover">
+                            <tr>
+                                <th>订单名称</th>
+                                <td><input id="orderName" name="orderName"th:value="${orderManage.orderName}" class="form-control" type="text" readonly></td>
+                                <th>*订单负责人</th>
+                                <td><input id="" name="orderManagerId" th:value="${orderManage.orderManagerId}" type="hidden">
+                                    <input class="form-control" name="orderManagerId" id="orderManagerId" th:value="${orderManage.orderManagerId}" type="text" readonly>
+                                </td>
+                                <th>订单编号</th>
+
+                                <td><input id="orderCode" name="orderCode" th:value="${orderManage.orderCode}" class="form-control" type="text" readonly></td>
+                                <th>订单类型</th>
+                                <td><input id="oldorderType" type="hidden"  th:value="${orderManage.orderType}">
+                                    <input id="orderType" name="orderType" th:value="${orderManage.orderType}" class="chosen-select form-control" type="text"  readonly></td>
+
+                            </tr>
+                            <tr>
+                                <th>*合同编号</th>
+                                <td><input id="contractCode" name="contractCode"th:value="${orderManage.contractCode}" class="form-control" type="text" readonly></td>
+                                <th>*合同名称</th>
+                                <td><input id="contractName" name="contractName" th:value="${orderManage.contractName}"class="form-control" type="text" readonly></td>
+                                <th>*合同类型</th>
+                                <input id="oldType" name="oldType" type="hidden">
+                                <td><input id="contractType" name="contractType" th:value="${orderManage.contractType}"data-placeholder="合同类型" class="chosen-select form-control"readonly/></td>
+                                <th>需求商</th>
+                                <td>
+                                    <input id="demandName" name="demandName" th:value="${orderManage.demandName}" class="form-control"  readonly></input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>签订日期</th>
+                                <td><input id="orderSigningDate" name="orderSigningDate" th:value="${#dates.format(orderManage.orderSigningDate,'yyyy-MM-dd')}"class="form-control" type="date" readonly></td>
+                                <th>开始日期</th>
+                                <td><input id="orderStartDate" name="orderStartDate" th:value="${#dates.format(orderManage.orderStartDate,'yyyy-MM-dd')}"class="form-control" type="date" readonly></td>
+                                <th>截止日期</th>
+                                <td><input id="orderDeadline" name="orderDeadline" th:value="${#dates.format(orderManage.orderDeadline,'yyyy-MM-dd')}"class="form-control" type="date" readonly></td>
+                                <th>订单发件人</th>
+                                <td><input id="orderSender" name="orderSender" th:value="${orderManage.orderSender}" class="form-control" type="text" readonly></td>
+
+                            </tr>
+                            <tr>
+                                <th>订单期次</th>
+                                <input id="oldState" name="oldState"  type="hidden">
+                                <td><input id="orderPeriod" name="orderPeriod" th:value="${orderManage.orderPeriod}"data-placeholder="合同状态" class="chosen-select form-control" readonly/></td>
+                                <th>订单状态</th>
+                                <td><input id="state" name="state" th:value="${orderManage.state}"class="form-control" type="text"readonly></td>
+                                <th>发货地</th>
+                                <td><input id="senderPlace" name="senderPlace" th:value="${orderManage.senderPlace}"class="form-control" type="text"readonly>
+                                </td>
+                                <th>总金额(元)</th>
+                                <td><input id="totalSum" name="totalSum" th:value="${orderManage.totalSum}" class="chosen-select form-control" type="text" readonly></td>
+
+                            </tr>
+                        </table>
+
+
+                        <!--th:each="content:${noBatchList}"-->
+                        <div name="noBatchItem">
+                            <input name="noBatchId"type="hidden">
+                            <b>订单内容</b>
+                            <table th:each="noBatch:${noBatchList}" class="table table-striped table-bordered table-hover">
+                                <tr><th>产品编号</th><th>产品名称</th><th>产品型号</th><th>总数量</th><th>发往地点</th></tr>
+                                <tr><td><input class="form-control" type="text" th:value="${noBatch.productDefinitionDO.productCode}" readonly></td><td><input class="form-control" type="text" th:value="${noBatch.productDefinitionDO.productName}" readonly></td><td><input class="form-control" type="text" th:value="${noBatch.productDefinitionDO.productModel}" readonly></td><td><input class="form-control"  name="noCount" th:value="${noBatch.count}" type="text" readonly></td><td><input class="form-control" type="text" th:value="${noBatch.destination}" name="noDestination" readonly></td></tr>
+                                <tr><th>单位</th><th>单价</th><th>总金额</th><th>到货日期</th><th>报缴仓库</th></tr>
+                                <tr><td><input class="form-control" type="text" th:value="${noBatch.productDefinitionDO.unitName}" readonly></td><td><input class="form-control" th:value="${noBatch.productDefinitionDO.price}" type="text" readonly></td><td><input class="form-control" name="noTotalSum" type="text" th:value="${noBatch.totalSum}" readonly></td><td><input class="form-control" name="noDeadline" th:value="${noBatch.deadline}" type="text"readonly ></td><td><input class="form-control" type="text" th:value="${noBatch.storehouse}" name="noStoreHouse" readonly></td></tr>
+                            </table>
+                        </div>
+
+                        <!--<div name="batchItem" th:if="${not #lists.isEmpty(batchList)}">-->
+                            <!--<input name="batchId"type="hidden">-->
+                            <!--<input name="batchChecked"type="checkbox"/><b>多批次订单内容</b>-->
+                            <!--<table th:each="content:${batchList}" class="table table-striped table-bordered table-hover">-->
+                                <!--<tr><th>*产品名称</th><th>产品型号</th><th>产品规格</th><th>总数量</th><th>发往地点</th></tr>-->
+                                <!--<tr><td><input class="form-control" type="text" th:value="${content.productDefinitionDO.productName}" readonly></td><td><input class="form-control" type="text" th:value="${content.productDefinitionDO.productModel}" readonly></td><td><input class="form-control" type="text" th:value="${content.productDefinitionDO.productSize}" readonly></td><td><input class="form-control"  name="noCount" th:value="${content.count}" type="text" ></td><td><input class="form-control" type="text" th:value="${content.destination}" name="noDestination"></td></tr>-->
+                                <!--<tr><th>单位</th><th>单价</th><th>总金额</th><th>到货日期</th><th>报缴仓库</th></tr>-->
+                                <!--<tr><td><input class="form-control" type="text" th:value="${content.productDefinitionDO.unit}" readonly></td><td><input class="form-control" th:value="${content.productDefinitionDO.price}" type="text" ></td><td><input class="form-control" name="noTotalSum" type="text" th:value="${content.totalSum}" ></td><td><input class="form-control" name="noDeadline" th:value="${content.deadline}" type="text" ></td><td><input class="form-control" type="text" th:value="${content.storehouse}" name="noStoreHouse" ></td></tr>-->
+                            <!--</table>-->
+                        <!--</div>-->
+
+                        <b>备注/附件</b>
+                        <div class="form-group" style="display: flex;align-items: center">
+                            <textarea style="height: 100px;margin-right: 20px"id="remark" name="remark" th:text="${orderManage.remark}"wrap="hard" row="20" cols="80" readonly></textarea>
+                            <label style="margin-right: 20px">附件下载</label><input id="files"name="files" th:value="${orderManage.files}"type="text" readonly>
+                            <button type="button" onclick="window.location='/common/sysFile/files/'+$('#files').val()">附件下载</button>
+                        </div>
+
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/orderManage/edit.js">
+</script>
+</body>
+</html>

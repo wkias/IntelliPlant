@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.productManage.dao.InspectionItemsDetailDao">
+
+    <select id="get" resultType="com.bootdo.factory.productManage.domain.InspectionItemsDetailDO">
+		select `id`,`product_inspection_id`,`inspection_items_id`,`project_name`,`value_type`,`unit`,`range_threshold`,`description`,`is_deleted`,`create_user_id`,`create_time` from inspection_items_detail where id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.productManage.domain.InspectionItemsDetailDO">
+        select
+        `id`,`product_inspection_id`,`inspection_items_id`,`project_name`,`value_type`,`unit`,`range_threshold`,`description`,`is_deleted`,`create_user_id`,`create_time`
+        from inspection_items_detail
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if>
+            <if test="productInspectionId != null and productInspectionId != ''">and product_inspection_id =
+                #{productInspectionId}
+            </if>
+            <if test="inspectionItemsId != null and inspectionItemsId != ''">and inspection_items_id =
+                #{inspectionItemsId}
+            </if>
+            <if test="projectName != null and projectName != ''">and project_name = #{projectName}</if>
+            <if test="valueType != null and valueType != ''">and value_type = #{valueType}</if>
+            <if test="unit != null and unit != ''">and unit = #{unit}</if>
+            <if test="rangeThreshold != null and rangeThreshold != ''">and range_threshold = #{rangeThreshold}</if>
+            <if test="description != null and description != ''">and description = #{description}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from inspection_items_detail
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if>
+			<if test="productInspectionId != null and productInspectionId != ''">and product_inspection_id =
+				#{productInspectionId}
+			</if>
+			<if test="inspectionItemsId != null and inspectionItemsId != ''">and inspection_items_id =
+				#{inspectionItemsId}
+			</if>
+            <if test="projectName != null and projectName != ''">and project_name = #{projectName}</if>
+            <if test="valueType != null and valueType != ''">and value_type = #{valueType}</if>
+            <if test="unit != null and unit != ''">and unit = #{unit}</if>
+            <if test="rangeThreshold != null and rangeThreshold != ''">and range_threshold = #{rangeThreshold}</if>
+            <if test="description != null and description != ''">and description = #{description}</if>
+            <if test="isDeleted != null and isDeleted != ''">and is_deleted = #{isDeleted}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.productManage.domain.InspectionItemsDetailDO">
+		insert into inspection_items_detail
+		(
+			`id`,
+			`product_inspection_id`,
+			`inspection_items_id`,
+			`project_name`, 
+			`value_type`, 
+			`unit`, 
+			`range_threshold`, 
+			`description`, 
+			`is_deleted`, 
+			`create_user_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{id},
+			#{productInspectionId},
+			#{inspectionItemsId},
+			#{projectName}, 
+			#{valueType}, 
+			#{unit}, 
+			#{rangeThreshold}, 
+			#{description}, 
+			#{isDeleted}, 
+			#{createUserId}, 
+			#{createTime}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.productManage.domain.InspectionItemsDetailDO">
+        update inspection_items_detail
+        <set>
+			<if test="productInspectionId != null and productInspectionId != ''">and product_inspection_id =
+				#{productInspectionId}
+			</if>
+			<if test="inspectionItemsId != null and inspectionItemsId != ''">and inspection_items_id =
+				#{inspectionItemsId}
+			</if>
+            <if test="projectName != null">`project_name` = #{projectName},</if>
+            <if test="valueType != null">`value_type` = #{valueType},</if>
+            <if test="unit != null">`unit` = #{unit},</if>
+            <if test="rangeThreshold != null">`range_threshold` = #{rangeThreshold},</if>
+            <if test="description != null">`description` = #{description},</if>
+            <if test="isDeleted != null">`is_deleted` = #{isDeleted},</if>
+            <if test="createUserId != null">`create_user_id` = #{createUserId},</if>
+            <if test="createTime != null">`create_time` = #{createTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="remove">
+		delete from inspection_items_detail where id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from inspection_items_detail where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

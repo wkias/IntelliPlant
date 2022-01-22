@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.dao.ProcessDefinitionDao">
+
+	<select id="get" resultType="com.bootdo.factory.domain.ProcessDefinitionDO">
+		select `process_id`,`process_code`,`process_name`,`state`,`description`,`is_deleted`,`create_user_id`,`create_time` from process_definition where process_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.domain.ProcessDefinitionDO">
+		select `process_id`,`process_code`,`process_name`,`state`,`description`,`is_deleted`,`create_user_id`,`create_time` from process_definition
+        <where>
+			is_deleted = 0
+		  		  <if test="processId != null and processId != ''"> and process_id = #{processId} </if>
+		  		  <if test="processCode != null and processCode != ''"> and process_code like CONCAT('%',#{processCode},'%')</if>
+		  		  <if test="processName != null and processName != ''"> and process_name like CONCAT('%',#{processName},'%')</if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="description != null and description != ''"> and description = #{description} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by process_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from process_definition
+		 <where>
+			 is_deleted = 0
+		  		  <if test="processId != null and processId != ''"> and process_id = #{processId} </if>
+		  		  <if test="processCode != null and processCode != ''"> and process_code = #{processCode} </if>
+		  		  <if test="processName != null and processName != ''"> and process_name = #{processName} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		  <if test="description != null and description != ''"> and description = #{description} </if>
+		  		  <if test="isDeleted != null and isDeleted != ''"> and is_deleted = #{isDeleted} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{create UserId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.domain.ProcessDefinitionDO">
+		insert into process_definition
+		(
+			`process_id`, 
+			`process_code`, 
+			`process_name`, 
+			`state`, 
+			`description`, 
+			`is_deleted`, 
+			`create_user_id`,
+			`create_time`
+		)
+		values
+		(
+			#{processId}, 
+			#{processCode}, 
+			#{processName}, 
+			#{state}, 
+			#{description}, 
+			#{isDeleted}, 
+			#{createUserId},
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.domain.ProcessDefinitionDO">
+		update process_definition 
+		<set>
+			<if test="processCode != null">`process_code` = #{processCode}, </if>
+			<if test="processName != null">`process_name` = #{processName}, </if>
+			<if test="state != null">`state` = #{state}, </if>
+			<if test="description != null">`description` = #{description}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where process_id = #{processId}
+	</update>
+
+	<delete id="remove">
+		update process_definition
+		<set>
+			is_deleted = 1
+			where
+			process_id = #{processId}
+		</set>
+	</delete>
+
+	<delete id="batchRemove">
+		update process_definition
+		set is_deleted = 1
+		where process_id in
+		<foreach item="processId" collection="array" open="(" separator="," close=")">
+			#{processId}
+		</foreach>
+	</delete>
+</mapper>

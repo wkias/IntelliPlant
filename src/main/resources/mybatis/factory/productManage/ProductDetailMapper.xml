@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.productManage.dao.ProductDetailDao">
+
+	<select id="get" resultType="com.bootdo.factory.productManage.domain.ProductDetailDO">
+		select `product_id`,`product_name`,`product_type`,`gauge_value`,`material`,`size`,`model`,`quantity_unit`,`weight_unit`,`remark`,`weight`,`price`,`files`,`is_deleted`,`creat_user_id`,`creat_date` from product_detail where product_id = #{value} and is_deleted = 0
+	</select>
+
+	<select id="list" resultType="com.bootdo.factory.productManage.domain.ProductDetailDO">
+		select `product_id`,`product_name`,`product_type`,`gauge_value`,`material`,`size`,`model`,`quantity_unit`,`weight_unit`,`remark`,`weight`,`price`,`files`,`is_deleted`,`creat_user_id`,`creat_date` from product_detail
+        <where>  
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="productName != null and productName != ''"> and product_name = #{productName} </if>
+		  		  <if test="productType != null and productType != ''"> and product_type = #{productType} </if>
+		  		  <if test="gaugeValue != null and gaugeValue != ''"> and gauge_value = #{gaugeValue} </if>
+		  		  <if test="material != null and material != ''"> and material = #{material} </if>
+		  		  <if test="size != null and size != ''"> and size = #{size} </if>
+		  		  <if test="model != null and model != ''"> and model = #{model} </if>
+		  		  <if test="quantityUnit != null and quantityUnit != ''"> and quantity_unit = #{quantityUnit} </if>
+		  		  <if test="weightUnit != null and weightUnit != ''"> and weight_unit = #{weightUnit} </if>
+		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		  		  <if test="weight != null and weight != ''"> and weight = #{weight} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="files != null and files != ''"> and files = #{files} </if>
+		  		   and is_deleted = 0
+		  		  <if test="creatUserId != null and creatUserId != ''"> and creat_user_id = #{creatUserId} </if>
+		  		  <if test="creatDate != null and creatDate != ''"> and creat_date = #{creatDate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by product_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from product_detail
+		 <where>  
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="productName != null and productName != ''"> and product_name = #{productName} </if>
+		  		  <if test="productType != null and productType != ''"> and product_type = #{productType} </if>
+		  		  <if test="gaugeValue != null and gaugeValue != ''"> and gauge_value = #{gaugeValue} </if>
+		  		  <if test="material != null and material != ''"> and material = #{material} </if>
+		  		  <if test="size != null and size != ''"> and size = #{size} </if>
+		  		  <if test="model != null and model != ''"> and model = #{model} </if>
+		  		  <if test="quantityUnit != null and quantityUnit != ''"> and quantity_unit = #{quantityUnit} </if>
+		  		  <if test="weightUnit != null and weightUnit != ''"> and weight_unit = #{weightUnit} </if>
+		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		  		  <if test="weight != null and weight != ''"> and weight = #{weight} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="files != null and files != ''"> and files = #{files} </if>
+		  		   and is_deleted = 0
+		  		  <if test="creatUserId != null and creatUserId != ''"> and creat_user_id = #{creatUserId} </if>
+		  		  <if test="creatDate != null and creatDate != ''"> and creat_date = #{creatDate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.factory.productManage.domain.ProductDetailDO">
+		insert into product_detail
+		(
+			`product_id`, 
+			`product_name`, 
+			`product_type`, 
+			`gauge_value`, 
+			`material`, 
+			`size`, 
+			`model`, 
+			`quantity_unit`, 
+			`weight_unit`, 
+			`remark`, 
+			`weight`, 
+			`price`, 
+			`files`, 
+			`is_deleted`, 
+			`creat_user_id`, 
+			`creat_date`
+		)
+		values
+		(
+			#{productId}, 
+			#{productName}, 
+			#{productType}, 
+			#{gaugeValue}, 
+			#{material}, 
+			#{size}, 
+			#{model}, 
+			#{quantityUnit}, 
+			#{weightUnit}, 
+			#{remark}, 
+			#{weight}, 
+			#{price}, 
+			#{files}, 
+			#{isDeleted}, 
+			#{creatUserId}, 
+			#{creatDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.factory.productManage.domain.ProductDetailDO">
+		update product_detail 
+		<set>
+			<if test="productName != null">`product_name` = #{productName}, </if>
+			<if test="productType != null">`product_type` = #{productType}, </if>
+			<if test="gaugeValue != null">`gauge_value` = #{gaugeValue}, </if>
+			<if test="material != null">`material` = #{material}, </if>
+			<if test="size != null">`size` = #{size}, </if>
+			<if test="model != null">`model` = #{model}, </if>
+			<if test="quantityUnit != null">`quantity_unit` = #{quantityUnit}, </if>
+			<if test="weightUnit != null">`weight_unit` = #{weightUnit}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="weight != null">`weight` = #{weight}, </if>
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="files != null">`files` = #{files}, </if>
+			<if test="isDeleted != null">`is_deleted` = #{isDeleted}, </if>
+			<if test="creatUserId != null">`creat_user_id` = #{creatUserId}, </if>
+			<if test="creatDate != null">`creat_date` = #{creatDate}</if>
+		</set>
+		where product_id = #{productId}
+	</update>
+	
+	<delete id="remove">
+		delete from product_detail where product_id = #{value}
+	</delete>
+	
+	<update id="batchRemove">
+		update product_detail set is_deleted = 1 where product_id in
+		<foreach item="productId" collection="array" open="(" separator="," close=")">
+			#{productId}
+		</foreach>
+	</update>
+
+</mapper>

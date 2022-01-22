@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.warehouseManagement.dao.OutboundOrderDao">
+
+    <select id="get" resultType="com.bootdo.factory.warehouseManagement.domain.OutboundOrderDO">
+		select `outbound_id`,`associated_table_id`,`associated_table_code`,`associated_table_type`,`outbound_code`,`consignee`,`consignee`,`business_type`,`outbound_state`,`quantity`,`weight`,`amount`,`manager`,`outbound_date`,`file`,`remark`,`repository`,`create_user_id`,`create_time`,`is_deleted` from outbound_order where outbound_id = #{value}
+	</select>
+
+    <select id="list" resultType="com.bootdo.factory.warehouseManagement.domain.OutboundOrderDO">
+        select
+        `outbound_id`,`associated_table_id`,`associated_table_code`,`associated_table_type`,`outbound_code`,`consignee`,`consignee`,`business_type`,`outbound_state`,`quantity`,`weight`,`amount`,`manager`,`outbound_date`,`file`,`remark`,`repository`,`create_user_id`,`create_time`,`is_deleted`
+        from outbound_order
+        <where>
+            <if test="outboundId != null and outboundId != ''">and outbound_id = #{outboundId}</if>
+            <if test="associatedTableId != null and associatedTableId != ''">and associated_table_id =
+                #{associatedTableId}
+            </if>
+            <if test="associatedTableCode != null and associatedTableCode != ''">and associated_table_code =
+                #{associatedTableCode}
+            </if>
+            <if test="associatedTableType != null and associatedTableType != ''">and associated_table_type =
+                #{associatedTableType}
+            </if>
+            <if test="outboundCode != null and outboundCode != ''">and outbound_code like #{outboundCode}</if>
+            <if test="consigneeId != null and consigneeId != ''">`consigneeId` = #{consigneeId},</if>
+            <if test="consignee != null and consignee != ''">and consignee like #{consignee}</if>
+            <if test="businessType != null and businessType != ''">and business_type = #{businessType}</if>
+            <if test="outboundState != null and outboundState != ''">and outbound_state = #{outboundState}</if>
+            <if test="quantity != null and quantity != ''">and quantity = #{quantity}</if>
+            <if test="weight != null and weight != ''">and weight = #{weight}</if>
+            <if test="amount != null and amount != ''">and amount = #{amount}</if>
+            <if test="manager != null and manager != ''">and manager = #{manager}</if>
+            <if test="outboundDate != null and outboundDate != ''">and outbound_date = #{outboundDate}</if>
+            <if test="file != null and file != ''">and file = #{file}</if>
+            <if test="remark != null and remark != ''">and remark = #{remark}</if>
+            <if test="repository != null and repository != ''">and repository = #{repository}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+            and is_deleted = 0
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by outbound_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from outbound_order
+        <where>
+            <if test="outboundId != null and outboundId != ''">and outbound_id = #{outboundId}</if>
+            <if test="associatedTableId != null and associatedTableId != ''">and associated_table_id =
+                #{associatedTableId}
+            </if>
+            <if test="associatedTableCode != null and associatedTableCode != ''">and associated_table_code =
+                #{associatedTableCode}
+            </if>
+            <if test="associatedTableType != null and associatedTableType != ''">and associated_table_type =
+                #{associatedTableType}
+            </if>
+            <if test="outboundCode != null and outboundCode != ''">and outbound_code like #{outboundCode}</if>
+            <if test="consigneeId != null and consigneeId != ''">`consigneeId` = #{consigneeId},</if>
+
+            <if test="consignee != null and consignee != ''">and consignee like #{consignee}</if>
+            <if test="businessType != null and businessType != ''">and business_type = #{businessType}</if>
+            <if test="outboundState != null and outboundState != ''">and outbound_state = #{outboundState}</if>
+            <if test="quantity != null and quantity != ''">and quantity = #{quantity}</if>
+            <if test="weight != null and weight != ''">and weight = #{weight}</if>
+            <if test="amount != null and amount != ''">and amount = #{amount}</if>
+            <if test="manager != null and manager != ''">and manager = #{manager}</if>
+            <if test="outboundDate != null and outboundDate != ''">and outbound_date = #{outboundDate}</if>
+            <if test="file != null and file != ''">and file = #{file}</if>
+            <if test="remark != null and remark != ''">and remark = #{remark}</if>
+            <if test="repository != null and repository != ''">and repository = #{repository}</if>
+            <if test="createUserId != null and createUserId != ''">and create_user_id = #{createUserId}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+            and is_deleted = 0
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.warehouseManagement.domain.OutboundOrderDO">
+		insert into outbound_order
+		(
+			`outbound_id`, 
+			`associated_table_id`, 
+			`associated_table_code`, 
+			`associated_table_type`, 
+			`outbound_code`,
+			`consignee_id`,
+			`consignee`, 
+			`business_type`, 
+			`outbound_state`, 
+			`quantity`, 
+			`weight`, 
+			`amount`, 
+			`manager`, 
+			`outbound_date`, 
+			`file`, 
+			`remark`, 
+			`repository`, 
+			`create_user_id`, 
+			`create_time`, 
+			`is_deleted`
+		)
+		values
+		(
+			#{outboundId}, 
+			#{associatedTableId}, 
+			#{associatedTableCode}, 
+			#{associatedTableType}, 
+			#{outboundCode},
+			#{consigneeId},
+			#{consignee}, 
+			#{businessType}, 
+			#{outboundState}, 
+			#{quantity}, 
+			#{weight}, 
+			#{amount}, 
+			#{manager}, 
+			#{outboundDate}, 
+			#{file}, 
+			#{remark}, 
+			#{repository}, 
+			#{createUserId}, 
+			#{createTime}, 
+			0
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.warehouseManagement.domain.OutboundOrderDO">
+        update outbound_order
+        <set>
+            <if test="associatedTableId != null">`associated_table_id` = #{associatedTableId},</if>
+            <if test="outboundState != null">`outbound_state` = #{outboundState},</if>
+            <if test="file != null">`file` = #{file},</if>
+            <if test="remark != null">`remark` = #{remark}</if>
+        </set>
+        where outbound_id = #{outboundId}
+    </update>
+
+    <delete id="remove">
+		update outbound_order set is_deleted = 1 where outbound_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        update outbound_order set is_deleted = 1 where outbound_id in
+        <foreach item="outboundId" collection="array" open="(" separator="," close=")">
+            #{outboundId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="saleId"name="saleId"type="hidden" >
+                        <input id="isDeleted"name="isDeleted"type="hidden" value="0">
+                        <b>基本信息</b>
+                        <table class="table table-striped table-bordered table-hover">
+                            <tr>
+                                <th>关联订单编号</th>
+                                <td><input id="orderId" name="orderId" readonly type="hidden">
+                                    <input id="orderCode" th:value="${orderManageDo.orderCode}" name="orderCode" class="form-control" readonly type="text" ></td>
+                                <th>关联订单名称</th>
+                                <td>
+
+                                    <input class="form-control" name="orderName" th:value="${orderManageDo.orderName}" id="orderName" readonly type="text" >
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>销售发货单编号</th>
+                                <td><input id="saleCode" name="saleCode" class="form-control"  th:value="${saleManageDo.saleCode}" readonly type="text" ></td>
+                                <th>销售发货日期</th>
+                                <td><input id="saleDate" name="saleDate" class="form-control" type="text" th:value="${saleManageDo.saleDate}"  readonly></td>
+
+                            </tr>
+                            <tr>
+                                <th>销售发货单状态</th>
+                                <td><input  id="saleState" name="saleState" th:value="${saleManageDo.saleStateName}" class="form-control"  readonly /></td>
+                                <th>销售发货负责人</th>
+                                <td><input class="form-control" name="saleManagerName" id="saleManagerName" th:value="${saleManageDo.saleManegerName}" readonly type="text" >
+                                    <input id="saleManagerId"  name="saleManagerId" class="form-control" type="hidden" ></td>
+
+                            </tr>
+                            <tr>
+                                <th>订货单位</th>
+
+                                <td><input id="custermerId" name="custermerId"  type="hidden" class="form-control" />
+                                    <input id="custermerName" name="custermerName" th:value="${custermerInformationDo.custermerName}" readonly class="form-control" /></td>
+                                <th>收货地址</th>
+                                <td><input id="destination" name="destination" th:value="${saleManageDo.destination}" class=" form-control"  readonly type="text"></input></td>
+
+                            </tr>
+                            <tr>
+                                <th>收货联系人</th>
+
+                                <td><input id="contact" name="contact"  class="form-control" readonly th:value="${saleManageDo.contact}"/></td>
+                                <th>收货联系电话</th>
+                                <td><input id="contactTel" name="contactTel"  class="form-control" th:value="${saleManageDo.contactTel}" readonly type="text"></input></td>
+
+                            </tr>
+                        </table>
+
+                        <!--<div><input id="period"  name="period" dateFormate="yyyy-MM-dd" type="date" onblur="loadPeriod()"/></div>-->
+                        <b>发货明细</b>
+                        <div name="content">
+                            <input name="contentId" id="contentId" type="hidden">
+                            <input name="contentProductId" id="productId" type="hidden">
+                            <div><input name="noBatchChecked"type="checkbox"/><b>订单内容</b></div>
+                            <table class="table table-striped table-bordered table-hover">
+                                <tr>
+                                    <th>产品编号</th>
+                                    <th>产品名称</th>
+                                    <th>产品型号</th>
+                                    <th>数量</th>
+                                    <th>数量单位</th>
+                                    <th>到货日期</th>
+                                    <th>报缴仓库</th>
+                                </tr>
+                                <tr th:each="content:${list}">
+                                    <td><input class="form-control" name="contentCode" th:value="${content.productCode}" type="text" readonly></td>
+                                    <td><input class="form-control" name="contentTypeName" th:value="${content.productName}" type="text" readonly><input class="form-control" name="contentType" type="hidden" readonly></td>
+                                    <td><input class="form-control" name="" th:value="${content.productType}" type="text" readonly></td>
+                                    <td><input class="form-control" type="text" th:value="${content.count}" name="count" readonly></td>
+                                    <td><input class="form-control" type="text" name="quantityUnit" th:value="${content.quantityUnitName}"  readonly></td>
+                                    <td><input class="form-control" type="text" name="deadline" th:value="${content.deadline}" readonly></td>
+                                    <td><input class="form-control" type="text" name="storehouse" th:value="${content.storehouse}"readonly></td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+                        <b>备注/附件</b>
+                        <div class="form-group" style="display: flex;align-items: center">
+                            <textarea style="height: 100px;margin-right: 20px"id="remark" name="remark" wrap="hard" row="20" cols="80"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+
+</body>
+</html>

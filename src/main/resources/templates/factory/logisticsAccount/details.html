@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+					<form class="form-horizontal m-t" id="signupForm">
+						<input id="logisticsId" name="logisticsId" th:value="${logisticsAccount.logisticsId}"  type="hidden">
+						<div class="form-group">
+                            <label class="col-sm-3 control-label">关联表单编号</label>
+                            <div class="col-sm-8">
+                                <input id="formId" name="formId" th:value="${logisticsAccount.formId}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">关联表单类型</label>
+                            <div class="col-sm-8">
+                                <input id="formTypeName" name="formTypeName" th:value="${logisticsAccount.formType}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">发货单位</label>
+                            <div class="col-sm-8">
+                                <input id="forwardingUnit" name="forwardingUnit"
+                                       th:value="${logisticsAccount.forwardingUnit}" class="form-control" type="text"
+                                       readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">物流台账编号</label>
+                            <div class="col-sm-8">
+                                <input id="logisticsNumber" name="logisticsNumber"
+                                       th:value="${logisticsAccount.logisticsNumber}" class="form-control" type="text"
+                                       readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">物流公司</label>
+                            <div class="col-sm-8">
+                                <input id="logisticsCompany" name="logisticsCompany"
+                                       th:value="${logisticsAccount.logisticsCompany}" class="form-control" type="text"
+                                       readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">收货单位</label>
+                            <div class="col-sm-8">
+                                <input id="receiveUnit" name="receiveUnit" th:value="${logisticsAccount.receiveUnit}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">总数量</label>
+                            <div class="col-sm-8">
+                                <input id="totalQuantity" name="totalQuantity"
+                                       th:value="${logisticsAccount.totalQuantity}" class="form-control" type="text"
+                                       readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">总重量</label>
+                            <div class="col-sm-8">
+                                <input id="totalWeight" name="totalWeight" th:value="${logisticsAccount.totalWeight}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">总金额</label>
+                            <div class="col-sm-8">
+                                <input id="totalMoney" name="totalMoney" th:value="${logisticsAccount.totalMoney}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">司机名称</label>
+                            <div class="col-sm-8">
+                                <input id="driverName" name="driverName" th:value="${logisticsAccount.driverName}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">联系电话</label>
+                            <div class="col-sm-8">
+                                <input id="phoneNumber" name="phoneNumber" th:value="${logisticsAccount.phoneNumber}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">车牌号</label>
+                            <div class="col-sm-8">
+                                <input id="carNumber" name="carNumber" th:value="${logisticsAccount.carNumber}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">驾照</label>
+                            <div class="col-sm-8">
+                                <input id="driverLicense" name="driverLicense"
+                                       th:value="${logisticsAccount.driverLicense}" class="form-control" type="text"
+                                       readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">行驶证</label>
+                            <div class="col-sm-8">
+                                <input id="driverPermit" name="driverPermit" th:value="${logisticsAccount.driverPermit}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">重量单位</label>
+                            <div class="col-sm-8">
+                                <input id="weightUnit" name="weightUnit" th:value="${logisticsAccount.weightUnit}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">重量</label>
+                            <div class="col-sm-8">
+                                <input id="weight" name="weight" th:value="${logisticsAccount.weight}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">金额</label>
+                            <div class="col-sm-8">
+                                <input id="money" name="money" th:value="${logisticsAccount.money}" class="form-control"
+                                       type="text" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">备注</label>
+                            <div class="col-sm-8">
+                                <input id="remarks" name="remarks" th:value="${logisticsAccount.remarks}"
+                                       class="form-control" type="text" readonly="readonly">
+                            </div>
+                        </div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:include="include::footer"></div>
+</body>
+</html>

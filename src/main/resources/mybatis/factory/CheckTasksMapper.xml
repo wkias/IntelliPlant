@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.factory.equipmentManage.dao.CheckTasksDao">
+
+    <select id="get" resultType="com.bootdo.factory.equipmentManage.domain.CheckTasksDO">
+		select `check_task_id`,`equipment_id`,`equipment_type`,`code`,`name`,`checker_id`,`date`,`deadline`,`state` from equipment_check_tasks where check_task_id = #{value}
+	</select>
+
+    <update id="check">
+        update equipment_check_tasks set state = 2 where check_task_id = #{checkTaskId}
+    </update>
+
+    <select id="list" resultType="com.bootdo.factory.equipmentManage.domain.CheckTasksDO">
+        select `check_task_id`,`equipment_id`,`equipment_type`,`code`,`name`,`checker_id`,`date`,`deadline`,`state` from
+        equipment_check_tasks
+        <where>
+            <if test="checkTaskId != null and checkTaskId != ''">and check_task_id = #{checkTaskId}</if>
+            <if test="equipmentId != null and equipmentId != ''">and equipment_id = #{equipmentId}</if>
+            <if test="equipmentType != null and equipmentType != ''">and equipment_type = #{equipmentType}</if>
+            <if test="code != null and code != ''">and code = #{code}</if>
+            <if test="name != null and name != ''">and name like #{name}</if>
+            <if test="checkerId != null and checkerId != ''">and checker_id = #{checkerId}</if>
+            <if test="date != null and date != ''">and date = #{date}</if>
+            <if test="deadline != null and deadline != ''">and deadline = #{deadline}</if>
+            and state = 0
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by check_task_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from equipment_check_tasks
+        <where>
+            <if test="checkTaskId != null and checkTaskId != ''">and check_task_id = #{checkTaskId}</if>
+            <if test="equipmentId != null and equipmentId != ''">and equipment_id = #{equipmentId}</if>
+            <if test="equipmentType != null and equipmentType != ''">and equipment_type = #{equipmentType}</if>
+            <if test="code != null and code != ''">and code = #{code}</if>
+            <if test="name != null and name != ''">and name like #{name}</if>
+            <if test="checkerId != null and checkerId != ''">and checker_id = #{checkerId}</if>
+            <if test="date != null and date != ''">and date = #{date}</if>
+            <if test="deadline != null and deadline != ''">and deadline = #{deadline}</if>
+            <if test="state != null and state != ''">and state = 0</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.bootdo.factory.equipmentManage.domain.CheckTasksDO">
+		insert into equipment_check_tasks
+		(
+			`check_task_id`,
+			`equipment_id`,
+			`equipment_type`,
+			`code`,
+			`name`,
+			`checker_id`,
+			`date`,
+			`deadline`,
+			`state`
+		)
+		values
+		(
+			#{checkTaskId},
+			#{equipmentId},
+			#{equipmentType},
+			#{code},
+			#{name},
+			#{checkerId},
+			#{date},
+			#{deadline},
+			0
+		)
+	</insert>
+
+    <update id="update" parameterType="com.bootdo.factory.equipmentManage.domain.CheckTasksDO">
+        update equipment_check_tasks
+        <set>
+            <if test="equipmentId != null">`equipment_id` = #{equipmentId},</if>
+            <if test="equipmentType != null">`equipment_type` = #{equipmentType},</if>
+            <if test="code != null">`code` = #{code},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="checkerId != null">`checker_id` = #{checkerId},</if>
+            <if test="date != null">`date` = #{date},</if>
+            <if test="deadline != null">`deadline` = #{deadline},</if>
+            <if test="state != null">`state` = #{state}</if>
+        </set>
+        where check_task_id = #{checkTaskId}
+    </update>
+
+    <delete id="remove">
+		delete from equipment_check_tasks where check_task_id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from equipment_check_tasks where check_task_id in
+        <foreach item="checkTaskId" collection="array" open="(" separator="," close=")">
+            #{checkTaskId}
+        </foreach>
+    </delete>
+
+</mapper>

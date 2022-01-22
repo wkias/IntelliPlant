@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="productId" name="productId" th:value="${productDefinition.productId}"  type="hidden">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">产品编号</label>
+                            <div class="col-sm-8">
+                                <input id="productCode" name="productCode" th:value="${productDefinition.productCode}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">产品名称</label>
+                            <div class="col-sm-8">
+                                <input id="productName" name="productName" th:value="${productDefinition.productName}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">产品规格</label>
+                            <div class="col-sm-8">
+                                <input id="productSize" name="productSize" th:value="${productDefinition.productSize}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">产品型号</label>
+                            <div class="col-sm-8">
+                                <input id="productModel" name="productModel" th:value="${productDefinition.productModel}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">单位</label>
+                            <div class="col-sm-8">
+                                <input id="oldUnit" name="oldUnit" th:value="${productDefinition.unitName}" type="text" readonly class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">重量单位</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="oldWeight"th:value="${productDefinition.weightUnitName}"readonly>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">产品单重</label>
+                            <div class="col-sm-8">
+                                <input id="weight" name="weight" th:value="${productDefinition.weight}"type="text" class="form-control" readonly />
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">单价(元)</label>
+                            <div class="col-sm-8">
+                                <input id="price" name="price" th:value="${productDefinition.price}" class="form-control" type="text" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">状态</label>
+
+                            <div class="col-sm-8">
+                                <label class="radio-inline"> <input
+                                        th:field="*{productDefinition.state}" type="radio" name="state" value="0"  readonly/>
+                                    停用
+                                </label> <label class="radio-inline"> <input
+                                    th:field="*{productDefinition.state}" type="radio" name="state" value="1"  readonly/>
+                                启用
+                            </label>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">产品描述</label>
+                            <div class="col-sm-8">
+                                <input id="description" name="description" th:value="${productDefinition.description}" class="form-control" type="text" readonly/>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <label class="col-sm-3 control-label">删除标记：0未删除；1已删除；默认0</label>
+                            <div class="col-sm-8">
+                                <input id="isDeleted" name="isDeleted" th:value="${productDefinition.isDeleted}" class="form-control" type="hidden">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <label class="col-sm-3 control-label">创建者</label>
+                            <div class="col-sm-8">
+                                <input id="createUserId" name="createUserId" th:value="${productDefinition.createUserId}" class="form-control" type="hidden">
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/productManage/productDefinition/edit.js">
+</script>
+</body>
+</html>

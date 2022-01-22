@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+	<div class="col-sm-12">
+		<div class="ibox">
+			<div class="ibox-body">
+				<div class="fixed-table-toolbar">
+					<div class="columns pull-left">
+						<button shiro:hasPermission="factory:invoiceRecord:add" type="button" class="btn  btn-primary" onclick="add()">
+							<i class="fa fa-plus s_exportFile_h" aria-hidden="true"></i>添加
+						</button>
+						<button shiro:hasPermission="factory:invoiceRecord:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+							<i class="fa fa-trash" aria-hidden="true"></i>删除
+						</button>
+						<button class="btn  btn-info" onclick="exportFile()"
+								shiro:hasPermission="factory:invoiceRecord:exportFile"
+								type="button">
+							<i aria-hidden="true" class="glyphicon glyphicon-file"></i>导出
+						</button>
+					</div>
+					<div shiro:hasPermission="factory:invoiceRecord:invoiceRecord" class="columns pull-right">
+						<button class="btn btn-success" onclick="reset()">重置</button>
+					</div>
+					<div shiro:hasPermission="factory:invoiceRecord:invoiceRecord" class="columns pull-right" style="margin-right:5px;">
+						<button class="btn btn-success" onclick="reLoad()">查询</button>
+					</div>
+					<div shiro:hasPermission="factory:invoiceRecord:invoiceRecord" class="columns pull-right col-md-2 nopadding" style="margin-right:5px;">
+						<input id="invoiceName" type="text" class="form-control"
+							   placeholder="开票名称">
+					</div>
+				</div>
+				<table id="exampleTable" data-mobile-responsive="true">
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+<div>
+
+	<script type="text/javascript">
+		var s_attachment_h = 'hidden';
+		var s_remove_h = 'hidden';
+		var s_exportFile_h = 'hidden';
+		var s_details_h = 'hidden';
+		var s_edit_h = 'hidden';
+	</script>
+</div>
+<div shiro:hasPermission="factory:invoiceRecord:attachment">
+	<script type="text/javascript">
+		s_attachment_h = '';
+	</script>
+</div>
+<div shiro:hasPermission="factory:invoiceRecord:remove">
+	<script type="text/javascript">
+		var s_remove_h = '';
+	</script>
+</div>
+<div shiro:hasPermission="factory:invoiceRecord:exportFile">
+	<script type="text/javascript">
+		var s_exportFile_h = '';
+	</script>
+</div>
+<div shiro:hasPermission="factory:invoiceRecord:details">
+	<script type="text/javascript">
+		s_details_h = '';
+	</script>
+</div>
+<div shiro:hasPermission="factory:invoiceRecord:edit">
+	<script type="text/javascript">
+		s_edit_h = '';
+	</script>
+</div>
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/appjs/factory/invoiceRecord/invoiceRecord.js"></script>
+</body>
+</html>
